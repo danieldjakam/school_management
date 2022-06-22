@@ -11,13 +11,20 @@ const connection = mysql.createConnection({
 
 
 module.exports.addClass = (req, res) => {
-    const {name, section} = req.body;
-    if (name && name !== '' && section && section !== '') {
+    let {name, section, level} = req.body;
+    level = parseInt(level)
+    if (name && name !== '' && section && section !== '' && level) {
         if (name.length < 4) {
             res.status(401).json({success: false, message: 'Le nom de la classe doit avoir au moins 3 caracteres!!'})
         }
         else if (section !== 'fr' && section !== 'en' && section !== 'ma') {
-            res.status(401).json({success: false, message: 'Le nom de la classe doit avoir au moins 3 caracteres!!'})
+            res.status(401).json({success: false, message: 'Mauvaise section!!'})
+        }
+        else if( (section === 'fr' || section === 'en') && (level < 1 || level > 6)){
+            res.status(401).json({success: false, message: 'Les niveaux de classe du secteur primaire doit etre compris entre 1 et 6!!'})
+        }
+        else if( section === 'ma' && (level < 1 || level > 3)){
+            res.status(401).json({success: false, message: 'Les niveaux de classe du secteur maternelle doit etre compris entre 1 et 3!!'})
         }
         else{
             connection.query('INSERT INTO class(id, name, section) VALUES(?, ?, ?)', [sign(name, env.SECRET), name, section], (err, resp) => {
@@ -31,7 +38,8 @@ module.exports.addClass = (req, res) => {
 }
 
 module.exports.updateClass = (req, res) => {
-    const {name, section} = req.body;
+    let {name, section, level} = req.body;
+    level = parseInt(level)
     const {id} = req.params;
     if (name && name !== '' && section && section !== '') {
         if (name.length < 4) {
@@ -40,8 +48,14 @@ module.exports.updateClass = (req, res) => {
         else if (section !== 'fr' && section !== 'en' && section !== 'ma') {
             res.status(401).json({success: false, message: 'La section doit avoir au moins 3 caracteres!!'})
         }
+        else if( (section === 'fr' || section === 'en') && (level < 1 || level > 6)){
+            res.status(401).json({success: false, message: 'Les niveaux de classe du secteur primaire doit etre compris entre 1 et 6!!'})
+        }
+        else if( section === 'ma' && (level < 1 || level > 3)){
+            res.status(401).json({success: false, message: 'Les niveaux de classe du secteur maternelle doit etre compris entre 1 et 3!!'})
+        }
         else{
-            connection.query('UPDATE class SET name = ? , section = ? WHERE id = ?', [ name, section, id], (err, resp) => {
+            connection.query('UPDATE class SET name = ? , section = ?, level = ? WHERE id = ?', [ name, section, level, id], (err, resp) => {
                 if(err) console.log(err);
 
                 else res.status(201).json({success: true})

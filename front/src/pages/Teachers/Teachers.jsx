@@ -10,6 +10,7 @@ import {
 } from "reactstrap"
 import AddTeacher from "./AddTeachers";
 import EditTeacher from "./EditTeacher";
+import ShowMdp from './ShowMdp';
 
 
 const Teachers = () => {
@@ -21,11 +22,13 @@ const Teachers = () => {
     const [teachers, setTeachers] = useState({});
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
-    const [success] = useState('');
+    const [generating, setGenerating] = useState(false);
     const [loadingDel, setLoadingDel] = useState(false);    
     const [teacherToEditId, setTeacherToEditId] = useState('')
     const [isAddteacher, setIsAddTeacher] = useState(false);
     const [isEditteacher, setIsEditTeacher] = useState(false);
+    const [isSeeMdp, setIsMdp] = useState(false);
+    const [mdp, setMdp] = useState('')
 
     useEffect(() => {
         (
@@ -63,11 +66,28 @@ const Teachers = () => {
                 setLoadingDel(false)
             }
         })
-  }
+    }
+    const regeneratePassword = () => {
+        setGenerating(true)
+        fetch('http://localhost:4000/teachers/regeneratePassword', {headers: {'Authorization': sessionStorage.user}})
+            .then((res) => res.json())
+            .then((res) => { 
+                console.log(res);
+                if (res.success) {
+                    window.location.reload();
+                }else{
+                    console.log(res.message);
+                    setError(res.message)
+                }
+            })
+        setGenerating(false)
+    }
     return <div style={{padding: '10px 10px'}} className='container'>
         
         <div style={{marginBottom: '10px'}}>
             <button onClick={() => {setIsAddTeacher(v => !v)}} className="btn btn-blue">Ajouter un enseignant</button>
+            <button onClick={() => {regeneratePassword()}} style={{marginLeft: '10px'}} className="btn btn-blue">{generating ? 'En ocurs...' : 'Generer les nouveaux mdp'}</button>
+            <a href="http://localhost:4000/teachers/downloadTeachersPassword" target="_blank" rel="noopener noreferrer" style={{marginLeft: '10px'}} className="btn btn-blue">Telecharger la liste des mdp</a>
         </div>
         <div className="allClas col-md-12">
             {
@@ -119,7 +139,8 @@ const Teachers = () => {
                                 </div>  
                             </div>
                             <div className="bottom">
-                                <button onClick={() => {setIsEditTeacher(v => !v); setTeacherToEditId(teacher.id)}} className="btn btn-warning"> Editer </button>
+                                <button onClick={() => {setMdp(teacher.password); setIsMdp(v => !v);}} className="btn btn-warning"> Voir le mdp </button>
+                                <button onClick={() => {setIsEditTeacher(v => !v); setTeacherToEditId(teacher.id)}} className="btn btn-success"> Editer</button>
                                 <button className="btn btn-danger" onClick={() => {deleteTeacher(teacher.id)}}> {loadingDel ? 'Suppression..' : 'Supprimer'} </button>
                             </div>  
                         </div> }) : <div className="i">
@@ -135,6 +156,10 @@ const Teachers = () => {
         
         <Modal isOpen={isAddteacher}>
             <AddTeacher error={error} setError={setError} setIsAddTeacher={setIsAddTeacher}/>
+        </Modal>
+
+        <Modal isOpen={isSeeMdp}>
+            <ShowMdp setIsMdp={setIsMdp} mdp={mdp}/>
         </Modal>
 
         <Modal isOpen={isEditteacher}>

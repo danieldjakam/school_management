@@ -5,7 +5,8 @@ const AddClass = ({ error, setError, setIsAddClass}) => {
 
   const [data, setData] = useState({
     name: '',
-    section: 'fr'
+    section: 'fr',
+    level: 1
   })
   const [loading, setLoading] = useState(false);
 
@@ -38,6 +39,10 @@ const AddClass = ({ error, setError, setIsAddClass}) => {
         <div className="field">
             <div className="label">Nom de la classe</div>
             <input type="text" value={data.name} onChange={(e) => {setData(val => {return {...val, name: e.target.value}})}} placeholder="Entrer un nom de classe valide" />
+        </div> 
+        <div className="field">
+            <div className="label">Niveau de la classe</div>
+            <input type="number" value={data.level} onChange={(e) => {setData(val => {return {...val, level: e.target.value}})}} placeholder="Entrer un nom de classe valide" />
         </div> 
         <div className="field">
             <div className="label">Section</div>

@@ -2,6 +2,9 @@ require('dotenv').config({path: '.env'})
 const {env} = process;
 const { sign } = require('jsonwebtoken');
 const mysql = require('mysql2');
+const fs = require('fs');
+const pdf = require('pdf-creator-node');
+const optionsPdf = require('../helpers/optionsPdf')
 const connection = mysql.createConnection({
     host: env.DB_HOST,
     user: env.DB_USERNAME,
@@ -22,10 +25,11 @@ module.exports.addTeacher = (req, res) => {
         }
         else{
             const t = [];
-            for (let i = 0; i < 6; i++) {
+            for (let i = 0; i < 4; i++) {
               const i = Math.round(Math.random() * 10);
               t.push(i);
             }
+            const password = t.join('')
 
             connection.query('SELECT name FROM class WHERE id = ? ', [classId], (erroorr, succc) => {
                 if (erroorr) {
@@ -35,7 +39,7 @@ module.exports.addTeacher = (req, res) => {
                     name = name.replace(' ', '')
                     name = name.toUpperCase()
                     const code = 'SEM-'+name;
-                    connection.query('INSERT INTO teachers(id, name, subname, class_id, matricule) VALUES(?, ?, ?, ?, ?)', [id, name, subname, classId, code], (err, resp) => {
+                    connection.query('INSERT INTO teachers(id, name, subname, class_id, matricule, password) VALUES(?, ?, ?, ?, ?, ?)', [id, name, subname, classId, code, password], (err, resp) => {
                         if(err) console.log(err);
 
                         else {
@@ -90,7 +94,7 @@ module.exports.updateTeacher = (req, res) => {
 }
 
 module.exports.getAllTeachers = (req, res) => {
-    connection.query('SELECT teachers.name, teachers.matricule, class.name as className, teachers.id, teachers.subname FROM teachers LEFT JOIN class ON class.id = teachers.class_id', (err, resp) => {
+    connection.query('SELECT teachers.name, teachers.password, teachers.matricule, class.name as className, teachers.id, teachers.subname FROM teachers LEFT JOIN class ON class.id = teachers.class_id', (err, resp) => {
         if(err) console.log(err);
         res.status(201).json(resp)
     })
@@ -107,5 +111,51 @@ module.exports.deleteTeacher = (req, res) => {
     const {id} = req.params;
     connection.query('DELETE FROM teachers WHERE id = ?', [id], (err, resp) => {
         res.status(201).json({success: true})
+    })
+}
+
+module.exports.downloadTeachersPassword = (req, res) => {
+    const html = fs.readFileSync('templates/teachersPassword.html', 'utf-8');
+    
+    connection.query('SELECT teachers.name, subname, matricule, password, class.name as class FROM teachers LEFT JOIN class ON teachers.class_id = class.id', [], (errr, teachers) => {
+        
+        const document = {
+            html: html,
+            data: {
+                teachers: teachers
+            },
+            path: `docs/mots_de_passe_maitres.pdf`
+        };
+        pdf.create(document, optionsPdf)
+            .then(resp => {
+                res.download(resp.filename)
+            })
+            .catch(err => {
+                console.log(err);
+                res.status(201).json({err, f: ''})
+            })
+    })
+}
+
+module.exports.generateNewPasswords = (req, res) => {
+    connection.query('SELECT * FROM teachers', (err, teachers) => {
+        try {
+            teachers.forEach(teacher => {
+                const t = []
+                for (let i = 0; i < 4; i++) {
+                    const i = Math.round(Math.random() * 10);
+                    t.push(i);
+                }
+                const password = t.join('')
+                connection.query('UPDATE teachers SET password = ? WHERE id = ?', [password, teacher.id], (err, resp) => {
+                    if (err) {
+                        console.log(err);
+                    }
+                })
+            })
+            res.status(201).json({success: true})
+        } catch (error) {
+            res.status(401).json({success: false, message: `Erreur: ${error}`})
+        }
     })
 }

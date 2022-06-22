@@ -11,7 +11,8 @@ const AddStudent = ({setIsAddStudent, error, setError}) => {
     birthday: '',
     sex: '',
     email: '',
-    phone_number: ''
+    phone_number: '',
+    status: 'old'
   })
   const [classs, setClass] = useState({});
   const [loading, setLoading] = useState(false);
@@ -82,6 +83,10 @@ const AddStudent = ({setIsAddStudent, error, setError}) => {
                         <option value="f">Feminin</option>
                     </select>
             </div>
+            <div className="field check " style={{display:'flex'}}>
+                <label className={`label ${data.status === 'new' ? 'checked' : ''}`} htmlFor='check'>Nouveau eleve ?</label>
+                <input type="checkbox" checked={data.status == 'new' ? true : false} onChange={(e) => {setData(val => {return{...val, status: data.status === 'new' ? 'old' : 'new'}})}} id="check" />
+            </div> 
             {
               error !== '' ? <div className="error">{error}</div> : ''
             } 

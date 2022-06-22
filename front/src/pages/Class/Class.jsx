@@ -91,6 +91,14 @@ const Class = () => {
                                     {classs.section === 'en' ? 'Anglo' : classs.section === 'fr' ? 'Franco' : 'Maternelle'}
                                 </span>
                             </div>
+                            <div className="qq">
+                                <span className="q">
+                                    Niveau:
+                                </span>
+                                <span className="r">
+                                    {classs.level}
+                                </span>
+                            </div>
                         </div>
                         <div className="bottom">
                             <Link to={`/students/${classs.id}`} className="btn btn-primary"> Visiter </Link>

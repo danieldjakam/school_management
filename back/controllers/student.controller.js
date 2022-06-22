@@ -12,7 +12,10 @@ const connection = mysql.createConnection({
 
 module.exports.addStudent = (req, res) => {
     const {id} = req.params;
-    const {name, subname, sex, birthday, email, phone_number} = req.body;
+    const {name, subname, sex, birthday, email, phone_number, status} = req.body;
+    if (!status) {
+        const status = 'old'
+    }
     if (name && name !== '' && subname && subname !== '' && sex && sex !== '' && birthday && birthday !== '') {
         if (name.length < 3) {
             res.status(401).json({success: false, message: 'Le nom de l\'eleve doit avoir au moins 3 caracteres!!'})
@@ -29,10 +32,13 @@ module.exports.addStudent = (req, res) => {
         else if (phone_number < 8) {
             res.status(401).json({success: false, message: 'Numero invalide'})
         }
+        else if (status && status !== 'new' && status !== 'old') {
+            res.status(401).json({success: false, message: 'Status de l\'eleve invalide'})
+        }
         else{
             connection.query('SELECT year_school FROM settings WHERE id = 1', (rerr, respe) => {
                 const {year_school} = respe[0];
-                connection.query('INSERT INTO students(id, name, subname, class_id, sex, birthday, email, phone_number, school_year) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)', [sign(name, env.SECRET), name, subname, id, sex, birthday, email, phone_number.toString(), year_school], (err, resp) => {
+                connection.query('INSERT INTO students(id, name, subname, class_id, sex, birthday, email, phone_number, school_year, status) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [sign(name+year_school, env.SECRET), name, subname, id, sex, birthday, email, phone_number.toString(), year_school, status], (err, resp) => {
                     if(err) console.log(err);
                     else res.status(201).json({success: true})
                 })
@@ -79,7 +85,7 @@ module.exports.updateStudent = (req, res) => {
 module.exports.getAllStudent = (req, res) => {
     connection.query('SELECT year_school FROM settings WHERE id = 1', (rerr, respe) => {
         const {year_school} = respe[0];
-        connection.query('SELECT * FROM students WHERE school_year = ?', [year_school], (err, resp) => {
+        connection.query('SELECT * FROM students WHERE school_year = ? ORDER BY name ASC', [year_school], (err, resp) => {
             if(err) console.log(err);
             else res.status(201).json(resp)
         })
@@ -89,9 +95,14 @@ module.exports.getAllStudent = (req, res) => {
 module.exports.getSpecificStudents = (req, res) => {
     connection.query('SELECT year_school FROM settings WHERE id = 1', (rerr, respe) => {
         const {year_school} = respe[0]
-        connection.query('SELECT * FROM students WHERE class_id = ? AND school_year = ?', [req.params.id, s=year_school] , (err, resp) => {
+        connection.query('SELECT * FROM students WHERE class_id = ? AND school_year = ? AND status = "old" ORDER BY name ASC', [req.params.id, year_school] , (err, oldStudents) => {
             if(err) console.log(err);
-            else res.status(201).json(resp);
+            else {
+                connection.query('SELECT * FROM students WHERE class_id = ? AND school_year = ? AND status = "new"', [req.params.id, year_school] , (err, newStudents) => {
+                    const resp = [...oldStudents, ...newStudents]
+                    res.status(201).json(resp)
+                })
+            }
         })
     })
 }
@@ -108,7 +119,10 @@ module.exports.getOneStudent = (req, res) => {
 
 module.exports.deleteStudent = (req, res) => {
     const {id} = req.params;
-    connection.query('DELETE FROM students WHERE id = ?', [id], (err, resp) => {
-        res.status(201).json({success: true})
+    connection.query('SELECT year_school FROM settings WHERE id = 1', (rerr, respe) => {
+        const {year_school} = respe[0];
+        connection.query('DELETE FROM students WHERE id = ? AND school_year = ?', [id, year_school], (err, resp) => {
+            res.status(201).json({success: true})
+        })
     })
 }

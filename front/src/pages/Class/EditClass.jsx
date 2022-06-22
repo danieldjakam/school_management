@@ -52,6 +52,10 @@ const EditClass = ({error, setError, setIsEditClass, classToEditId}) => {
               <div className="label">Nom de la classe</div>
               <input type="text" value={classs.name} onChange={(e) => {setClasss  (val => {return {...val, name: e.target.value}})}} placeholder="Entrer un nom de classe valide" />
           </div> 
+        <div className="field">
+            <div className="label">Niveau de la classe</div>
+            <input type="number" value={classs.level} onChange={(e) => {setClasss(val => {return {...val, level: e.target.value}})}} placeholder="Entrer un niveau compris" />
+        </div> 
           <div className="field">
               <div className="label">Section</div>
               <select value={classs.section} onChange={(e) => {setClasss  (val => {return {...val, section: e.target.value}})}} className="form-control form-control-lg"
