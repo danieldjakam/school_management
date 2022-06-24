@@ -61,7 +61,11 @@ const Login = ({setUser}) => {
             } 
           </div>
           <div className="card-footer">
-            <button type="submit">Se connecter</button>
+            <button type="submit">
+              {
+                loading ? 'Connexion...': 'Se connecter'
+              }
+            </button>
           </div>
         </form>
       </div>

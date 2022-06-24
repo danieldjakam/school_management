@@ -1,3 +1,5 @@
+import { Matiere } from "../models/Matiere";
+
 require('dotenv').config({path: '.env'})
 const fs = require('fs');
 var Json2csvParser = require('json2csv').Parser
@@ -49,10 +51,15 @@ module.exports.downloadStudentsPdf = (req, res) => {
     connection.query("SELECT students.name, teachers.name as tName, teachers.subname as tSubname, students.subname,  students.email,  students.phone_number, students.birthday, students.sex, class.name as cName  FROM students LEFT JOIN class ON class.id = students.class_id LEFT JOIN teachers ON teachers.class_id = class.id WHERE students.class_id = ?", [req.params.id], function (err, students, fields) {
         if (err) console.log(err);
         const fileName = `Liste des eleves de ${students[0].cName}.pdf`;
-        let info = {};
-        info.className = students[0].cName;
-        info.teacherName = students[0].tName;
-        info.teacherSubname = students[0].tSubname;
+        let info : {
+            className : string,
+            teacherName : string
+            teacherSubname : string
+        } = {
+            className  : students[0].cName,
+            teacherName  : students[0].tName,
+            teacherSubname  : students[0].tSubname,
+        }
         students.forEach(student => {
             const date = new Date(student.birthday).getDate() + ' '+ months[new Date(student.birthday).getMonth()] + " " + new Date(student.birthday).getUTCFullYear()
             student.sex = student.sex === 'm' ? 'Masculin' : 'Feminin';
@@ -81,20 +88,32 @@ module.exports.downloadStudentsPdf = (req, res) => {
 module.exports.downloadBulletin = (req, res) => {
     const {exam_id, student_id, class_id} = req.params;
     const html = fs.readFileSync('templates/Bulletin.html', 'utf-8');
-    let badCompetence = [];
-    let totalPoint = 0;
-    let totalNote
-    let diviser = 0;
+    let badCompetence : string[] = [];
+    let totalPoint : number = 0;
+    let totalNote : number
+    let diviser : number = 0;
     
-    connection.query('SELECT * FROM students WHERE class_id = ?', [class_id], (errr, allStudents) => {
+    connection.query('SELECT * FROM students WHERE class_id = ?', [class_id], (errr, allStudents : []) => {
         connection.query("SELECT students.name, teachers.name as tName, teachers.subname as tSubname, students.subname, students.birthday, students.sex, class.name as cName  FROM students LEFT JOIN class ON class.id = students.class_id LEFT JOIN teachers ON teachers.class_id = class.id WHERE students.id = ?", [student_id], function (err, student, fields) {
             if (err) console.log(err);
-            const stud = student[0];
-            const fileName = `Bulletin de ${stud.name} ${stud.subname}.pdf`;
-            let info = {};
-            info.className = stud.cName;
-            info.teacherName = stud.tName;
-            info.teacherSubname = stud.tSubname;
+            const stud : {
+                name: string,
+                subname: string,
+                cName: string,
+                tName: string,
+                tSubname: string,
+                sex: string,
+                birthday: string,
+            } = student[0];
+            let info : {
+                className : string,
+                teacherName : string
+                teacherSubname : string
+            } = {
+                className  : stud.cName,
+                teacherName  : stud.tName,
+                teacherSubname  : stud.tSubname,
+            }
             stud.sex = stud.sex === 'm' ? 'Masculin' : 'Feminin';
             const date = new Date(stud.birthday).getDate() + ' '+ months[new Date(stud.birthday).getMonth()] + " " + new Date(stud.birthday).getUTCFullYear()
             stud.birthday = date;
@@ -104,15 +123,17 @@ module.exports.downloadBulletin = (req, res) => {
                 notes.forEach(note => {
                     totalPoint += parseInt(note.value);
                 });
-                connection.query('SELECT * FROM matiere', (err3, mat) => {
-                    mat.forEach(m => {
+                connection.query('SELECT * FROM matiere', (err3, mat : Matiere[]) => {
+                    mat.forEach((m) => {
                         const tags = JSON.parse(m.tags);
                         const notesForThisMatiere = notes.filter(h => h.matiere_id === m.id);
                         const t = JSON.parse(m.tags).length + 2;
                         totalNote = 0;
                         let total = 0;
                         tags.map(tag => {
-                            const notesForThisTag = notesForThisMatiere.filter(h => h.tag_name === tag.name)[0];
+                            const notesForThisTag = notesForThisMatiere.filter((h : {
+                                tag_name: string,
+                            } )=> h.tag_name === tag.name)[0];
                             const note = notesForThisTag !== {} && notesForThisTag !== undefined ? parseInt(notesForThisTag.value) : 0;
                             totalNote += note;
                             total += parseInt(tag.over);
@@ -161,13 +182,17 @@ module.exports.downloadBulletin = (req, res) => {
                         connection.query('SELECT * FROM stats WHERE class_id = ? AND exam_id = ? ', [class_id, exam_id], (errrt, stats) => {
                             const rangedArray = stats.sort((a, b) => b.totalPoints - a.totalPoints);
                             const g = stats.sort((a, b) => b.totalPoints - a.totalPoints);
-                            let firstPoints = g[0].totalPoints;
-                            let lastPoints = {};
-                            g.forEach(ey => {
+                            let firstPoints : number = g[0].totalPoints;
+                            let lastPoints : number = 0;
+                            g.forEach((ey : {
+                                totalPoints: number
+                            }) => {
                                 lastPoints = ey.totalPoints;
                             })
                             let rang = 0;
-                            rangedArray.forEach((s, c) => {
+                            rangedArray.forEach((s : {
+                                student_id: string
+                            }, c) => {
                                 if (s.student_id === student_id) {
                                     rang = c + 1
                                 }
@@ -221,29 +246,36 @@ module.exports.downloadBulletinByClass = async (req, res) => {
             students.forEach(tt => {
                 const {exam_id, class_id} = req.params;
                 const html = fs.readFileSync('templates/Bulletin.html', 'utf-8');
-                let badCompetence = [];
+                let badCompetence : string[] = [];
                 let totalPoint = 0;
-                let totalNote
-                let diviser = 0;
+                let totalNote : number
+                let diviser : number = 0;
                 const stud = tt;
-                let info = {};
-                info.className = stud.cName;
-                info.teacherName = stud.tName;
-                info.teacherSubname = stud.tSubname;
+                let info : {
+                    className : string,
+                    teacherName : string
+                    teacherSubname : string
+                } = {
+                    className  : stud.cName,
+                    teacherName  : stud.tName,
+                    teacherSubname  : stud.tSubname,
+                }
                 stud.sex = stud.sex === 'm' ? 'Masculin' : 'Feminin';
                 const date = new Date(stud.birthday).getDate() + ' '+ months[new Date(stud.birthday).getMonth()] + " " + new Date(stud.birthday).getUTCFullYear()
                 stud.birthday = date;
                 
                 connection.query('SELECT * FROM notes WHERE exam_id = ? AND class_id = ? AND student_id = ?', [exam_id, class_id, stud.id] , (err2, notes) => {
                     if(err2) console.log(err2);
-                    notes.forEach(note => {
+                    notes.forEach((note : {
+                        value: string
+                    }) => {
                         totalPoint += parseInt(note.value);
                     });
-                    connection.query('SELECT * FROM matiere', (err3, mat) => {
+                    connection.query('SELECT * FROM matiere', (err3, mat:Matiere[]) => {
                         mat.forEach(m => {
                             const tags = JSON.parse(m.tags);
                             const notesForThisMatiere = notes.filter(h => h.matiere_id === m.id);
-                            const t = JSON.parse(m.tags).length + 2;
+                            const t : number = JSON.parse(m.tags).length + 2;
                             totalNote = 0;
                             let total = 0;
                             tags.map(tag => {
@@ -265,7 +297,7 @@ module.exports.downloadBulletinByClass = async (req, res) => {
                         })
     
                         connection.query('SELECT * FROM com', (err5, competences) => {
-                            mat.map(m => {
+                            mat.map((m ) => {
                                 let t = 0;
                                 const tags = JSON.parse(m.tags);
                                 m.tags = tags;
@@ -296,13 +328,15 @@ module.exports.downloadBulletinByClass = async (req, res) => {
                             connection.query('SELECT * FROM stats WHERE class_id = ? AND exam_id = ? ', [class_id, exam_id], (errrt, stats) => {
                                 const rangedArray = stats.sort((a, b) => b.totalPoints - a.totalPoints);
                                 const g = stats.sort((a, b) => b.totalPoints - a.totalPoints);
-                                let firstPoints = g[0].totalPoints;
-                                let lastPoints = {};
+                                let firstPoints : number = g[0].totalPoints;
+                                let lastPoints : number = 0 ;
                                 g.forEach(ey => {
                                     lastPoints = ey.totalPoints;
                                 })
                                 let rang = 0;
-                                rangedArray.forEach((s, c) => {
+                                rangedArray.forEach((s : {
+                                    student_id: string
+                                }, c) => {
                                     if (s.student_id === stud.id) {
                                         rang = c + 1
                                     }
