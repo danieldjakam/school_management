@@ -1,15 +1,3 @@
-require('dotenv').config({path: '.env'})
-const {env} = process;
-const { sign } = require('jsonwebtoken');
-const mysql = require('mysql2');
-const connection = mysql.createConnection({
-    host: env.DB_HOST,
-    user: env.DB_USERNAME,
-    database: env.DB_NAME,
-    password: env.DB_PASSWORD,
-});
-
-
 module.exports.addClass = (req : any, res : any) => {
     let {name, section, level} = req.body;
     level = parseInt(level)
@@ -27,7 +15,7 @@ module.exports.addClass = (req : any, res : any) => {
             res.status(401).json({success: false, message: 'Les niveaux de classe du secteur maternelle doit etre compris entre 1 et 3!!'})
         }
         else{
-            connection.query('INSERT INTO class(id, name, section) VALUES(?, ?, ?)', [sign(name, env.SECRET), name, section], (err: any, resp : any) => {
+            req.connection.query('INSERT INTO class(id, name, section) VALUES(?, ?, ?)', [req.jwt.sign(name, req.env.SECRET), name, section], (err: any, resp : any) => {
                 if(err) console.log(err);
                 else res.status(201).json({success: true})
             })
@@ -55,7 +43,7 @@ module.exports.updateClass = (req : any, res : any) => {
             res.status(401).json({success: false, message: 'Les niveaux de classe du secteur maternelle doit etre compris entre 1 et 3!!'})
         }
         else{
-            connection.query('UPDATE class SET name = ? , section = ?, level = ? WHERE id = ?', [ name, section, level, id], (err: any, resp : any) => {
+            req.connection.query('UPDATE class SET name = ? , section = ?, level = ? WHERE id = ?', [ name, section, level, id], (err: any, resp : any) => {
                 if(err) console.log(err);
 
                 else res.status(201).json({success: true})
@@ -67,31 +55,31 @@ module.exports.updateClass = (req : any, res : any) => {
 }
 
 module.exports.getAllClass = (req : any, res : any) => {
-    connection.query('SELECT teachers.name as tName, class.id, teachers.subname as ts, class.name, class.section, teachers.id as tId, teachers.subname FROM teachers LEFT JOIN class ON class.id = teachers.class_id', (err: any, resp : any) => {
+    req.connection.query('SELECT teachers.name as tName, class.id, teachers.subname as ts, class.name, class.section, teachers.id as tId, teachers.subname FROM teachers LEFT JOIN class ON class.id = teachers.class_id', (err: any, resp : any) => {
         res.status(201).json(resp);
     })
 }
 module.exports.getAllOClass = (req : any, res : any) => {
-    connection.query('SELECT * FROM class', (err: any, resp : any) => {
+    req.connection.query('SELECT * FROM class', (err: any, resp : any) => {
         res.status(201).json(resp);
     })
 }
 
 module.exports.getSpecialClass = (req : any, res : any) => {
-    connection.query('SELECT teachers.name as tName, teachers.subname as tSubname, class.id, teachers.subname as ts, class.name, class.section, teachers.id as tId, teachers.subname FROM class LEFT JOIN teachers ON class.id = teachers.class_id WHERE class.id = ?', [req.params.id], (err: any, resp : any) => {
+    req.connection.query('SELECT teachers.name as tName, teachers.subname as tSubname, class.id, teachers.subname as ts, class.name, class.section, teachers.id as tId, teachers.subname FROM class LEFT JOIN teachers ON class.id = teachers.class_id WHERE class.id = ?', [req.params.id], (err: any, resp : any) => {
         res.status(201).json(resp[0]);
     })
 }
 
 module.exports.getOneClass = (req : any, res : any) => {
-    connection.query('SELECT * FROM class WHERE id = ?', [req.params.id], (err: any, resp : any) => {
+    req.connection.query('SELECT * FROM class WHERE id = ?', [req.params.id], (err: any, resp : any) => {
         res.status(201).json(resp[0])
     })
 }
 
 module.exports.deleteClass = (req : any, res : any) => {
     const {id} = req.params;
-    connection.query('DELETE FROM class WHERE id = ?', [id], (err: any, resp : any) => {
+    req.connection.query('DELETE FROM class WHERE id = ?', [id], (err: any, resp : any) => {
         res.status(201).json({success: true})
     })
 }

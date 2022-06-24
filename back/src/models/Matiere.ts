@@ -5,5 +5,5 @@ export interface Matiere {
     comId: string,
     totalNote: number,
     total: number,
-    t: number
+    t: numberrs
 }

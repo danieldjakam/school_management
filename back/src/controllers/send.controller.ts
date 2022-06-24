@@ -1,13 +1,3 @@
-require('dotenv').config({path: '.env'})
-const {env} = process;
-const mysql = require('mysql2');
-const connection = mysql.createConnection({
-    host: env.DB_HOST,
-    user: env.DB_USERNAME,
-    database: env.DB_NAME,
-    password: env.DB_PASSWORD,
-});
-
 const nodemailer = require('nodemailer');
 
 let mailTrasporter = nodemailer.createTransport({
@@ -23,7 +13,7 @@ module.exports.sendBulletinToParentByEmail = (req, res) => {
     const {id} = req.params;
     console.log('g');
 
-    connection.query('SELECT email FROM students WHERE id = ?', [id], (err, resp) => {
+    req.connection.query('SELECT email FROM students WHERE id = ?', [id], (err, resp) => {
         const {email} = resp[0];
         const message = {
             from: "gsblasemence2022@gmail.com",

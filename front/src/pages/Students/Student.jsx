@@ -133,6 +133,15 @@ const Student = () => {
             })
         setLoadingDel(false)
     }
+    const getOrdonnedStudents = async () => {
+        setLoading(true)
+        const resp = await fetch('http://localhost:4000/students/getOrdonnedStudents/'+id, {headers: {
+            'Authorization': sessionStorage.user
+        }})
+        const data = await resp.json();
+        setStudents(data);
+        setLoading(false)
+    }
     return <div style={{padding: '10px 10px'}} className='container'>
             {
                 sessionStorage.stat === 'ad' ? <>
@@ -197,7 +206,8 @@ const Student = () => {
                 <div style={{marginRight: '10px'}} className='nav item'>
                     <ul className="navbar-nav" style={{fontSize: '1.3rem'}}>
                         <button onClick={() => {setIsAddStudent(v => !v)}} className="btn btn-blue">Ajouter un eleve</button>
-                        <Link to={'/students/'+id+'/add'} style={{marginLeft: '30px'}} className="btn btn-success">Importer les eleves</Link>
+                        <Link to={'/students/'+id+'/add'} style={{marginLeft: '10px'}} className="btn btn-success">Importer les eleves</Link>
+                        <button onClick={() => {getOrdonnedStudents()}} style={{marginLeft: '10px'}} className="btn btn-blue">Ranger</button>
                     </ul>
                 </div>
             </nav>

@@ -1,14 +1,4 @@
-require('dotenv').config({path: '.env'})
-const {env} = process;
-const mysql = require('mysql2');
-const jwt = require('jsonwebtoken');
 const { isEmail } = require('validator');
-const connection = mysql.createConnection({
-    host: env.DB_HOST,
-    user: env.DB_USERNAME,
-    database: env.DB_NAME,
-    password: env.DB_PASSWORD,
-})
 
 module.exports.register = async (req, res) => {
     const {username, email, password, confirm} = req.body;
@@ -26,7 +16,7 @@ module.exports.register = async (req, res) => {
             res.status(401).json({success: false, message: "Les deux mot de passe ne correspondent pas !!"})
         }
         else{
-            connection.query('INSERT INTO users(id, username, email, password) VALUES(?, ?, ?, ?)', [jwt.sign(username, env.SECRET), username, email, password], (err, resp) => {
+            req.connection.query('INSERT INTO users(id, username, email, password) VALUES(?, ?, ?, ?)', [req.jwt.sign(username, req.env.SECRET), username, email, password], (err, resp) => {
                 if(!err) res.status(201).json({success: true})
                 else console.log(err);
             })
@@ -39,17 +29,17 @@ module.exports.register = async (req, res) => {
 module.exports.login = (req, res) => {
     const {username, password} = req.body;
     if (username && username !== '' && password && password !== '') {
-        connection.query('SELECT * FROM users WHERE username = ?', [username], (err, resp) => {
+        req.connection.query('SELECT * FROM users WHERE username = ?', [username], (err, resp) => {
             if(resp.length < 1){
-                connection.query('SELECT * FROM teachers WHERE matricule = ?', [username], (err2, resp2) => {
+                req.connection.query('SELECT * FROM teachers WHERE matricule = ?', [username], (err2, resp2) => {
                     if(resp2.length < 1){
                         res.status(401).json({success: false, message: 'Utilisateur non reconnu'})
                     }else{
                         if ('semence' === password) {
-                            const token = jwt.sign({
+                            const token = req.jwt.sign({
                                 id: resp2[0].id,
                                 role: 'teacher'
-                            }, env.SECRET)
+                            }, req.env.SECRET)
                             res.status(401).json({success: true, token, status: 'en', classId: resp2[0].class_id})
                         }else{
                             res.status(401).json({success: false, message: 'Mot de passe incorrect!!'})
@@ -58,10 +48,10 @@ module.exports.login = (req, res) => {
                 })
             }else{
                 if (resp[0].password === password) {
-                    const token = jwt.sign({
+                    const token = req.jwt.sign({
                         id: resp[0].id,
                         role: 'admin'
-                    }, env.SECRET)
+                    }, req.env.SECRET)
                     res.status(401).json({success: true, token, status: 'ad'})
                 }else{
                     res.status(401).json({success: false, message: 'Mot de passe incorrect!!'})
@@ -74,13 +64,13 @@ module.exports.login = (req, res) => {
 }
 
 module.exports.getInfos = (req, res) => {
-    connection.query('SELECT * FROM users WHERE id = ?', [req.payload.id] , (err, resp) => {
+    req.connection.query('SELECT * FROM users WHERE id = ?', [req.payload.id] , (err, resp) => {
         res.status(201).json(resp[0])
     })
 }
 
 module.exports.getAllAdmin = (req, res) => {
-    connection.query('SELECT * FROM users', [] , (err, resp) => {
+    req.connection.query('SELECT * FROM users', [] , (err, resp) => {
         if(err) console.log(err);
         else res.status(201).json(resp);
     })
@@ -88,19 +78,19 @@ module.exports.getAllAdmin = (req, res) => {
 
 module.exports.deleteAdmin = (req, res) => {
     const {id} = req.params;
-    connection.query('DELETE FROM users WHERE id = ?', [id], (err, resp) => {
+    req.connection.query('DELETE FROM users WHERE id = ?', [id], (err, resp) => {
         res.status(201).json({success: true})
     })
 }
 
 module.exports.getTeacherOrAdmin = (req, res) => {
     if (req.payload.role === 'admin') {
-        connection.query('SELECT * FROM users WHERE id = ?', [req.payload.id] , (err, resp) => {
+        req.connection.query('SELECT * FROM users WHERE id = ?', [req.payload.id] , (err, resp) => {
             if(err) console.log(err);
             else res.status(201).json(resp[0]);
         })  
     }else{
-        connection.query('SELECT * FROM teachers WHERE id = ?', [req.payload.id] , (err, resp) => {
+        req.connection.query('SELECT * FROM teachers WHERE id = ?', [req.payload.id] , (err, resp) => {
             if(err) console.log(err);
             else res.status(201).json(resp[0]);
         })

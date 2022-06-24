@@ -6,20 +6,19 @@ const fs = require('fs');
 const path = require('path');
 const bodyparser = require('body-parser');
 require('dotenv').config({path: '.env'})
-const {env} = process;
 
-const userRoutes = require('./routes/users.routes');
-const classRoutes = require('./routes/class.routes');
-const studentRoutes = require('./routes/student.routes');
-const matiereRoutes = require('./routes/matiere.routes');
-const teachersRoutes = require('./routes/teachers.routes');
-const downloadRoutes = require('./routes/download.routes');
-const seqRoutes = require('./routes/seq.routes');
-const sendRoutes = require('./routes/send.routes');
-const settingsRoutes = require('./routes/settings.routes');
-const trimRoutes = require('./routes/trim.routes');
-const comRoutes = require('./routes/com.routes');
-const notesRoutes = require('./routes/notes.routes');
+const userRoutes = require('./src/routes/users.routes');
+const classRoutes = require('./src/routes/class.routes');
+const studentRoutes = require('./src/routes/student.routes');
+const matiereRoutes = require('./src/routes/matiere.routes');
+const teachersRoutes = require('./src/routes/teachers.routes');
+const downloadRoutes = require('./src/routes/download.routes');
+const seqRoutes = require('./src/routes/seq.routes');
+const sendRoutes = require('./src/routes/send.routes');
+const settingsRoutes = require('./src/routes/settings.routes');
+const trimRoutes = require('./src/routes/trim.routes');
+const comRoutes = require('./src/routes/com.routes');
+const notesRoutes = require('./src/routes/notes.routes');
 
 app.use(bodyparser.json());
 app.use(cors({origin: 'http://localhost:3000'}))
@@ -44,6 +43,6 @@ app.use('/notes', notesRoutes)
 app.use('/settings', settingsRoutes)
 app.use('/send', sendRoutes)
 
-app.listen(env.PORT, () => {
-    console.log(`Listenning on ${env.PORT}`);
+app.listen(process.env.PORT, () => {
+    console.log(`Listenning on ${process.env.PORT}`);
 })

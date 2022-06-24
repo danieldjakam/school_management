@@ -1,14 +1,3 @@
-require('dotenv').config({path: '.env'})
-const {env} = process;
-const { sign } = require('jsonwebtoken');
-const mysql = require('mysql2');
-const connection = mysql.createConnection({
-    host: env.DB_HOST,
-    user: env.DB_USERNAME,
-    database: env.DB_NAME,
-    password: env.DB_PASSWORD,
-});
-
 module.exports.addTrimestre = async (req, res) => {
     const {name, seqIds} = req.body;
     console.log(seqIds);
@@ -17,7 +6,7 @@ module.exports.addTrimestre = async (req, res) => {
             res.status(401).json({success: false, message: "Le pseudo doit etre compris entre 5 et 30 caracteres !!"})
         }
         else{
-            connection.query('INSERT INTO trims(id, name, seqIds) VALUES(?, ?, ?)', [sign(name, env.SECRET), name, JSON.stringify(seqIds)], (err, resp) => {
+            req.connection.query('INSERT INTO trims(id, name, seqIds) VALUES(?, ?, ?)', [req.jwt.sign(name, req.env.SECRET), name, JSON.stringify(seqIds)], (err, resp) => {
                 if(!err) res.status(201).json({success: true})
                 else console.log(err);
             })
@@ -28,14 +17,14 @@ module.exports.addTrimestre = async (req, res) => {
 }
 
 module.exports.getAllTrimestre = (req, res) => {
-    connection.query('SELECT * FROM trims', (err, resp) => {
+    req.connection.query('SELECT * FROM trims', (err, resp) => {
         if(err) console.log(err);
         else res.status(201).json(resp)
     })
 }
 
 module.exports.getOneTrimestre = (req, res) => {
-    connection.query('SELECT * FROM trims WHERE id = ?', [req.params.id], (err, resp) => {
+    req.connection.query('SELECT * FROM trims WHERE id = ?', [req.params.id], (err, resp) => {
         if(err) console.log(err);
         else res.status(201).json(resp[0])
     })
@@ -44,15 +33,15 @@ module.exports.getOneTrimestre = (req, res) => {
 module.exports.updateTrimestre = (req, res) => {
     const {name, slug} = req.body;
     if (name && name !== '' && slug && slug !== '') {
-        connection.query('SELECT * FROM users WHERE name = ?', [name], (err, resp) => {
+        req.connection.query('SELECT * FROM users WHERE name = ?', [name], (err, resp) => {
             if(resp.length < 1){
                 res.status(401).json({success: false, message: 'nom de la matiere non reconnu'})
             }else{
                 if (resp[0].slug === slug) {
-                    const token = jwt.sign({
+                    const token = jwt.req.jwt.sign({
                         id: resp[0].id,
                         role: 'client'
-                    }, env.SECRET)
+                    }, req.env.SECRET)
                     res.status(401).json({success: true, token})
                 }else{
                     res.status(401).json({success: false, message: ''})
@@ -66,7 +55,7 @@ module.exports.updateTrimestre = (req, res) => {
 
 module.exports.deleteTrimestre = (req, res) => {
     const {id} = req.params;
-    connection.query('DELETE FROM trim WHERE id = ?', [id], (err, resp) => {
+    req.connection.query('DELETE FROM trim WHERE id = ?', [id], (err, resp) => {
         res.status(201).json({success: true})
     })
 }

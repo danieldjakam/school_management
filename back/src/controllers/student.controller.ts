@@ -1,15 +1,3 @@
-require('dotenv').config({path: '.env'})
-const {env} = process;
-const { sign } = require('jsonwebtoken');
-const mysql = require('mysql2');
-const {isEmail} = require('validator')
-const connection = mysql.createConnection({
-    host: env.DB_HOST,
-    user: env.DB_USERNAME,
-    database: env.DB_NAME,
-    password: env.DB_PASSWORD,
-});
-
 module.exports.addStudent = (req, res) => {
     const {id} = req.params;
     const {name, subname, sex, birthday, email, phone_number, status} = req.body;
@@ -36,9 +24,9 @@ module.exports.addStudent = (req, res) => {
             res.status(401).json({success: false, message: 'Status de l\'eleve invalide'})
         }
         else{
-            connection.query('SELECT year_school FROM settings WHERE id = 1', (rerr, respe) => {
+            req.connection.query('SELECT year_school FROM settings WHERE id = 1', (rerr, respe) => {
                 const {year_school} = respe[0];
-                connection.query('INSERT INTO students(id, name, subname, class_id, sex, birthday, email, phone_number, school_year, status) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [sign(name+year_school, env.SECRET), name, subname, id, sex, birthday, email, phone_number.toString(), year_school, status], (err, resp) => {
+                req.connection.query('INSERT INTO students(id, name, subname, class_id, sex, birthday, email, phone_number, school_year, status) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [req.sign(name+year_school, req.env.SECRET), name, subname, id, sex, birthday, email, phone_number.toString(), year_school, status], (err, resp) => {
                     if(err) console.log(err);
                     else res.status(201).json({success: true})
                 })
@@ -72,7 +60,7 @@ module.exports.updateStudent = (req, res) => {
             const month = new Date(birthday).getMonth() > 9 ? new Date(birthday).getMonth() : '0'+new Date(birthday).getMonth().toString();
             const day = new Date(birthday).getDate() > 9 ? new Date(birthday).getDate() : '0'+new Date(birthday).getDate().toString();
             const date = new Date(birthday).getUTCFullYear() + '-'+ month + "-" + day;
-            connection.query('UPDATE students SET name = ?, subname = ?, sex = ?, birthday = NOW(), email = ?, phone_number = ? WHERE id = ?', [name, subname, sex, email, phone_number.toString(), id], (err, resp) => {
+            req.connection.query('UPDATE students SET name = ?, subname = ?, sex = ?, birthday = NOW(), email = ?, phone_number = ? WHERE id = ?', [name, subname, sex, email, phone_number.toString(), id], (err, resp) => {
                 if(err) console.log(err);
                 else res.status(201).json({success: true})
             })
@@ -83,9 +71,9 @@ module.exports.updateStudent = (req, res) => {
 }
 
 module.exports.getAllStudent = (req, res) => {
-    connection.query('SELECT year_school FROM settings WHERE id = 1', (rerr, respe) => {
+    req.connection.query('SELECT year_school FROM settings WHERE id = 1', (rerr, respe) => {
         const {year_school} = respe[0];
-        connection.query('SELECT * FROM students WHERE school_year = ? ORDER BY name ASC', [year_school], (err, resp) => {
+        req.connection.query('SELECT * FROM students WHERE school_year = ? ORDER BY name ASC', [year_school], (err, resp) => {
             if(err) console.log(err);
             else res.status(201).json(resp)
         })
@@ -93,12 +81,12 @@ module.exports.getAllStudent = (req, res) => {
 }
 
 module.exports.getSpecificStudents = (req, res) => {
-    connection.query('SELECT year_school FROM settings WHERE id = 1', (rerr, respe) => {
+    req.connection.query('SELECT year_school FROM settings WHERE id = 1', (rerr, respe) => {
         const {year_school} = respe[0]
-        connection.query('SELECT * FROM students WHERE class_id = ? AND school_year = ? AND status = "old" ORDER BY name ASC', [req.params.id, year_school] , (err, oldStudents) => {
+        req.connection.query('SELECT * FROM students WHERE class_id = ? AND school_year = ? AND status = "old" ORDER BY name ASC', [req.params.id, year_school] , (err, oldStudents) => {
             if(err) console.log(err);
             else {
-                connection.query('SELECT * FROM students WHERE class_id = ? AND school_year = ? AND status = "new"', [req.params.id, year_school] , (err, newStudents) => {
+                req.connection.query('SELECT * FROM students WHERE class_id = ? AND school_year = ? AND status = "new"', [req.params.id, year_school] , (err, newStudents) => {
                     const resp = [...oldStudents, ...newStudents]
                     res.status(201).json(resp)
                 })
@@ -108,9 +96,9 @@ module.exports.getSpecificStudents = (req, res) => {
 }
 
 module.exports.getOneStudent = (req, res) => {
-    connection.query('SELECT year_school FROM settings WHERE id = 1', (rerr, respe) => {
+    req.connection.query('SELECT year_school FROM settings WHERE id = 1', (rerr, respe) => {
         const {year_school} = respe[0];
-        connection.query('SELECT * FROM students WHERE id = ? AND school_year = ?', [req.params.id, year_school] , (err, resp) => {
+        req.connection.query('SELECT * FROM students WHERE id = ? AND school_year = ?', [req.params.id, year_school] , (err, resp) => {
             if(err) console.log(err);
             else res.status(201).json(resp[0]);
         })
@@ -119,10 +107,20 @@ module.exports.getOneStudent = (req, res) => {
 
 module.exports.deleteStudent = (req, res) => {
     const {id} = req.params;
-    connection.query('SELECT year_school FROM settings WHERE id = 1', (rerr, respe) => {
+    req.connection.query('SELECT year_school FROM settings WHERE id = 1', (rerr, respe) => {
         const {year_school} = respe[0];
-        connection.query('DELETE FROM students WHERE id = ? AND school_year = ?', [id, year_school], (err, resp) => {
+        req.connection.query('DELETE FROM students WHERE id = ? AND school_year = ?', [id, year_school], (err, resp) => {
             res.status(201).json({success: true})
+        })
+    })
+}
+
+module.exports.getOrdonnedStudents = (req : any, res : any) => {
+    req.connection.query('SELECT year_school FROM settings WHERE id = 1', (rerr, respe) => {
+        const {year_school} = respe[0];
+        req.connection.query('SELECT * FROM students WHERE class_id = ? AND school_year = ? ORDER BY name ASC', [req.params.id, year_school], (err, resp) => {
+            if(err) console.log(err);
+            else res.status(201).json(resp)
         })
     })
 }
