@@ -225,6 +225,7 @@ const Student = () => {
         <table className="table table-dark table-bordered table-striped">
             <thead>
                 <tr>
+                    <td>Numero </td>
                     <th>Nom</th>
                     <th>Prenom</th>
                     <th>Sexe</th>
@@ -238,6 +239,7 @@ const Student = () => {
                     loading ? <tr ><td colSpan={5} style={{justifyItems: 'center', paddingLeft: '50%'}}><ReactLoading color="#fff" type="cylon"/></td></tr> : students.length > 0 ? students.map((student, id) => {
                         const date = new Date(student.birthday).getDate() + ' '+ months[new Date(student.birthday).getMonth()] + " " + new Date(student.birthday).getUTCFullYear()
                         return <tr key={id}>
+                            <td>{id + 1}</td>
                             <td>{student.name}</td>
                             <td>{student.subname}</td>
                             <td>{student.sex === 'm' ? 'Masculin' : 'Feminin'}</td>
