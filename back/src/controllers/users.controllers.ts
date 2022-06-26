@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt')
 const { isEmail } = require('validator');
 
 module.exports.register = async (req, res) => {
@@ -16,7 +17,9 @@ module.exports.register = async (req, res) => {
             res.status(401).json({success: false, message: "Les deux mot de passe ne correspondent pas !!"})
         }
         else{
-            req.connection.query('INSERT INTO users(id, username, email, password) VALUES(?, ?, ?, ?)', [req.jwt.sign(username, req.env.SECRET), username, email, password], (err, resp) => {
+            const salt = bcrypt.genSalt()
+            const passwordCrypted = bcrypt.hash(password, salt)
+            req.connection.query('INSERT INTO users(id, username, email, password) VALUES(?, ?, ?, ?)', [req.jwt.sign(username, req.env.SECRET), username, email, passwordCrypted], (err, resp) => {
                 if(!err) res.status(201).json({success: true})
                 else console.log(err);
             })
@@ -47,7 +50,8 @@ module.exports.login = (req, res) => {
                     }
                 })
             }else{
-                if (resp[0].password === password) {
+                const isOk = bcrypt.compare(password, resp[0].password);
+                if (isOk) {
                     const token = req.jwt.sign({
                         id: resp[0].id,
                         role: 'admin'
