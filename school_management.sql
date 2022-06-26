@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jun 26, 2022 at 08:05 PM
+-- Generation Time: Jun 26, 2022 at 08:19 PM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 8.0.19
 
@@ -267,7 +267,7 @@ INSERT INTO `seq` (`id`, `name`) VALUES
 CREATE TABLE `settings` (
   `id` int(11) NOT NULL,
   `is_editable` varchar(10) NOT NULL DEFAULT 'no',
-  `year_school` year(4) NOT NULL DEFAULT current_timestamp(),
+  `year_school` year(4) NOT NULL,
   `school_id` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
