@@ -169,9 +169,9 @@ else if(arg === 'createsuperuser') {
                                         }
                                     }
                                 }
+                                connection.destroy()
                             }
                         })
-                        connection.destroy()
                     })
                     .catch(err => {
                         console.log(`Erreur: ${err}`);
