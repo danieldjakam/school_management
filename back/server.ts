@@ -2,8 +2,6 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const admZip = require('adm-zip');
-const fs = require('fs');
-const path = require('path');
 const bodyparser = require('body-parser');
 require('dotenv').config({path: '.env'})
 
@@ -21,15 +19,16 @@ const comRoutes = require('./src/routes/com.routes');
 const notesRoutes = require('./src/routes/notes.routes');
 
 app.use(bodyparser.json());
-app.use(cors({origin: 'http://localhost:3000'}))
-app.get('/', (req, res) => {
-    const zip = new admZip();
-    zip.addLocalFile('docs/Testons.pdf');
-    fs.writeFileSync('output.zip', zip.toBuffer());
-    res.download('output.zip', (err, resp) => {
-        if(err)console.log(err);
-    });
-})
+app.use(
+    cors(
+        {
+            origin: [
+                'http://localhost:3000',
+                'http://localhost:2706'
+            ]
+        }
+    )
+)
 app.use('/users', userRoutes)
 app.use('/class', classRoutes)
 app.use('/students', studentRoutes)
