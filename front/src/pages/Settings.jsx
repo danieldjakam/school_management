@@ -2,6 +2,7 @@ import React from 'react'
 import { useEffect } from 'react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { host } from '../utils/fetch'
 
 function Settings() {
     const [settings, setSettings] = useState({})
@@ -44,13 +45,12 @@ function Settings() {
           async () => {
             if (sessionStorage.stat === 'ad') {
               setLoading(true)
-              const resp = await fetch('http://localhost:4000/settings/getSettings', {headers: {
+              const resp = await fetch(host+'/settings/getSettings', {headers: {
                 'Authorization': sessionStorage.user
               }}).catch(err => setErrors(`Erreur: ${err}`))
               const data = await resp.json();
               setSettings(data);
               setLoading(false);
-              console.log(data);
             }
           }
       )()
@@ -59,7 +59,7 @@ function Settings() {
     const handleChangeSettings = (e) => {
         setLoading(true);
         e.preventDefault();
-        fetch('http://localhost:4000/settings/setSettings', {method: 'POST', body: JSON.stringify(settings), headers: {'Content-Type': 'application/json', Authorization: sessionStorage.user}})
+        fetch(host+'/settings/setSettings', {method: 'POST', body: JSON.stringify(settings), headers: {'Content-Type': 'application/json', Authorization: sessionStorage.user}})
           .then((res) => res.json())
           .then(res => {
             if (res.success) {
@@ -99,10 +99,10 @@ function Settings() {
 
             {
                 errors !== '' ? <div className="error">{errors}</div> : ''
-            } 
+            }
         </div>
         <div className="card-footer">
-            <button type="submit">Enregistrer</button>
+            <button type="submit">{loading ? 'Enregistrement' : 'Enregistrer'}</button>
         </div>
         </form>
     </div>

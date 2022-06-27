@@ -1,5 +1,6 @@
 import React from 'react'
 import { useEffect, useState } from "react";
+import { host } from '../../utils/fetch';
 
 const EditStudent = ({error, setError, studentToEditId, setIsEditStudent}) => {
 
@@ -10,7 +11,7 @@ const EditStudent = ({error, setError, studentToEditId, setIsEditStudent}) => {
       (
           async () => {
               setLoading(true)
-              const resp = await fetch('http://localhost:4000/students/one/'+studentToEditId, {headers: {
+              const resp = await fetch(host+'/students/one/'+studentToEditId, {headers: {
                   'Authorization': sessionStorage.user
               }})
               const data = await resp.json();
@@ -25,7 +26,7 @@ const EditStudent = ({error, setError, studentToEditId, setIsEditStudent}) => {
       e.preventDefault();
       setLoading(true);
       student.date = `${new Date(student.birthday).getUTCFullYear()}-${new Date(student.birthday).getMonth() < 10 ? '0' + new Date(student.birthday).getMonth() : ''}-0${new Date(student.birthday).getDay()}`;
-      fetch('http://localhost:4000/students/'+studentToEditId, {method: 'PUT', body: JSON.stringify(student), headers: {'Content-Type': 'application/json', 'Authorization': sessionStorage.user}})
+      fetch(host+'/students/'+studentToEditId, {method: 'PUT', body: JSON.stringify(student), headers: {'Content-Type': 'application/json', 'Authorization': sessionStorage.user}})
           .then((res) => res.json())
           .then(res => {
               if (res.success) {

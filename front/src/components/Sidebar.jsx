@@ -14,13 +14,15 @@ function Sidebar() {
     useEffect(() => {
         (
         async () => {
-            setLoading(true);
+            if (sessionStorage.user !== undefined) {
+                setLoading(true);
             const resp = await fetch('http://localhost:4000/users/getTeacherOrAdmin/', {headers: {
               'Authorization': sessionStorage.user
             }})
             const data = await resp.json();
             setUserInfos(data);
             setLoading(false);
+            }
         }
         )()
     }, [])

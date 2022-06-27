@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import BulletinEntete from '../../components/BulletinEntete';
+import { host } from '../../utils/fetch';
 
 const BulletinTrim = () => {
 
@@ -26,7 +27,7 @@ const BulletinTrim = () => {
         (
             async () => {
                 setLoading(true)
-                const resp = await fetch('http://localhost:4000/students/one/'+student_id, {headers: {
+                const resp = await fetch(host+'/students/one/'+student_id, {headers: {
                     'Authorization': sessionStorage.user
                   }})
                 const data = await resp.json();
@@ -39,7 +40,7 @@ const BulletinTrim = () => {
         (
             async () => {
                 setLoading(true)
-                const resp = await fetch('http://localhost:4000/students/'+class_id, {headers: {
+                const resp = await fetch(host+'/students/'+class_id, {headers: {
                     'Authorization': sessionStorage.user
                   }})
                 const data = await resp.json();
@@ -53,7 +54,7 @@ const BulletinTrim = () => {
             async () => {
                 setLoading(true)
                 let total = 0;
-                const resp = await fetch('http://localhost:4000/notes/getByTrimPeople/'+exam_id+'/'+student_id, {headers: {
+                const resp = await fetch(host+'/notes/getByTrimPeople/'+exam_id+'/'+student_id, {headers: {
                     'Authorization': sessionStorage.user
                 }}) 
                 let data = await resp.json();
@@ -92,7 +93,7 @@ const BulletinTrim = () => {
         (
             async () => {
                 setLoading(true)
-                const resp = await fetch('http://localhost:4000/trim/'+exam_id, {headers: {
+                const resp = await fetch(host+'/trim/'+exam_id, {headers: {
                     'Authorization': sessionStorage.user
                   }})
                 const data = await resp.json();
@@ -105,7 +106,7 @@ const BulletinTrim = () => {
         (
             async () => {
                 setLoading(true)
-                const resp = await fetch('http://localhost:4000/class/special/'+class_id, {headers: {
+                const resp = await fetch(host+'/class/special/'+class_id, {headers: {
                     'Authorization': sessionStorage.user
                   }})
                 const data = await resp.json();
@@ -118,7 +119,7 @@ const BulletinTrim = () => {
         (
             async () => {
                 setLoading(true)
-                const resp = await fetch('http://localhost:4000/matiere/getAll', {headers: {
+                const resp = await fetch(host+'/matiere/getAll', {headers: {
                     'Authorization': sessionStorage.user
                   }})
                 const data = await resp.json();
@@ -139,7 +140,7 @@ const BulletinTrim = () => {
         (
             async () => {
                 setLoading(true)
-                const resp = await fetch('http://localhost:4000/matiere/getAll', {headers: {
+                const resp = await fetch(host+'/matiere/getAll', {headers: {
                     'Authorization': sessionStorage.user
                   }})
                 const data = await resp.json();
@@ -160,11 +161,11 @@ const BulletinTrim = () => {
         (
             async () => {
                 setLoading(true)
-                fetch('http://localhost:4000/com/getAll', {headers: { 'Authorization': sessionStorage.user}})
+                fetch(host+'/com/getAll', {headers: { 'Authorization': sessionStorage.user}})
                     .then(competences => competences.json())
                     .then(competences => {
                         competences.forEach(com => {
-                            fetch('http://localhost:4000/matiere/getAll', {headers: { 'Authorization': sessionStorage.user}})
+                            fetch(host+'/matiere/getAll', {headers: { 'Authorization': sessionStorage.user}})
                                 .then(matieres => matieres.json())
                                 .then(matieres => {
                                     com.sub = matieres.filter(mat => mat.comId === com.id)
@@ -179,7 +180,7 @@ const BulletinTrim = () => {
         (
             async () => {
                 setLoading(true)
-                const resp = await fetch(`http://localhost:4000/notes/getTotalPoints?class_id=${class_id}&exam_id=${exam_id}`, {headers: {
+                const resp = await fetch(host+`/notes/getTotalPoints?class_id=${class_id}&exam_id=${exam_id}`, {headers: {
                     'Authorization': sessionStorage.user
                   }})
                 const data = await resp.json();

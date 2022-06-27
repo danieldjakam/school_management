@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import ReactLoading from 'react-loading'
+import { host } from '../../utils/fetch';
 
 function TrimStu() {
     
@@ -9,7 +10,7 @@ function TrimStu() {
         (
             async () => {
                 setLoading(true)
-                const resp = await fetch('http://localhost:4000/trim/getAll', {headers: {
+                const resp = await fetch(host+'/trim/getAll', {headers: {
                     'Authorization': sessionStorage.user
                   }})
                 const data = await resp.json();

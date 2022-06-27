@@ -2,6 +2,7 @@ import React from 'react'
 import { useEffect } from "react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { host } from '../../utils/fetch';
 
 const EditMatiere = ({error, setError, setIsSeq, id}) => {
     
@@ -11,7 +12,7 @@ const EditMatiere = ({error, setError, setIsSeq, id}) => {
         (
             async () => {
                 setLoading(true)
-                const resp = await fetch('http://localhost:4000/matiere/'+id, {headers: {
+                const resp = await fetch(host+'/matiere/'+id, {headers: {
                     'Authorization': sessionStorage.user
                   }})
                 let matiere = await resp.json();
@@ -27,7 +28,7 @@ const EditMatiere = ({error, setError, setIsSeq, id}) => {
     const handleEdit = (e) => {
         e.preventDefault();
         setLoading(true);
-        fetch('http://localhost:4000/matiere/'+id, {method: 'PUT', body: JSON.stringify(matiere), headers: {'Content-Type': 'application/json', 'Authorization': sessionStorage.user}})
+        fetch(host+'/matiere/'+id, {method: 'PUT', body: JSON.stringify(matiere), headers: {'Content-Type': 'application/json', 'Authorization': sessionStorage.user}})
         .then((res) => res.json())
         .then(res => {
             if (res.success) {

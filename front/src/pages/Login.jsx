@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { host } from '../utils/fetch';
 
 const Login = ({setUser}) => {
 
@@ -13,10 +14,11 @@ const Login = ({setUser}) => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  console.log(host);
   const handleLogin = (e) => {
     setLoading(true);
     e.preventDefault();
-    fetch('http://localhost:4000/users/login', {method: 'POST', body: JSON.stringify(data), headers: {'Content-Type': 'application/json'}})
+    fetch(host+'/users/login', {method: 'POST', body: JSON.stringify(data), headers: {'Content-Type': 'application/json'}})
       .then((res) => res.json())
       .then(res => {
         if (res.success) {

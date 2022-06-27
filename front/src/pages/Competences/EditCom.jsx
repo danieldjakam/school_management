@@ -2,6 +2,7 @@ import React from 'react'
 import { useEffect } from "react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { host } from '../../utils/fetch';
 
 const EditCom = ({error, setError, setIsEditComp, compToEditId}) => {
     const [comp, setComp] = useState({});
@@ -12,7 +13,7 @@ const EditCom = ({error, setError, setIsEditComp, compToEditId}) => {
         (
             async () => {
                 setLoading(true)
-                const resp = await fetch('http://localhost:4000/com/'+compToEditId, {headers: {
+                const resp = await fetch(host+'/com/'+compToEditId, {headers: {
                     'Authorization': sessionStorage.user
                 }})
                 const data = await resp.json();
@@ -25,7 +26,7 @@ const EditCom = ({error, setError, setIsEditComp, compToEditId}) => {
     const handleUpdate = (e) => {
         e.preventDefault();
         setLoading(true);
-        fetch('http://localhost:4000/com/'+compToEditId, {method: 'PUT', body: JSON.stringify(comp), headers: {'Content-Type': 'application/json', 'Authorization': sessionStorage.user}})
+        fetch(host+'/com/'+compToEditId, {method: 'PUT', body: JSON.stringify(comp), headers: {'Content-Type': 'application/json', 'Authorization': sessionStorage.user}})
         .then((res) => res.json())
         .then(res => {
           console.log(res);

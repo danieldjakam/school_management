@@ -1,6 +1,7 @@
 import React from 'react'
 import { useEffect, useState } from "react";
 import {useParams } from "react-router-dom";
+import { host } from '../../utils/fetch';
 
 const AddStudent = ({setIsAddStudent, error, setError}) => {
   const params = useParams();
@@ -20,7 +21,7 @@ const AddStudent = ({setIsAddStudent, error, setError}) => {
       (
           async () => {
               setLoading(true)
-              const resp = await fetch('http://localhost:4000/class/'+id, {headers: {
+              const resp = await fetch(host+'/class/'+id, {headers: {
                   'Authorization': sessionStorage.user
                 }})
               const data = await resp.json();
@@ -33,7 +34,7 @@ const AddStudent = ({setIsAddStudent, error, setError}) => {
   const handleAdd = (e) => {
     e.preventDefault();
     setLoading(true);
-    fetch('http://localhost:4000/students/add/'+id, {method: 'POST', body: JSON.stringify(data), headers: {'Content-Type': 'application/json', 'Authorization': sessionStorage.user}})
+    fetch(host+'/students/add/'+id, {method: 'POST', body: JSON.stringify(data), headers: {'Content-Type': 'application/json', 'Authorization': sessionStorage.user}})
       .then((res) => res.json())
       .then(res => {
         if (res.success) {

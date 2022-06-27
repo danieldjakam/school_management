@@ -41,9 +41,10 @@ module.exports.login = (req, res) => {
                         if ('semence' === password) {
                             const token = req.jwt.sign({
                                 id: resp2[0].id,
-                                role: 'teacher'
+                                role: 'teacher',
+                                school_id: resp2[0].school_id
                             }, req.env.SECRET)
-                            res.status(401).json({success: true, token, status: 'en', classId: resp2[0].class_id})
+                            res.status(401).json({success: true, token, status: 'en', classId: resp2[0].class_id, school_id: resp2[0].school_id})
                         }else{
                             res.status(401).json({success: false, message: 'Mot de passe incorrect!!'})
                         }
@@ -54,7 +55,8 @@ module.exports.login = (req, res) => {
                 if (isOk) {
                     const token = req.jwt.sign({
                         id: resp[0].id,
-                        role: 'admin'
+                        role: 'admin',
+                        school_id: resp[0].school_id
                     }, req.env.SECRET)
                     res.status(401).json({success: true, token, status: 'ad'})
                 }else{

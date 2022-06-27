@@ -2,6 +2,7 @@ import React from 'react'
 import { useEffect } from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { host } from '../../utils/fetch';
 
 const EditClass = ({error, setError, setIsEditClass, classToEditId}) => {
     const [classs, setClasss] = useState({});
@@ -12,7 +13,7 @@ const EditClass = ({error, setError, setIsEditClass, classToEditId}) => {
         (
             async () => {
                 setLoading(true)
-                const resp = await fetch('http://localhost:4000/class/'+classToEditId, {headers: {
+                const resp = await fetch(host+'/class/'+classToEditId, {headers: {
                     'Authorization': sessionStorage.user
                 }})
                 const data = await resp.json();
@@ -25,7 +26,7 @@ const EditClass = ({error, setError, setIsEditClass, classToEditId}) => {
     const handleUpdate = (e) => {
         e.preventDefault();
         setLoading(true);
-        fetch('http://localhost:4000/class/'+classToEditId, {method: 'PUT', body: JSON.stringify(classs), headers: {'Content-Type': 'application/json', 'Authorization': sessionStorage.user}})
+        fetch(host+'/class/'+classToEditId, {method: 'PUT', body: JSON.stringify(classs), headers: {'Content-Type': 'application/json', 'Authorization': sessionStorage.user}})
         .then((res) => res.json())
         .then(res => {
           console.log(res);

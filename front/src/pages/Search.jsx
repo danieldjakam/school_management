@@ -5,6 +5,7 @@ import ReactLoading from 'react-loading';
 import OneClass from './Class/OneClass';
 import OneTeacher from './Teachers/OneTeacher';
 import Onestudent from './Students/OneStudent';
+import { host } from '../utils/fetch';
 
 function SearchView() {
   const [searchValue, setSearchValue] = useState('');
@@ -19,7 +20,7 @@ function SearchView() {
       (
           async () => {
               setLoading(true)
-              const resp = await fetch('http://localhost:4000/students/getAll', {headers: {
+              const resp = await fetch(host+'/students/getAll', {headers: {
                   'Authorization': sessionStorage.user
                 }})
               const data = await resp.json();
@@ -32,7 +33,7 @@ function SearchView() {
       (
           async () => {
               setLoading(true)
-              const resp = await fetch('http://localhost:4000/teachers/getAll', {headers: {
+              const resp = await fetch(host+'/teachers/getAll', {headers: {
                   'Authorization': sessionStorage.user
                 }})
               const data = await resp.json();
@@ -45,7 +46,7 @@ function SearchView() {
     (
         async () => {
             setLoading(true)
-            const resp = await fetch('http://localhost:4000/class/getOAll', {headers: {
+            const resp = await fetch(host+'/class/getOAll', {headers: {
                 'Authorization': sessionStorage.user
               }})
             const data = await resp.json();
@@ -148,10 +149,10 @@ function SearchView() {
 
                             case 's':
                               return<Onestudent key={id} student={result} />
-                              break
                             default:
                               break;
                           }
+                          return
                         })
                       }
                   </div>

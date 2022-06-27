@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { host } from '../../utils/fetch';
 
 const AddCom = ({ error, setError, setIsAddComp}) => {
 
@@ -9,12 +10,10 @@ const AddCom = ({ error, setError, setIsAddComp}) => {
     section: 'fr'
   })
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
-
   const handleAdd = (e) => {
     e.preventDefault();
     setLoading(true);
-    fetch('http://localhost:4000/com/add', {method: 'POST', body: JSON.stringify(data), headers: {'Content-Type': 'application/json', 'Authorization': sessionStorage.user}})
+    fetch(host+'/com/add', {method: 'POST', body: JSON.stringify(data), headers: {'Content-Type': 'application/json', 'Authorization': sessionStorage.user}})
       .then((res) => res.json())
       .then(res => {
         if (res.success) {
@@ -55,7 +54,7 @@ const AddCom = ({ error, setError, setIsAddComp}) => {
         } 
       </div>
       <div className="card-footer">
-        <button className="btn btn-blue" type="submit">Enregistrer</button>
+        <button className="btn btn-blue" type="submit">{loading ? 'Enregistrement' : 'Enregistrer'}</button>
         <button onClick={() => {handleCancel()}} type="submit"> Fermer (Annuler)</button>
       </div>
       

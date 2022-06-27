@@ -2,6 +2,7 @@ import React from 'react'
 import { useEffect, useRef } from "react";
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { host } from '../../utils/fetch';
 
 const Exams = () => {
 
@@ -21,7 +22,7 @@ const Exams = () => {
         (
             async () => {
                 setLoading(true)
-                const resp = await fetch('http://localhost:4000/students/'+class_id, {headers: {
+                const resp = await fetch(host+'/students/'+class_id, {headers: {
                     'Authorization': sessionStorage.user
                   }})
                 const data = await resp.json();
@@ -34,7 +35,7 @@ const Exams = () => {
         (
             async () => {
                 setLoading(true)
-                const resp = await fetch('http://localhost:4000/notes/getAll', {headers: {
+                const resp = await fetch(host+'/notes/getAll', {headers: {
                     'Authorization': sessionStorage.user
                   }})
                 const data = await resp.json();
@@ -49,7 +50,7 @@ const Exams = () => {
         (
             async () => {
                 setLoading(true)
-                const resp = await fetch('http://localhost:4000/seq/'+exam_id, {headers: {
+                const resp = await fetch(host+'/seq/'+exam_id, {headers: {
                     'Authorization': sessionStorage.user
                   }})
                 const data = await resp.json();
@@ -62,7 +63,7 @@ const Exams = () => {
         (
             async () => {
                 setLoading(true)
-                const resp = await fetch('http://localhost:4000/class/'+class_id, {headers: {
+                const resp = await fetch(host+'/class/'+class_id, {headers: {
                     'Authorization': sessionStorage.user
                   }})
                 const data = await resp.json();
@@ -75,7 +76,7 @@ const Exams = () => {
         (
             async () => {
                 setLoading(true)
-                const resp = await fetch('http://localhost:4000/matiere/getAll', {headers: {
+                const resp = await fetch(host+'/matiere/getAll', {headers: {
                     'Authorization': sessionStorage.user
                   }})
                 const data = await resp.json();
@@ -97,11 +98,11 @@ const Exams = () => {
         (
             async () => {
                 setLoading(true)
-                fetch('http://localhost:4000/com/getAll', {headers: { 'Authorization': sessionStorage.user}})
+                fetch(host+'/com/getAll', {headers: { 'Authorization': sessionStorage.user}})
                     .then(competences => competences.json())
                     .then(competences => {
                         competences.forEach(com => {
-                            fetch('http://localhost:4000/matiere/getAll', {headers: { 'Authorization': sessionStorage.user}})
+                            fetch(host+'/matiere/getAll', {headers: { 'Authorization': sessionStorage.user}})
                                 .then(matieres => matieres.json())
                                 .then(matieres => {
                                     com.sub = matieres.filter(mat => mat.comId === com.id)
@@ -145,7 +146,7 @@ const Exams = () => {
             student_id,
             class_id
         }
-        fetch('http://localhost:4000/notes/addOrUpdate', {method: 'POST', body: JSON.stringify(data), headers: {'Content-Type': 'application/json', 'Authorization': sessionStorage.user}})
+        fetch(host+'/notes/addOrUpdate', {method: 'POST', body: JSON.stringify(data), headers: {'Content-Type': 'application/json', 'Authorization': sessionStorage.user}})
             .then((res) => res.json())
             .then(res => {
                 if (!res.success) {
@@ -161,7 +162,7 @@ const Exams = () => {
             <div className="collapse navbar-collapse" id="navbarNav">
                 <ul className="navbar-nav" style={{fontSize: '1.3rem', display:"flex", justifyContent:'space-between'}}>
                     <h2 style={{marginLeft  : '40px'}}>{actualExam.name} : {ActualClass.name}</h2>
-                    <a href={"http://localhost:4000/download/pdf/bul/"+class_id+'/'+exam_id} target={'_blank'} className="btn btn-success">Telecharger les bulletins</a>
+                    <a href={host+"/download/pdf/bul/"+class_id+'/'+exam_id} target={'_blank'} className="btn btn-success">Telecharger les bulletins</a>
                     <button onClick={() => {}} style={{marginLeft: '10px'}} className="btn btn-primary">Calculer les moyennes</button>
                     <button onClick={() => {}} style={{marginLeft: '10px'}} className="btn btn-secondary">Classer</button>
                 </ul>

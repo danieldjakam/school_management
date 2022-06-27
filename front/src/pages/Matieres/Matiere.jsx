@@ -9,6 +9,7 @@ import {
 } from "reactstrap"
 import AddMatiere from "./AddMatiere";
 import EditMatiere from "./EditMatiere";
+import { host } from '../../utils/fetch';
 
 const Matiere = () => {
     const navigate = useNavigate()
@@ -28,7 +29,7 @@ const Matiere = () => {
         (
             async () => {
                 setLoading(true)
-                const resp = await fetch('http://localhost:4000/matiere/getAll', {headers: {
+                const resp = await fetch(host+'/matiere/getAll', {headers: {
                     'Authorization': sessionStorage.user
                   }})
                 const data = await resp.json();
@@ -43,7 +44,7 @@ const Matiere = () => {
         (
             async () => {
                 setLoading(true)
-                const resp = await fetch('http://localhost:4000/com/getAll', {headers: {
+                const resp = await fetch(host+'/com/getAll', {headers: {
                     'Authorization': sessionStorage.user
                   }})
                 const data = await resp.json();
@@ -60,7 +61,7 @@ const Matiere = () => {
         }).then(res => {
             if (res.value) {
                 setLoadingDel(true);
-                fetch('http://localhost:4000/matiere/'+id, {method: 'DELETE', headers: {'Authorization': sessionStorage.user}})
+                fetch(host+'/matiere/'+id, {method: 'DELETE', headers: {'Authorization': sessionStorage.user}})
                     .then((res) => res.json())
                     .then((res) => { 
                         console.log(res);

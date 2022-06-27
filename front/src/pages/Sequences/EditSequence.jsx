@@ -2,6 +2,7 @@ import React from 'react'
 import { useEffect } from "react";
 import { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { host } from '../../utils/fetch';
 import AddSequence from "./AddSequence";
 
 const EditSequence = () => {
@@ -16,7 +17,7 @@ const EditSequence = () => {
         (
             async () => {
                 setLoading(true)
-                const resp = await fetch('http://localhost:4000/sequence/'+id, {headers: {
+                const resp = await fetch(host+'/sequence/'+id, {headers: {
                     'Authorization': sessionStorage.user
                 }})
                 const data = await resp.json();
@@ -29,7 +30,7 @@ const EditSequence = () => {
     const handleUpdate = (e) => {
         e.preventDefault();
         setLoading(true);
-        fetch('http://localhost:4000/sequence/'+id, {method: 'PUT', body: JSON.stringify(AddSequence), headers: {'Content-Type': 'application/json', 'Authorization': sessionStorage.user}})
+        fetch(host+'/sequence/'+id, {method: 'PUT', body: JSON.stringify(AddSequence), headers: {'Content-Type': 'application/json', 'Authorization': sessionStorage.user}})
         .then((res) => res.json())
         .then(res => {
           console.log(res);

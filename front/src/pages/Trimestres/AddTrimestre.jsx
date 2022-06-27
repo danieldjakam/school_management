@@ -1,6 +1,7 @@
 import React from 'react'
 import { useEffect } from "react";
 import { useState } from "react";
+import { host } from '../../utils/fetch';
 
 const AddTrimestre = ({error, setError, setIsTrim}) => {
 
@@ -15,7 +16,7 @@ const AddTrimestre = ({error, setError, setIsTrim}) => {
         (
             async () => {
                 setLoading(true)
-                const resp = await fetch('http://localhost:4000/seq/getAll', {headers: {
+                const resp = await fetch(host+'/seq/getAll', {headers: {
                     'Authorization': sessionStorage.user
                   }})
                 const data = await resp.json();
@@ -27,7 +28,7 @@ const AddTrimestre = ({error, setError, setIsTrim}) => {
     const handleAdd = (e) => {
         e.preventDefault();
         setLoading(true);
-        fetch('http://localhost:4000/trim/add', {method: 'POST', body: JSON.stringify(data), headers: {'Content-Type': 'application/json', 'Authorization': sessionStorage.user}})
+        fetch(host+'/trim/add', {method: 'POST', body: JSON.stringify(data), headers: {'Content-Type': 'application/json', 'Authorization': sessionStorage.user}})
             .then((res) => res.json())
             .then(res => {
                 if (res.success) {

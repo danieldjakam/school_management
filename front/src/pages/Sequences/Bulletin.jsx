@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import BulletinEntete from '../../components/BulletinEntete';
+import { host } from '../../utils/fetch';
 
 const Bulletin = () => {
 
@@ -28,7 +29,7 @@ const Bulletin = () => {
         (
             async () => {
                 setLoading(true)
-                const resp = await fetch('http://localhost:4000/students/one/'+student_id, {headers: {
+                const resp = await fetch(host+'/students/one/'+student_id, {headers: {
                     'Authorization': sessionStorage.user
                   }})
                 const data = await resp.json();
@@ -41,7 +42,7 @@ const Bulletin = () => {
         (
             async () => {
                 setLoading(true)
-                const resp = await fetch('http://localhost:4000/students/'+class_id, {headers: {
+                const resp = await fetch(host+'/students/'+class_id, {headers: {
                     'Authorization': sessionStorage.user
                   }})
                 const data = await resp.json();
@@ -55,7 +56,7 @@ const Bulletin = () => {
             async () => {
                 setLoading(true)
                 let total = 0;
-                const resp = await fetch('http://localhost:4000/notes/getAll', {headers: {
+                const resp = await fetch(host+'/notes/getAll', {headers: {
                     'Authorization': sessionStorage.user
                   }})
                 const data = await resp.json();
@@ -94,7 +95,7 @@ const Bulletin = () => {
         (
             async () => {
                 setLoading(true)
-                const resp = await fetch(`http://localhost:4000/notes/getTotalPoints?class_id=${class_id}&exam_id=${exam_id}`, {headers: {
+                const resp = await fetch(host+`/notes/getTotalPoints?class_id=${class_id}&exam_id=${exam_id}`, {headers: {
                     'Authorization': sessionStorage.user
                   }})
                 const data = await resp.json();
@@ -114,7 +115,7 @@ const Bulletin = () => {
         (
             async () => {
                 setLoading(true)
-                const resp = await fetch('http://localhost:4000/seq/'+exam_id, {headers: {
+                const resp = await fetch(host+'/seq/'+exam_id, {headers: {
                     'Authorization': sessionStorage.user
                   }})
                 const data = await resp.json();
@@ -127,7 +128,7 @@ const Bulletin = () => {
         (
             async () => {
                 setLoading(true)
-                const resp = await fetch('http://localhost:4000/class/special/'+class_id, {headers: {
+                const resp = await fetch(host+'/class/special/'+class_id, {headers: {
                     'Authorization': sessionStorage.user
                   }})
                 const data = await resp.json();
@@ -140,7 +141,7 @@ const Bulletin = () => {
         (
             async () => {
                 setLoading(true)
-                const resp = await fetch('http://localhost:4000/matiere/getAll', {headers: {
+                const resp = await fetch(host+'/matiere/getAll', {headers: {
                     'Authorization': sessionStorage.user
                   }})
                 const data = await resp.json();
@@ -161,7 +162,7 @@ const Bulletin = () => {
         (
             async () => {
                 setLoading(true)
-                const resp = await fetch('http://localhost:4000/matiere/getAll', {headers: {
+                const resp = await fetch(host+'/matiere/getAll', {headers: {
                     'Authorization': sessionStorage.user
                   }})
                 const data = await resp.json();
@@ -182,11 +183,11 @@ const Bulletin = () => {
         (
             async () => {
                 setLoading(true)
-                fetch('http://localhost:4000/com/getAll', {headers: { 'Authorization': sessionStorage.user}})
+                fetch(host+'/com/getAll', {headers: { 'Authorization': sessionStorage.user}})
                     .then(competences => competences.json())
                     .then(competences => {
                         competences.forEach(com => {
-                            fetch('http://localhost:4000/matiere/getAll', {headers: { 'Authorization': sessionStorage.user}})
+                            fetch(host+'/matiere/getAll', {headers: { 'Authorization': sessionStorage.user}})
                                 .then(matieres => matieres.json())
                                 .then(matieres => {
                                     com.sub = matieres.filter(mat => mat.comId === com.id)
@@ -199,7 +200,7 @@ const Bulletin = () => {
     }, []);
 
     const sendToParent = () => {
-        fetch('http://localhost:4000/send/bulByEmail/'+student_id, {headers: {
+        fetch(host+'/send/bulByEmail/'+student_id, {headers: {
                 'Authorization': sessionStorage.user
             }})
             .then(r => r.json())
@@ -227,7 +228,7 @@ const Bulletin = () => {
                 <button onClick={(e) => {sendToParent(e)}} style={{marginLeft: '10px'}} className="btn btn-primary">Envoyer le bulletin au parent</button>
             </div>
             
-            <a href={"http://localhost:4000/download/pdf/bul/"+class_id+'/'+student_id+'/'+exam_id} target={'_blank'} className="btn btn-success">Telecharger le bulletin</a>
+            <a href={host+"/download/pdf/bul/"+class_id+'/'+student_id+'/'+exam_id} target={'_blank'} className="btn btn-success">Telecharger le bulletin</a>
         </nav>
 
         {

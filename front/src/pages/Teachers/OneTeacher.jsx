@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import * as Swal from 'sweetalert2'
+import { host } from '../../utils/fetch'
 
 
 function OneTeacher({teacher, key}) {
@@ -12,7 +13,7 @@ function OneTeacher({teacher, key}) {
         }).then(res => {
             if (res.value) {
                 setLoadingDel(true);
-                fetch('http://localhost:4000/teachers/'+id, {method: 'DELETE', headers: {'Authorization': sessionStorage.user}})
+                fetch(host+'/teachers/'+id, {method: 'DELETE', headers: {'Authorization': sessionStorage.user}})
                     .then((res) => res.json())
                     .then((res) => { 
                         console.log(res);

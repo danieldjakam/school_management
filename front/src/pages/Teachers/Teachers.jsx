@@ -11,6 +11,7 @@ import {
 import AddTeacher from "./AddTeachers";
 import EditTeacher from "./EditTeacher";
 import ShowMdp from './ShowMdp';
+import { host } from '../../utils/fetch';
 
 
 const Teachers = () => {
@@ -34,7 +35,7 @@ const Teachers = () => {
         (
             async () => {
                 setLoading(true)
-                const resp = await fetch('http://localhost:4000/teachers/getAll', {headers: {
+                const resp = await fetch(host+'/teachers/getAll', {headers: {
                     'Authorization': sessionStorage.user
                   }})
                 const data = await resp.json();
@@ -52,7 +53,7 @@ const Teachers = () => {
         }).then(res => {
             if (res.value) {
                 setLoadingDel(true);
-                fetch('http://localhost:4000/teachers/'+id, {method: 'DELETE', headers: {'Authorization': sessionStorage.user}})
+                fetch(host+'/teachers/'+id, {method: 'DELETE', headers: {'Authorization': sessionStorage.user}})
                     .then((res) => res.json())
                     .then((res) => { 
                         console.log(res);
@@ -69,7 +70,7 @@ const Teachers = () => {
     }
     const regeneratePassword = () => {
         setGenerating(true)
-        fetch('http://localhost:4000/teachers/regeneratePassword', {headers: {'Authorization': sessionStorage.user}})
+        fetch(host+'/teachers/regeneratePassword', {headers: {'Authorization': sessionStorage.user}})
             .then((res) => res.json())
             .then((res) => { 
                 console.log(res);
@@ -87,7 +88,7 @@ const Teachers = () => {
         <div style={{marginBottom: '10px'}}>
             <button onClick={() => {setIsAddTeacher(v => !v)}} className="btn btn-blue">Ajouter un enseignant</button>
             <button onClick={() => {regeneratePassword()}} style={{marginLeft: '10px'}} className="btn btn-blue">{generating ? 'En ocurs...' : 'Generer les nouveaux mdp'}</button>
-            <a href="http://localhost:4000/teachers/downloadTeachersPassword" target="_blank" rel="noopener noreferrer" style={{marginLeft: '10px'}} className="btn btn-blue">Telecharger la liste des mdp</a>
+            <a href={host+"/teachers/downloadTeachersPassword"} target="_blank" rel="noopener noreferrer" style={{marginLeft: '10px'}} className="btn btn-blue">Telecharger la liste des mdp</a>
         </div>
         <div className="allClas col-md-12">
             {

@@ -2,6 +2,7 @@ import React from 'react'
 import { useEffect } from "react";
 import { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { host } from '../../utils/fetch';
 
 const EditTeacher = ({error, setError, setIsEditClass, teacherToEditId}) => {
     const [oldC, setOldC] = useState('')
@@ -14,7 +15,7 @@ const EditTeacher = ({error, setError, setIsEditClass, teacherToEditId}) => {
         (
             async () => {
                 setLoading(true)
-                const resp = await fetch('http://localhost:4000/class/getOAll', {headers: {
+                const resp = await fetch(host+'/class/getOAll', {headers: {
                     'Authorization': sessionStorage.user
                 }})
                 const data = await resp.json();
@@ -27,7 +28,7 @@ const EditTeacher = ({error, setError, setIsEditClass, teacherToEditId}) => {
         (
             async () => {
                 setLoading(true)
-                const resp = await fetch('http://localhost:4000/teachers/'+teacherToEditId, {headers: {
+                const resp = await fetch(host+'/teachers/'+teacherToEditId, {headers: {
                   'Authorization': sessionStorage.user
                 }})
                 const data = await resp.json();
@@ -42,7 +43,7 @@ const EditTeacher = ({error, setError, setIsEditClass, teacherToEditId}) => {
         e.preventDefault();
         setLoading(true);
         teacher.OldclassId = oldC;
-        fetch('http://localhost:4000/teachers/'+teacherToEditId, {method: 'PUT', body: JSON.stringify(teacher), headers: {'Content-Type': 'application/json', 'Authorization': sessionStorage.user}})
+        fetch(host+'/teachers/'+teacherToEditId, {method: 'PUT', body: JSON.stringify(teacher), headers: {'Content-Type': 'application/json', 'Authorization': sessionStorage.user}})
         .then((res) => res.json())
         .then(res => {
           console.log(res);

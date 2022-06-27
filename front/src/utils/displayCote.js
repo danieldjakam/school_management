@@ -1,3 +1,0 @@
-const displayCote = (note, total) => {
-
-}

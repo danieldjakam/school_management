@@ -10,6 +10,7 @@ import {
     Modal
 } from "reactstrap"
 import { useNavigate } from "react-router-dom";
+import { host } from '../../utils/fetch';
 
 const Class = () => {
     const navigate = useNavigate()
@@ -29,7 +30,7 @@ const Class = () => {
         (
             async () => {
                 setLoading(true)
-                const resp = await fetch('http://localhost:4000/class/getOAll', {headers: {
+                const resp = await fetch(host+'/class/getOAll', {headers: {
                     'Authorization': sessionStorage.user
                   }})
                 const data = await resp.json();
@@ -47,7 +48,7 @@ const Class = () => {
         }).then(res => {
             if (res.value) {
                 setLoadingDel(true);
-                fetch('http://localhost:4000/class/'+id, {method: 'DELETE', headers: {'Authorization': sessionStorage.user}})
+                fetch(host+'/class/'+id, {method: 'DELETE', headers: {'Authorization': sessionStorage.user}})
                     .then((res) => res.json())
                     .then((res) => { 
                         console.log(res);

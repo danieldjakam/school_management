@@ -9,6 +9,7 @@ import {
 } from "reactstrap"
 import AddCom from "./AddCom";
 import EditCom from "./EditCom";
+import { host } from '../../utils/fetch';
 
 const Comp = () => {
     const navigate = useNavigate()
@@ -28,7 +29,7 @@ const Comp = () => {
         (
             async () => {
                 setLoading(true)
-                const resp = await fetch('http://localhost:4000/com/getAll', {headers: {
+                const resp = await fetch(host+'/com/getAll', {headers: {
                     'Authorization': sessionStorage.user
                   }})
                 const data = await resp.json();
@@ -46,7 +47,7 @@ const Comp = () => {
         }).then(res => {
             if (res.value) {
                 setLoadingDel(true);
-                fetch('http://localhost:4000/com/'+id, {method: 'DELETE', headers: {'Authorization': sessionStorage.user}})
+                fetch(host+'/com/'+id, {method: 'DELETE', headers: {'Authorization': sessionStorage.user}})
                     .then((res) => res.json())
                     .then((res) => { 
                         console.log(res);

@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { host } from '../utils/fetch';
 
 const Register = () => {
   const [data, setData] = useState({
@@ -17,7 +18,7 @@ const Register = () => {
   const handleRegister = (e) => {
     setLoading(true);
     e.preventDefault();
-    fetch('http://localhost:4000/users/register', {method: 'POST', body: JSON.stringify(data), headers: {'Content-Type': 'application/json'}})
+    fetch(host+'/users/register', {method: 'POST', body: JSON.stringify(data), headers: {'Content-Type': 'application/json'}})
       .then((res) => res.json())
       .then(res => {
         if (res.success) {

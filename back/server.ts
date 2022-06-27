@@ -22,10 +22,7 @@ app.use(bodyparser.json());
 app.use(
     cors(
         {
-            origin: [
-                'http://localhost:3000',
-                'http://localhost:2706'
-            ]
+            origin: '*'
         }
     )
 )

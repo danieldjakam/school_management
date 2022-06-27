@@ -10,6 +10,7 @@ import {
 import AddTrimestre from "../Trimestres/AddTrimestre";
 import AddStudent from "./AddStudent";
 import EditStudent from "./EditStudent";
+import { host } from '../../utils/fetch';
   
 
 const Student = () => {
@@ -53,7 +54,7 @@ const Student = () => {
         (
             async () => {
                 setLoading(true)
-                const resp = await fetch('http://localhost:4000/seq/getAll', {headers: {
+                const resp = await fetch(host+'/seq/getAll', {headers: {
                     'Authorization': sessionStorage.user
                   }})
                 const data = await resp.json();
@@ -67,7 +68,7 @@ const Student = () => {
         (
             async () => {
                 setLoading(true)
-                const resp = await fetch('http://localhost:4000/class/'+id, {headers: {
+                const resp = await fetch(host+'/class/'+id, {headers: {
                     'Authorization': sessionStorage.user
                   }})
                 const data = await resp.json();
@@ -81,7 +82,7 @@ const Student = () => {
         (
             async () => {
                 setLoading(true)
-                const resp = await fetch('http://localhost:4000/students/'+id, {headers: {
+                const resp = await fetch(host+'/students/'+id, {headers: {
                     'Authorization': sessionStorage.user
                   }})
                 const data = await resp.json();
@@ -95,7 +96,7 @@ const Student = () => {
         (
             async () => {
                 setLoading(true)
-                const resp = await fetch('http://localhost:4000/trim/getAll', {headers: {
+                const resp = await fetch(host+'/trim/getAll', {headers: {
                     'Authorization': sessionStorage.user
                   }})
                 const data = await resp.json();
@@ -107,7 +108,7 @@ const Student = () => {
 
     const deleteStudent = (id) => {
         setLoadingDel(true);
-        fetch('http://localhost:4000/students/'+id, {method: 'DELETE', headers: {'Authorization': sessionStorage.user}})
+        fetch(host+'/students/'+id, {method: 'DELETE', headers: {'Authorization': sessionStorage.user}})
             .then((res) => res.json())
             .then((res) => {
                 if (res.success) {
@@ -122,7 +123,7 @@ const Student = () => {
 
     const deleteSeq = (id) => {
         setLoadingDel(true);
-        fetch('http://localhost:4000/seq/'+id, {method: 'DELETE', headers: {'Authorization': sessionStorage.user}})
+        fetch(host+'/seq/'+id, {method: 'DELETE', headers: {'Authorization': sessionStorage.user}})
             .then((res) => res.json())
             .then((res) => {
                 if (res.success) {
@@ -135,7 +136,7 @@ const Student = () => {
     }
     const getOrdonnedStudents = async () => {
         setLoading(true)
-        const resp = await fetch('http://localhost:4000/students/getOrdonnedStudents/'+id, {headers: {
+        const resp = await fetch(host+'/students/getOrdonnedStudents/'+id, {headers: {
             'Authorization': sessionStorage.user
         }})
         const data = await resp.json();
@@ -217,8 +218,8 @@ const Student = () => {
                 </button>
                 <div className="collapse navbar-collapse" id="navbarNav">
                 <ul className="navbar-nav" style={{fontSize: '1.3rem'}}>
-                    <a target={'_blank'} rel='noreferrer' href={'http://localhost:4000/download/csv/students/'+id} className="btn btn-secondary">Telecharger la liste au format csv</a>
-                    <a target={'_blank'} rel='noreferrer' style={{marginLeft: '30px'}} href={'http://localhost:4000/download/pdf/students/'+id} className="btn btn-secondary">Telecharger la liste au format pdf</a>
+                    <a target={'_blank'} rel='noreferrer' href={host+'/download/csv/students/'+id} className="btn btn-secondary">Telecharger la liste au format csv</a>
+                    <a target={'_blank'} rel='noreferrer' style={{marginLeft: '30px'}} href={host+'/download/pdf/students/'+id} className="btn btn-secondary">Telecharger la liste au format pdf</a>
                 </ul>
                 </div>
             </nav>

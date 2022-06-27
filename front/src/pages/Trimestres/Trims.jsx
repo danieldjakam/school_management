@@ -2,6 +2,7 @@ import React from 'react'
 import { useEffect } from "react";
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { host } from '../../utils/fetch';
 
 const Trims = () => {
 
@@ -19,7 +20,7 @@ const Trims = () => {
         (
             async () => {
                 setLoading(true)
-                const resp = await fetch('http://localhost:4000/notes/getByTrim/'+exam_id, {headers: {
+                const resp = await fetch(host+'/notes/getByTrim/'+exam_id, {headers: {
                     'Authorization': sessionStorage.user
                 }})
                 let data = await resp.json();
@@ -33,7 +34,7 @@ const Trims = () => {
         (
             async () => {
                 setLoading(true)
-                const resp = await fetch('http://localhost:4000/trim/'+exam_id, {headers: {
+                const resp = await fetch(host+'/trim/'+exam_id, {headers: {
                     'Authorization': sessionStorage.user
                 }})
                 const data = await resp.json();
@@ -46,7 +47,7 @@ const Trims = () => {
         (
             async () => {
                 setLoading(true)
-                const resp = await fetch('http://localhost:4000/students/'+class_id, {headers: {
+                const resp = await fetch(host+'/students/'+class_id, {headers: {
                     'Authorization': sessionStorage.user
                   }})
                 let data = await resp.json();
@@ -58,7 +59,7 @@ const Trims = () => {
                         exam_id,
                         class_id
                     }
-                    fetch('http://localhost:4000/notes/addOrUpdateStats', {method: 'POST', body: JSON.stringify(to), headers: {'Content-Type': 'application/json', 'Authorization': sessionStorage.user}})
+                    fetch(host+'/notes/addOrUpdateStats', {method: 'POST', body: JSON.stringify(to), headers: {'Content-Type': 'application/json', 'Authorization': sessionStorage.user}})
                         .then((res) => res.json())
                         .then(res => {
                             if (!res.success) {
@@ -74,7 +75,7 @@ const Trims = () => {
         (
             async () => {
                 setLoading(true)
-                const resp = await fetch('http://localhost:4000/class/'+class_id, {headers: {
+                const resp = await fetch(host+'/class/'+class_id, {headers: {
                     'Authorization': sessionStorage.user
                   }})
                 const data = await resp.json();
@@ -87,7 +88,7 @@ const Trims = () => {
         (
             async () => {
                 setLoading(true)
-                const resp = await fetch('http://localhost:4000/matiere/getAll', {headers: {
+                const resp = await fetch(host+'/matiere/getAll', {headers: {
                     'Authorization': sessionStorage.user
                   }})
                 const data = await resp.json();
@@ -109,11 +110,11 @@ const Trims = () => {
         (
             async () => {
                 setLoading(true)
-                fetch('http://localhost:4000/com/getAll', {headers: { 'Authorization': sessionStorage.user}})
+                fetch(host+'/com/getAll', {headers: { 'Authorization': sessionStorage.user}})
                     .then(competences => competences.json())
                     .then(competences => {
                         competences.forEach(com => {
-                            fetch('http://localhost:4000/matiere/getAll', {headers: { 'Authorization': sessionStorage.user}})
+                            fetch(host+'/matiere/getAll', {headers: { 'Authorization': sessionStorage.user}})
                                 .then(matieres => matieres.json())
                                 .then(matieres => {
                                     com.sub = matieres.filter(mat => mat.comId === com.id)

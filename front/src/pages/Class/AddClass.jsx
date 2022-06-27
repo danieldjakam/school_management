@@ -1,5 +1,6 @@
 import { useState } from "react";
 import React from 'react'
+import { host } from "../../utils/fetch";
 
 const AddClass = ({ error, setError, setIsAddClass}) => {
 
@@ -13,7 +14,7 @@ const AddClass = ({ error, setError, setIsAddClass}) => {
   const handleAdd = (e) => {
     e.preventDefault();
     setLoading(true);
-    fetch('http://localhost:4000/class/add', {method: 'POST', body: JSON.stringify(data), headers: {'Content-Type': 'application/json', 'Authorization': sessionStorage.user}})
+    fetch(host+'/class/add', {method: 'POST', body: JSON.stringify(data), headers: {'Content-Type': 'application/json', 'Authorization': sessionStorage.user}})
       .then((res) => res.json())
       .then(res => {
         if (res.success) {
@@ -60,7 +61,7 @@ const AddClass = ({ error, setError, setIsAddClass}) => {
         } 
       </div>
       <div className="card-footer">
-        <button className="btn btn-blue" type="submit">Enregistrer</button>
+        <button className="btn btn-blue" type="submit">{loading ? 'Enregistrement' : 'Enregistrer'}</button>
         <button onClick={() => {handleCancel()}} type="submit">Fermer (Annuler)</button>
       </div>
       

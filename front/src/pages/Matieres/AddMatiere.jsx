@@ -1,6 +1,7 @@
 import React from 'react'
 import { useEffect } from "react";
 import { useState } from "react";
+import { host } from '../../utils/fetch';
 
 const AddMatiere = ({error, setError, setIsSeq}) => {
   const [trims, setTrims] = useState({});
@@ -8,7 +9,7 @@ const AddMatiere = ({error, setError, setIsSeq}) => {
       (
           async () => {
               setLoading(true)
-              const resp = await fetch('http://localhost:4000/com/getAll', {headers: {
+              const resp = await fetch(host+'/com/getAll', {headers: {
                   'Authorization': sessionStorage.user
                 }})
               const data = await resp.json();
@@ -35,7 +36,7 @@ const AddMatiere = ({error, setError, setIsSeq}) => {
   const handleAdd = (e) => {
       e.preventDefault();
       setLoading(true);
-      fetch('http://localhost:4000/matiere/add', {method: 'POST', body: JSON.stringify(data), headers: {'Content-Type': 'application/json', 'Authorization': sessionStorage.user}})
+      fetch(host+'/matiere/add', {method: 'POST', body: JSON.stringify(data), headers: {'Content-Type': 'application/json', 'Authorization': sessionStorage.user}})
       .then((res) => res.json())
       .then(res => {
           if (res.success) {

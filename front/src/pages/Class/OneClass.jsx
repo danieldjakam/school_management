@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import * as Swal from 'sweetalert2'
-
+import { host } from '../../utils/fetch'
 
 function OneClass({clas, key}) {
     const [loadingDel, setLoadingDel] = useState(false)
@@ -13,7 +13,7 @@ function OneClass({clas, key}) {
         }).then(res => {
             if (res.value) {
                 setLoadingDel(true);
-                fetch('http://localhost:4000/class/'+id, {method: 'DELETE', headers: {'Authorization': sessionStorage.user}})
+                fetch(host+'/class/'+id, {method: 'DELETE', headers: {'Authorization': sessionStorage.user}})
                     .then((res) => res.json())
                     .then((res) => { 
                         console.log(res);

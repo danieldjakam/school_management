@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { host } from '../../utils/fetch';
 
 const AddSequence = ({error, setError, setIsSeq}) => {
 
@@ -8,12 +9,11 @@ const AddSequence = ({error, setError, setIsSeq}) => {
         name: '',
     })
     const [loading, setLoading] = useState(false);
-    const navigate = useNavigate();
 
     const handleAdd = (e) => {
         e.preventDefault();
         setLoading(true);
-        fetch('http://localhost:4000/seq/add', {method: 'POST', body: JSON.stringify(data), headers: {'Content-Type': 'application/json', 'Authorization': sessionStorage.user}})
+        fetch(host+'/seq/add', {method: 'POST', body: JSON.stringify(data), headers: {'Content-Type': 'application/json', 'Authorization': sessionStorage.user}})
         .then((res) => res.json())
         .then(res => {
             if (res.success) {

@@ -1,6 +1,7 @@
 import React from 'react'
 import { useEffect } from "react";
 import { useState } from "react";
+import { host } from '../../utils/fetch';
 
 const AddTeacher = ({ error, setError, setIsAddTeacher}) => {
 
@@ -16,7 +17,7 @@ const AddTeacher = ({ error, setError, setIsAddTeacher}) => {
       (
           async () => {
               setLoading(true)
-              const resp = await fetch('http://localhost:4000/class/getOAll', {headers: {
+              const resp = await fetch(host+'/class/getOAll', {headers: {
                   'Authorization': sessionStorage.user
               }})
               const data = await resp.json();
@@ -29,7 +30,7 @@ const AddTeacher = ({ error, setError, setIsAddTeacher}) => {
   const handleAdd = (e) => {
       e.preventDefault();
       setLoading(true);
-      fetch('http://localhost:4000/teachers/add', {method: 'POST', body: JSON.stringify(data), headers: {'Content-Type': 'application/json', 'Authorization': sessionStorage.user}})
+      fetch(host+'/teachers/add', {method: 'POST', body: JSON.stringify(data), headers: {'Content-Type': 'application/json', 'Authorization': sessionStorage.user}})
       .then((res) => res.json())
       .then(res => {
           if (res.success) {
@@ -79,7 +80,7 @@ const AddTeacher = ({ error, setError, setIsAddTeacher}) => {
         } 
       </div>
       <div className="card-footer">
-        <button className="btn btn-blue" type="submit">Enregistrer</button>
+        <button className="btn btn-blue" type="submit">{loading ? 'Enregistrement...' : 'Enregistrer'}</button>
         <button onClick={() => {handleCancel()}} type="submit">Fermer (Annuler)</button>
       </div>
       

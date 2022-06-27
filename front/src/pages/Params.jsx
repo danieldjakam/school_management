@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import * as Swal from 'sweetalert2'
+import { host } from '../utils/fetch';
 function Params() {
   
   const [data, setData] = useState({
@@ -20,7 +21,7 @@ function Params() {
         async () => {
           if (sessionStorage.stat === 'ad') {
             setLoading(true)
-            const resp = await fetch('http://localhost:4000/users/all', {headers: {
+            const resp = await fetch(host+'/users/all', {headers: {
               'Authorization': sessionStorage.user
             }})
             const data = await resp.json();
@@ -35,7 +36,7 @@ function Params() {
     (
         async () => {
             setLoading(true)
-            const resp = await fetch('http://localhost:4000/users/getTeacherOrAdmin/', {headers: {
+            const resp = await fetch(host+'/users/getTeacherOrAdmin/', {headers: {
               'Authorization': sessionStorage.user
             }})
             const data = await resp.json();
@@ -48,7 +49,7 @@ function Params() {
   const handleRegister = (e) => {
     setLoading(true);
     e.preventDefault();
-    fetch('http://localhost:4000/users/register', {method: 'POST', body: JSON.stringify(data), headers: {'Content-Type': 'application/json'}})
+    fetch(host+'/users/register', {method: 'POST', body: JSON.stringify(data), headers: {'Content-Type': 'application/json'}})
       .then((res) => res.json())
       .then(res => {
         if (res.success) {
@@ -71,7 +72,7 @@ function Params() {
         text: 'Cette action est irreversible !!'
     }).then(res => {
         if (res.value) {
-            fetch('http://localhost:4000/users/'+id, {method: 'DELETE', headers: {'Authorization': sessionStorage.user}})
+            fetch(host+'/users/'+id, {method: 'DELETE', headers: {'Authorization': sessionStorage.user}})
                 .then((res) => res.json())
                 .then((res) => { 
                     console.log(res);
