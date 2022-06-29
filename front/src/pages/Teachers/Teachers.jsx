@@ -88,8 +88,8 @@ const Teachers = () => {
         
         <div style={{marginBottom: '10px'}}>
             <button onClick={() => {setIsAddTeacher(v => !v)}} className="btn btn-blue">Ajouter un enseignant</button>
-                <label htmlFor='csvFile' style={{marginLeft: '10px'}} className="btn btn-success">Importer les enseignants</label>
-                <input type="file" accept='.csv' id='csvFile' style={{display: 'none'}} onChange={(e) => {handleChangeCsvFile(e, '/upload/teachers/csv', setError)}} />
+            <label htmlFor='csvFile' style={{marginLeft: '10px'}} className="btn btn-success">Importer les enseignants</label>
+            <input type="file" accept='.csv' id='csvFile' style={{display: 'none'}} onChange={(e) => {handleChangeCsvFile(e, '/upload/teachers/csv', setError)}} />
             <button onClick={() => {regeneratePassword()}} style={{marginLeft: '10px'}} className="btn btn-blue">{generating ? 'En ocurs...' : 'Generer les nouveaux mdp'}</button>
             <a href={host+"/teachers/downloadTeachersPassword"} target="_blank" rel="noopener noreferrer" style={{marginLeft: '10px'}} className="btn btn-blue">Telecharger la liste des mdp</a>
         </div>

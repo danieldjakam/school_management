@@ -66,3 +66,44 @@ module.exports.uploadTeacherCsv = (req: any, res:any ) => {
             console.error(err);
         })
 }
+
+module.exports.uploadClassCsv = (req: any, res:any ) => {
+    const {csvText} = req.body;
+    
+    csvtojson()
+        .fromString(csvText)
+        .then((classes)=>{ 
+            classes.forEach(classe => {
+                let {name, section, level} = classe;
+                req.connection.query('INSERT INTO class(id, name, level, section, school_id) VALUES(?, ?, ?, ?, ?)', [req.jwt.sign(name, req.env.SECRET), name, level, section, req.payload.school_id], (err, respp) => {
+                    if(err) console.log(err);
+                    else res.status(201).json({success: true})
+                })
+            })
+        })
+        .catch(err => {
+            console.error(err);
+        })
+}
+
+module.exports.uploadNoteCsv = (req: any, res:any ) => {
+    const {csvText} = req.body;
+    
+    csvtojson()
+        .fromString(csvText)
+        .then((notes)=>{ 
+            notes.forEach(note => {
+                const {value, exam_id, student_id, class_id, matiere_id, tag_name} = note;
+                let val: number = 0;
+                val = parseFloat(value) > 0 ? value : 0;  
+                val = parseFloat(value) > 20 ? 20 : value;
+                req.connection.query('INSERT INTO notes(student_id, exam_id, class_id, matiere_id, tag_name, value) VALUES(?, ?, ?, ?, ?, ?)', [student_id, exam_id, class_id, matiere_id, tag_name, val], (err, respp) => {
+                    if(err) console.log(err);
+                    else res.status(201).json({success: true})
+                })
+            })
+        })
+        .catch(err => {
+            console.error(err);
+        })
+}

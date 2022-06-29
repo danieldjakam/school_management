@@ -3,6 +3,7 @@ import { useEffect, useRef } from "react";
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { host } from '../../utils/fetch';
+import { handleChangeCsvFile } from '../../utils/functions';
 
 const Exams = () => {
 
@@ -154,13 +155,14 @@ const Exams = () => {
             })
     }
     return <div className="container">
-        <nav className="navbar navbar-expand-lg" style={{padding: '10px 10px'}}>
+        <nav className="navbar navbar-expand-lg" style={{padding: '10px'}}>
             <div className="collapse navbar-collapse" id="navbarNav">
                 <ul className="navbar-nav" style={{fontSize: '1.3rem', display:"flex", justifyContent:'space-between'}}>
                     <h2 style={{marginLeft  : '40px'}}>{actualExam.name} : {ActualClass.name}</h2>
                     <a href={host+"/download/pdf/bul/"+class_id+'/'+exam_id} target={'_blank'} className="btn btn-success">Telecharger les bulletins</a>
                     <button onClick={() => {}} style={{marginLeft: '10px'}} className="btn btn-primary">Calculer les moyennes</button>
-                    <button onClick={() => {}} style={{marginLeft: '10px'}} className="btn btn-secondary">Classer</button>
+                    <label htmlFor='csvFile' style={{marginLeft: '10px'}} className="btn btn-success">Importer les notes</label>
+                    <input type="file" accept='.csv' id='csvFile' style={{display: 'none'}} onChange={(e) => {handleChangeCsvFile(e, '/upload/notes/csv', setError)}} />
                 </ul>
             </div>
         </nav>

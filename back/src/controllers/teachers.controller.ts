@@ -25,7 +25,7 @@ module.exports.addTeacher = (req, res) => {
             }
             const password = t.join('')
 
-            req.connection.query('SELECT name FROM class WHERE id = ? ', [classId], (erroorr, succc) => {
+            req.connection.query('SELECT name FROM class WHERE id = ? AND school_id = ? ', [classId, req.payload.school_id], (erroorr, succc) => {
                 if (erroorr) {
                     console.log(erroorr);
                 }else{
@@ -34,7 +34,7 @@ module.exports.addTeacher = (req, res) => {
                     cname = cname.toUpperCase()
                     const code = 'SEM-'+cname;
                     const p = phone_number.toString()
-                    req.connection.query('INSERT INTO teachers(id, name, subname, class_id, matricule, password, sex, phone_number, birthday) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)', [id, name, subname, classId, code, password, sex, p, birthday], (err, resp) => {
+                    req.connection.query('INSERT INTO teachers(id, name, subname, class_id, matricule, password, sex, phone_number, birthday, school_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [id, name, subname, classId, code, password, sex, p, birthday, req.payload.school_id], (err, resp) => {
                         if(err) console.log(err);
 
                         else {
@@ -72,7 +72,7 @@ module.exports.updateTeacher = (req, res) => {
         }
         else{
 
-            req.connection.query('SELECT name FROM class WHERE id = ? ', [class_id], (erroorr, c) => {
+            req.connection.query('SELECT name FROM class WHERE id = ? AND school_id ', [class_id, req.payload.school_id], (erroorr, c) => {
                 if(erroorr) console.log(erroorr);
                 
                 let {cname} = c[0]
@@ -84,12 +84,12 @@ module.exports.updateTeacher = (req, res) => {
                     if(err) console.log(err);
 
                     else {
-                        req.connection.query('UPDATE class SET teacherId = ? WHERE id = ?', [null, OldclassId], (err2, resp2) => {
+                        req.connection.query('UPDATE class SET teacherId = ? WHERE id = ? AND school_id', [null, OldclassId, req.payload.school_id], (err2, resp2) => {
                             if (err2) {
                                 if(!err2) res.status(201).json({success: true})
                                 else console.log(err2);
                             }else{
-                                req.connection.query('UPDATE class SET teacherId = ? WHERE id = ?', [class_id, OldclassId], (err3, resp2) => {
+                                req.connection.query('UPDATE class SET teacherId = ? WHERE id = ? AND school_id', [class_id, OldclassId, req.payload.school_id], (err3, resp2) => {
                                     if(!err3) res.status(201).json({success: true})
                                     else console.log(err3);
                                 })
@@ -105,14 +105,14 @@ module.exports.updateTeacher = (req, res) => {
 }
 
 module.exports.getAllTeachers = (req, res) => {
-    req.connection.query('SELECT teachers.name, teachers.password, teachers.matricule, class.name as className, teachers.id, teachers.subname FROM teachers LEFT JOIN class ON class.id = teachers.class_id', (err, resp) => {
+    req.connection.query('SELECT teachers.name, teachers.password, teachers.matricule, class.name as className, teachers.id, teachers.subname FROM teachers LEFT JOIN class ON class.id = teachers.class_id WHERE class.school_id = ?', [req.payload.school_id], (err, resp) => {
         if(err) console.log(err);
         res.status(201).json(resp)
     })
 }
 
 module.exports.getOneTeacher = (req, res) => {
-    req.connection.query('SELECT * FROM teachers WHERE id = ?', [req.params.id] , (err, resp) => {
+    req.connection.query('SELECT * FROM teachers WHERE id = ? AND school_id', [req.params.id, req.payload.school_id] , (err, resp) => {
         if(err) console.log(err);
         res.status(201).json(resp[0])
     })
@@ -120,7 +120,7 @@ module.exports.getOneTeacher = (req, res) => {
 
 module.exports.deleteTeacher = (req, res) => {
     const {id} = req.params;
-    req.connection.query('DELETE FROM teachers WHERE id = ?', [id], (err, resp) => {
+    req.connection.query('DELETE FROM teachers WHERE id = ? AND school_id', [id, req.payload.school_id], (err, resp) => {
         res.status(201).json({success: true})
     })
 }
@@ -149,7 +149,7 @@ module.exports.downloadTeachersPassword = (req, res) => {
 }
 
 module.exports.generateNewPasswords = (req, res) => {
-    req.connection.query('SELECT * FROM teachers', (err, teachers) => {
+    req.connection.query('SELECT * FROM teachers WHERE school_id', [req.payload.school_id], (err, teachers) => {
         try {
             teachers.forEach(teacher => {
                 const t = []

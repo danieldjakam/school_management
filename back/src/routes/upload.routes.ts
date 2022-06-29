@@ -7,5 +7,7 @@ const uploadController = require('../controllers/uploadController');
 
 routerForUplaod.post('/students/csv', authGlobalForUplaod, authAdminForUplaod, uploadController.uploadStudentCsv);
 routerForUplaod.post('/teachers/csv', authGlobalForUplaod, authAdminForUplaod, uploadController.uploadTeacherCsv);
+routerForUplaod.post('/class/csv', authGlobalForUplaod, authAdminForUplaod, uploadController.uploadClassCsv);
+routerForUplaod.post('/notes/csv', authGlobalForUplaod, authAdminForUplaod, uploadController.uploadNoteCsv);
 
 module.exports = routerForUplaod;

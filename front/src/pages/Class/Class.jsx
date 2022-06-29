@@ -11,6 +11,7 @@ import {
 } from "reactstrap"
 import { useNavigate } from "react-router-dom";
 import { host } from '../../utils/fetch';
+import { handleChangeCsvFile } from '../../utils/functions';
 
 const Class = () => {
     const navigate = useNavigate()
@@ -67,6 +68,8 @@ const Class = () => {
         
         <div style={{marginBottom: '10px'}}>
             <button onClick={() => {setIsAddClass(v => !v)}} className="btn btn-blue">Ajouter une classe</button>
+                                <label htmlFor='csvFile' style={{marginLeft: '10px'}} className="btn btn-success">Importer les classes</label>
+                                <input type="file" accept='.csv' id='csvFile' style={{display: 'none'}} onChange={(e) => {handleChangeCsvFile(e, '/upload/class/csv', setError)}} />
         </div>
         <div className="allClas">
             {

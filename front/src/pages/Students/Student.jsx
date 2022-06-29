@@ -159,7 +159,7 @@ const Student = () => {
                                 loading ? <tr ><td colSpan={5} style={{justifyItems: 'center', paddingLeft: '50%'}}><ReactLoading color="#fff" type="cylon"/></td></tr> : exams.length > 0 ? exams.map((exam, index) => {
                                     return <tr key={index}>
                                         <td>{exam.name}</td>
-                                        <td><a style={{textDecoration: 'none', color: '#fff'}} href={`http://localhost:3000/exams/${exam.id}/${id}`}>Entrer les donnees</a></td>
+                                        <td><a style={{textDecoration: 'none', color: '#fff'}} href={`/exams/${exam.id}/${id}`}>Entrer les donnees</a></td>
                                         <td style={{display: 'flex', justifyContent: 'space-between'}}>
                                             <button className="btn btn-danger" onClick={() => {deleteSeq(exam.id)}}> {loadingDel ? 'Suppression..' : 'Supprimer'} </button>
                                         </td>
@@ -186,7 +186,7 @@ const Student = () => {
                                 loading ? <tr ><td colSpan={5} style={{justifyItems: 'center', paddingLeft: '50%'}}><ReactLoading color="#fff" type="cylon"/></td></tr> : trims.length > 0 ? trims.map((trim, index) => {
                                     return <tr key={index}>
                                         <td>{trim.name}</td>
-                                        <td><a style={{textDecoration: 'none', color: '#fff'}} onMouseOver={(e) => {e.target.style.color= '#dedede'}} href={`http://localhost:3000/trims/${trim.id}/${id}`}>Voir les donnees</a></td>
+                                        <td><a style={{textDecoration: 'none', color: '#fff'}} onMouseOver={(e) => {e.target.style.color= '#dedede'}} href={`/trims/${trim.id}/${id}`}>Voir les donnees</a></td>
                                         <td style={{display: 'flex', justifyContent: 'space-between'}}>
                                             <button className="btn btn-danger" onClick={() => {deleteStudent(trim.id)}}> {loadingDel ? 'Suppression..' : 'Supprimer'} </button>
                                         </td>
