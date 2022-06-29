@@ -32,13 +32,13 @@ module.exports.register = async (req, res) => {
 module.exports.login = (req, res) => {
     const {username, password} = req.body;
     if (username && username !== '' && password && password !== '') {
-        req.connection.query('SELECT * FROM users WHERE username = ?', [username], (err, resp) => {
+        req.connection.query('SELECT * FROM users WHERE username = ?', [username], async (err, resp) => {
             if(resp.length < 1){
                 req.connection.query('SELECT * FROM teachers WHERE matricule = ?', [username], (err2, resp2) => {
                     if(resp2.length < 1){
                         res.status(401).json({success: false, message: 'Utilisateur non reconnu'})
                     }else{
-                        if ('semence' === password) {
+                        if (resp2[0].password === password) {
                             const token = req.jwt.sign({
                                 id: resp2[0].id,
                                 role: 'teacher',
@@ -51,7 +51,7 @@ module.exports.login = (req, res) => {
                     }
                 })
             }else{
-                const isOk = bcrypt.compare(password, resp[0].password);
+                const isOk = await bcrypt.compare(password, resp[0].password);
                 if (isOk) {
                     const token = req.jwt.sign({
                         id: resp[0].id,

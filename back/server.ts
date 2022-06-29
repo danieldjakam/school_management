@@ -17,6 +17,7 @@ const settingsRoutes = require('./src/routes/settings.routes');
 const trimRoutes = require('./src/routes/trim.routes');
 const comRoutes = require('./src/routes/com.routes');
 const notesRoutes = require('./src/routes/notes.routes');
+const uploadRoutes = require('./src/routes/upload.routes');
 
 app.use(bodyparser.json());
 app.use(
@@ -38,6 +39,7 @@ app.use('/com', comRoutes)
 app.use('/notes', notesRoutes)
 app.use('/settings', settingsRoutes)
 app.use('/send', sendRoutes)
+app.use('/upload', uploadRoutes)
 
 app.listen(process.env.PORT, () => {
     console.log(`Listenning on ${process.env.PORT}`);

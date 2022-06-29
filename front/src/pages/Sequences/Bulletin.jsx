@@ -74,7 +74,7 @@ const Bulletin = () => {
                 mat.map(m => {
                     const tags = JSON.parse(m.tags);
                     const notesForThisMatiere = notes.filter(h => h.matiere_id === m.id);
-                    const t = JSON.parse(m.tags).length + 2;
+                    // const t = JSON.parse(m.tags).length + 2;
                     let totalNote = 0;
                     let total = 0;
                     tags.map(tag => {
@@ -82,10 +82,12 @@ const Bulletin = () => {
                         const note = notesForThisTag !== {} && notesForThisTag !== undefined ? parseFloat(notesForThisTag.value) : 0;
                         totalNote += note;
                         total += parseFloat(tag.over);
+                        return '';
                     })
                     if (totalNote < (total / 2)) {
                         arr.push(m.name);
                     }
+                    return '';
                 })
                 setBadCompetence(arr);
             }
@@ -367,6 +369,9 @@ const Bulletin = () => {
                 </tr>
             </tbody>
         </table>
+        {
+            loading ? totalPointsClass : ''
+        }
     </div>
 }
 

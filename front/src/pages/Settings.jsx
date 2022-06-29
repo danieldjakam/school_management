@@ -94,7 +94,7 @@ function Settings() {
             </div> 
             <div className="field check " style={{display:'flex'}}>
                 <label className={`label ${settings.is_editable === 'yes' ? 'checked' : ''}`} htmlFor='check'>Est il le temps d'editer les notes ?</label>
-                <input type="checkbox" checked={settings.is_editable == 'yes' ? true : false} onChange={(e) => {setSettings(val => {return{...val, is_editable: settings.is_editable === 'yes' ? 'no' : 'yes'}})}} id="check" />
+                <input type="checkbox" checked={settings.is_editable === 'yes' ? true : false} onChange={(e) => {setSettings(val => {return{...val, is_editable: settings.is_editable === 'yes' ? 'no' : 'yes'}})}} id="check" />
             </div> 
 
             {

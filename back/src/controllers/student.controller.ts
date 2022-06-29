@@ -1,10 +1,10 @@
 module.exports.addStudent = (req, res) => {
     const {id} = req.params;
-    const {name, subname, sex, birthday, email, phone_number, status} = req.body;
+    const {name, subname, birthday ,fatherName, phone_number, profession, email, sex, status} = req.body;
     if (!status) {
         const status = 'old'
     }
-    if (name && name !== '' && subname && subname !== '' && sex && sex !== '' && birthday && birthday !== '') {
+    if (name && subname && sex && birthday && fatherName && profession) {
         if (name.length < 3) {
             res.status(401).json({success: false, message: 'Le nom de l\'eleve doit avoir au moins 3 caracteres!!'})
         }
@@ -26,7 +26,7 @@ module.exports.addStudent = (req, res) => {
         else{
             req.connection.query('SELECT year_school FROM settings WHERE id = 1', (rerr, respe) => {
                 const {year_school} = respe[0];
-                req.connection.query('INSERT INTO students(id, name, subname, class_id, sex, birthday, email, phone_number, school_year, status) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [req.sign(name+year_school, req.env.SECRET), name, subname, id, sex, birthday, email, phone_number.toString(), year_school, status], (err, resp) => {
+                req.connection.query('INSERT INTO students(id, name, subname, class_id, sex, birthday, email, phone_number, school_year, status, fatherName, profession) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [req.jwt.sign(name+year_school, req.env.SECRET), name, subname, id, sex, birthday, email, phone_number.toString(), year_school, status, fatherName, profession], (err, resp) => {
                     if(err) console.log(err);
                     else res.status(201).json({success: true})
                 })
@@ -39,8 +39,8 @@ module.exports.addStudent = (req, res) => {
 
 module.exports.updateStudent = (req, res) => {
     const {id} = req.params;
-    const {name, subname, sex, birthday, email, phone_number} = req.body;
-    if (name && name !== '' && subname && subname !== '' && sex && sex !== '' && birthday && birthday !== '') {
+    const {name, subname, birthday ,fatherName, phone_number, profession, email, sex} = req.body;
+    if (name && subname && sex && birthday) {
         if (name.length < 3) {
             res.status(401).json({success: false, message: 'Le nom de l\'eleve doit avoir au moins 3 caracteres!!'})
         }
@@ -60,7 +60,7 @@ module.exports.updateStudent = (req, res) => {
             const month = new Date(birthday).getMonth() > 9 ? new Date(birthday).getMonth() : '0'+new Date(birthday).getMonth().toString();
             const day = new Date(birthday).getDate() > 9 ? new Date(birthday).getDate() : '0'+new Date(birthday).getDate().toString();
             const date = new Date(birthday).getUTCFullYear() + '-'+ month + "-" + day;
-            req.connection.query('UPDATE students SET name = ?, subname = ?, sex = ?, birthday = NOW(), email = ?, phone_number = ? WHERE id = ?', [name, subname, sex, email, phone_number.toString(), id], (err, resp) => {
+            req.connection.query('UPDATE students SET name = ?, subname = ?, sex = ?, birthday = NOW(), email = ?, phone_number = ?, fatherName = ?, profession = ? WHERE id = ?', [name, subname, sex, email, phone_number.toString(), fatherName, profession, id], (err, resp) => {
                 if(err) console.log(err);
                 else res.status(201).json({success: true})
             })

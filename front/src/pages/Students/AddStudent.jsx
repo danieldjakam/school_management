@@ -86,7 +86,7 @@ const AddStudent = ({setIsAddStudent, error, setError}) => {
             </div>
             <div className="field check " style={{display:'flex'}}>
                 <label className={`label ${data.status === 'new' ? 'checked' : ''}`} htmlFor='check'>Nouveau eleve ?</label>
-                <input type="checkbox" checked={data.status == 'new' ? true : false} onChange={(e) => {setData(val => {return{...val, status: data.status === 'new' ? 'old' : 'new'}})}} id="check" />
+                <input type="checkbox" checked={data.status === 'new' ? true : false} onChange={(e) => {setData(val => {return{...val, status: data.status === 'new' ? 'old' : 'new'}})}} id="check" />
             </div> 
             {
               error !== '' ? <div className="error">{error}</div> : ''

@@ -9,6 +9,10 @@ const AddTeacher = ({ error, setError, setIsAddTeacher}) => {
     name: '',
     subname: '',
     classId: '',
+
+    phone_number: '',
+    sex: '',
+    birthday: ''
   })
   const [classs, setClasss] = useState({});
   const [loading, setLoading] = useState(false);
@@ -74,6 +78,22 @@ const AddTeacher = ({ error, setError, setIsAddTeacher}) => {
                     }
                 </select>
         </div> 
+        <div className="field">
+            <div className="label">Numero de telephone de l'enseignant</div>
+            <input type="tel" value={data.phone_number} onChange={(e) => {setData(val => {return {...val, phone_number: e.target.value}})}} placeholder="Entrer le numero du parent" />
+        </div>
+        <div className="field">
+            <div className="label">Date de naissance de l'enseignant</div>
+            <input type="date" value={data.birthday} onChange={(e) => {setData(val => {return {...val, birthday: e.target.value}})}} placeholder="Entrer la date naissance de l'enfant" />
+        </div>
+        <div className="field">
+            <div className="label">Sexe de l'enseignant</div>
+            <select value={data.sex} onChange={(e) => {setData(val => {return {...val, sex: e.target.value}})}} className="form-control form-control-lg">
+                    <option value={''}>--- Selectionner le sexe de l'enseignant ----</option>
+                    <option value="m">Masculin</option>
+                    <option value="f">Feminin</option>
+                </select>
+        </div>
 
         {
           error !== '' ? <div className="error">{error}</div> : ''

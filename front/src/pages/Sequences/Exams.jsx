@@ -120,12 +120,12 @@ const Exams = () => {
             let totalNote = 0;
             mat.forEach((m, f) => {
                 const notesForThisMatiere = herNotes.length > 0 ? herNotes.filter(h => h.matiere_id === m.id) : {};
-                let total = 0;
+                // let total = 0;
                 const tags = JSON.parse(m.tags)
                 tags.forEach(t => {
                     const notesForThisTag = notesForThisMatiere.length > 0 ? notesForThisMatiere.filter(h => h.tag_name === t.name)[0] : {};
                     const note = notesForThisTag !== {} && notesForThisTag !== undefined ? parseFloat(notesForThisTag.value) : 0;
-                    total += note;
+                    // total += note;
                     totalNote += note;
                 })
             })
@@ -143,7 +143,6 @@ const Exams = () => {
             matiere_id,
             tag_name,
             exam_id,
-            student_id,
             class_id
         }
         fetch(host+'/notes/addOrUpdate', {method: 'POST', body: JSON.stringify(data), headers: {'Content-Type': 'application/json', 'Authorization': sessionStorage.user}})
@@ -156,9 +155,6 @@ const Exams = () => {
     }
     return <div className="container">
         <nav className="navbar navbar-expand-lg" style={{padding: '10px 10px'}}>
-            <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span className="navbar-toggler-icon"></span>
-            </button>
             <div className="collapse navbar-collapse" id="navbarNav">
                 <ul className="navbar-nav" style={{fontSize: '1.3rem', display:"flex", justifyContent:'space-between'}}>
                     <h2 style={{marginLeft  : '40px'}}>{actualExam.name} : {ActualClass.name}</h2>
@@ -294,6 +290,9 @@ const Exams = () => {
             }
         </tbody>
     </table>
+    {
+        loading ? studentsPoints : ''
+    }
     </div>
 }
 

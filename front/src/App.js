@@ -13,8 +13,7 @@ import Trims from './pages/Trimestres/Trims';
 import Bulletin from './pages/Sequences/Bulletin';
 import BulletinTrim from './pages/Trimestres/BulletinTrim';
 import Sidebar from './components/Sidebar';
-import Login from './pages/Login'
-import Register from './pages/Register'
+import Login from './pages/Login';
 import SearchView from './pages/Search';
 import Params from './pages/Params';
 import Error404 from './pages/Error404';
@@ -53,7 +52,6 @@ function App() {
                   </>
                  : <> 
                     <Route path='/login' element={<Login setUser={setUser}/>} />
-                    <Route path='/register' element={<Register/>} />
                     <Route path='*' element={<Login setUser={setUser} />} />
                  </> 
           }

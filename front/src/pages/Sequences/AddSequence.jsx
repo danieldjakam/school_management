@@ -1,6 +1,5 @@
 import React from 'react'
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { host } from '../../utils/fetch';
 
 const AddSequence = ({error, setError, setIsSeq}) => {

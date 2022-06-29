@@ -1,4 +1,5 @@
-import React from 'react'
+import React from 'react';
+import sem from '../images/sem.png'
 const BulletinEntete = ({student, currentClass, actualExam}) => {
         
     const months = [
@@ -31,7 +32,7 @@ const BulletinEntete = ({student, currentClass, actualExam}) => {
                             TEL: (237) 33 08 95 82/699717529 <br />
                         </th>
                         <th className=' '>
-                            <img src='../../../assets/sem.png' height={200} />
+                            <img src={sem} height={200} alt='logo' />
                         </th>
                         <th className=''>
                             REPUBLIC OF CAMEROON  <br />

@@ -1,14 +1,11 @@
 import React from 'react'
 import { useEffect } from "react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { host } from '../../utils/fetch';
 
 const EditClass = ({error, setError, setIsEditClass, classToEditId}) => {
     const [classs, setClasss] = useState({});
     const [loading, setLoading] = useState(false);
-    const navigate = useNavigate();
-
     useEffect(() => {
         (
             async () => {
@@ -73,7 +70,7 @@ const EditClass = ({error, setError, setIsEditClass, classToEditId}) => {
           } 
         </div>
         <div className="card-footer">
-          <button className="btn btn-blue" type="submit">Enregistrer</button>
+          <button className="btn btn-blue" type="submit">{loading ? 'Enregistrement' : 'Enregistrer'}</button>
           <button onClick={() => {handleCancel()}} type="submit">Fermer (Annuler)</button>
         </div>
         

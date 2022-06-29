@@ -17,17 +17,17 @@ function SearchView() {
   const [classes, setClasses] = useState([])
   const [teachers, setTeachers] = useState([])
   useEffect(() => {
-      (
-          async () => {
-              setLoading(true)
-              const resp = await fetch(host+'/students/getAll', {headers: {
-                  'Authorization': sessionStorage.user
-                }})
-              const data = await resp.json();
-              setStudents(data);
-              setLoading(false);
-          }
-      )()
+    (
+      async () => {
+          setLoading(true)
+          const resp = await fetch(`${host+ sessionStorage.stat === 'ad' ? '/students/getAll' : '/students/getOrdonnedStudents/'+sessionStorage.classId}`, {headers: {
+              'Authorization': sessionStorage.user
+            }})
+          const data = await resp.json();
+          setStudents(data);
+          setLoading(false);
+      }
+    )()
   }, [])
   useEffect(() => {
       (
@@ -92,7 +92,7 @@ function SearchView() {
     e.preventDefault()
     if (searchValue !== '') {
       setIsQuestionSearch(true)
-      if (searchColumn !== '') {
+      if (searchColumn !== '' && sessionStorage.stat === 'ad') {
         handleSearch(searchColumn)
       }else{
         handleSearch('s')
@@ -152,7 +152,7 @@ function SearchView() {
                             default:
                               break;
                           }
-                          return
+                          return ''
                         })
                       }
                   </div>

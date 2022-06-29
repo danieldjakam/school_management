@@ -22,7 +22,7 @@ const months = [
 const path = require('path');
 
 module.exports.downloadStudentsCsv = (req, res) => {
-    connection.query("SELECT students.name, students.subname, students.birthday, students.sex, class.name as cName  FROM students LEFT JOIN class ON class.id = students.class_id WHERE class_id = ?", [req.params.id], function (err, users, fields) {
+    req.connection.query("SELECT students.name, students.subname, students.birthday, students.sex, class.name as cName  FROM students LEFT JOIN class ON class.id = students.class_id WHERE class_id = ?", [req.params.id], function (err, users, fields) {
         if (err) throw err;
         const jsonUsers = JSON.parse(JSON.stringify(users));
         const csvFields = ['name', 'subname', 'birthday', 'sex'];
@@ -38,7 +38,7 @@ module.exports.downloadStudentsCsv = (req, res) => {
 
 module.exports.downloadStudentsPdf = (req, res) => {
     const html = req.fs.readFileSync('templates/studentsList.html', 'utf-8');
-    connection.query("SELECT students.name, teachers.name as tName, teachers.subname as tSubname, students.subname,  students.email,  students.phone_number, students.birthday, students.sex, class.name as cName  FROM students LEFT JOIN class ON class.id = students.class_id LEFT JOIN teachers ON teachers.class_id = class.id WHERE students.class_id = ?", [req.params.id], function (err, students, fields) {
+    req.connection.query("SELECT students.name, teachers.name as tName, teachers.subname as tSubname, students.subname,  students.email,  students.phone_number, students.birthday, students.sex, class.name as cName  FROM students LEFT JOIN class ON class.id = students.class_id LEFT JOIN teachers ON teachers.class_id = class.id WHERE students.class_id = ?", [req.params.id], function (err, students, fields) {
         if (err) console.log(err);
         const fileName = `Liste des eleves de ${students[0].cName}.pdf`;
         let info : {
@@ -83,8 +83,8 @@ module.exports.downloadBulletin = (req, res) => {
     let totalNote : number
     let diviser : number = 0;
     
-    connection.query('SELECT * FROM students WHERE class_id = ?', [class_id], (errr, allStudents : []) => {
-        connection.query("SELECT students.name, teachers.name as tName, teachers.subname as tSubname, students.subname, students.birthday, students.sex, class.name as cName  FROM students LEFT JOIN class ON class.id = students.class_id LEFT JOIN teachers ON teachers.class_id = class.id WHERE students.id = ?", [student_id], function (err, student, fields) {
+    req.connection.query('SELECT * FROM students WHERE class_id = ?', [class_id], (errr, allStudents : []) => {
+        req.connection.query("SELECT students.name, teachers.name as tName, teachers.subname as tSubname, students.subname, students.birthday, students.sex, class.name as cName  FROM students LEFT JOIN class ON class.id = students.class_id LEFT JOIN teachers ON teachers.class_id = class.id WHERE students.id = ?", [student_id], function (err, student, fields) {
             if (err) console.log(err);
             const stud : {
                 name: string,
@@ -108,12 +108,12 @@ module.exports.downloadBulletin = (req, res) => {
             const date = new Date(stud.birthday).getDate() + ' '+ months[new Date(stud.birthday).getMonth()] + " " + new Date(stud.birthday).getUTCFullYear()
             stud.birthday = date;
             
-            connection.query('SELECT * FROM notes WHERE exam_id = ? AND class_id = ? AND student_id = ?', [exam_id, class_id, student_id] , (err2, notes) => {
+            req.connection.query('SELECT * FROM notes WHERE exam_id = ? AND class_id = ? AND student_id = ?', [exam_id, class_id, student_id] , (err2, notes) => {
                 if(err2) console.log(err2);
                 notes.forEach(note => {
                     totalPoint += parseInt(note.value);
                 });
-                connection.query('SELECT * FROM matiere', (err3, mat : Matiere[]) => {
+                req.connection.query('SELECT * FROM matiere', (err3, mat : Matiere[]) => {
                     mat.forEach((m) => {
                         const tags = JSON.parse(m.tags);
                         const notesForThisMatiere = notes.filter(h => h.matiere_id === m.id);
@@ -140,7 +140,7 @@ module.exports.downloadBulletin = (req, res) => {
                         })
                     })
     
-                    connection.query('SELECT * FROM com', (err5, competences) => {
+                    req.connection.query('SELECT * FROM com', (err5, competences) => {
                         mat.map(m => {
                             let t = 0;
                             const tags = JSON.parse(m.tags);
@@ -169,7 +169,7 @@ module.exports.downloadBulletin = (req, res) => {
                             })
                             com.total = to + 1;
                         })
-                        connection.query('SELECT * FROM stats WHERE class_id = ? AND exam_id = ? ', [class_id, exam_id], (errrt, stats) => {
+                        req.connection.query('SELECT * FROM stats WHERE class_id = ? AND exam_id = ? ', [class_id, exam_id], (errrt, stats) => {
                             const rangedArray = stats.sort((a, b) => b.totalPoints - a.totalPoints);
                             const g = stats.sort((a, b) => b.totalPoints - a.totalPoints);
                             let firstPoints : number = g[0].totalPoints;
@@ -229,7 +229,7 @@ module.exports.downloadBulletin = (req, res) => {
 module.exports.downloadBulletinByClass = async (req, res) => {
     const zip = new admZip();
     const {class_id} = req.params;
-    connection.query('SELECT students.id, students.name, teachers.name as tName, teachers.subname as tSubname, students.subname, students.birthday, students.sex, class.name as cName  FROM students LEFT JOIN class ON class.id = students.class_id LEFT JOIN teachers ON teachers.class_id = class.id WHERE students.class_id = ?', [class_id], async (err, students) => {
+    req.connection.query('SELECT students.id, students.name, teachers.name as tName, teachers.subname as tSubname, students.subname, students.birthday, students.sex, class.name as cName  FROM students LEFT JOIN class ON class.id = students.class_id LEFT JOIN teachers ON teachers.class_id = class.id WHERE students.class_id = ?', [class_id], async (err, students) => {
         const dirPath = `docs/${students[0].cName}`;
         if(!req.fs.existsSync(dirPath)) req.fs.mkdirSync(dirPath);
         await new Promise((resolve, reject) => {
@@ -254,14 +254,14 @@ module.exports.downloadBulletinByClass = async (req, res) => {
                 const date = new Date(stud.birthday).getDate() + ' '+ months[new Date(stud.birthday).getMonth()] + " " + new Date(stud.birthday).getUTCFullYear()
                 stud.birthday = date;
                 
-                connection.query('SELECT * FROM notes WHERE exam_id = ? AND class_id = ? AND student_id = ?', [exam_id, class_id, stud.id] , (err2, notes) => {
+                req.connection.query('SELECT * FROM notes WHERE exam_id = ? AND class_id = ? AND student_id = ?', [exam_id, class_id, stud.id] , (err2, notes) => {
                     if(err2) console.log(err2);
                     notes.forEach((note : {
                         value: string
                     }) => {
                         totalPoint += parseInt(note.value);
                     });
-                    connection.query('SELECT * FROM matiere', (err3, mat:Matiere[]) => {
+                    req.connection.query('SELECT * FROM matiere', (err3, mat:Matiere[]) => {
                         mat.forEach(m => {
                             const tags = JSON.parse(m.tags);
                             const notesForThisMatiere = notes.filter(h => h.matiere_id === m.id);
@@ -286,7 +286,7 @@ module.exports.downloadBulletinByClass = async (req, res) => {
                             })
                         })
     
-                        connection.query('SELECT * FROM com', (err5, competences) => {
+                        req.connection.query('SELECT * FROM com', (err5, competences) => {
                             mat.map((m ) => {
                                 let t = 0;
                                 const tags = JSON.parse(m.tags);
@@ -315,7 +315,7 @@ module.exports.downloadBulletinByClass = async (req, res) => {
                                 })
                                 com.total = to + 1;
                             })
-                            connection.query('SELECT * FROM stats WHERE class_id = ? AND exam_id = ? ', [class_id, exam_id], (errrt, stats) => {
+                            req.connection.query('SELECT * FROM stats WHERE class_id = ? AND exam_id = ? ', [class_id, exam_id], (errrt, stats) => {
                                 const rangedArray = stats.sort((a, b) => b.totalPoints - a.totalPoints);
                                 const g = stats.sort((a, b) => b.totalPoints - a.totalPoints);
                                 let firstPoints : number = g[0].totalPoints;

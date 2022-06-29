@@ -39,20 +39,6 @@ const Matiere = () => {
         )()
     }, [])
 
-    
-    useEffect(() => {
-        (
-            async () => {
-                setLoading(true)
-                const resp = await fetch(host+'/com/getAll', {headers: {
-                    'Authorization': sessionStorage.user
-                  }})
-                const data = await resp.json();
-                setLoading(false);
-            }
-        )()
-    }, [])
-
     const deleteMatiere = (id) => {
         Swal.fire({
             title: 'Confirmez la suppression !',

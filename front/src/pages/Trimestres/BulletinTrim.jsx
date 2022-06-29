@@ -333,7 +333,7 @@ const BulletinTrim = () => {
             </tbody>
         </table>
         {
-            loading ? '' : ''
+            loading ? totalPointsClass : ''
         }
     </div>
 }

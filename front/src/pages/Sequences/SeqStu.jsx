@@ -33,7 +33,7 @@ function SeqStu() {
                         loading ? <tr ><td colSpan={5} style={{justifyItems: 'center', paddingLeft: '50%'}}><ReactLoading color="#fff" type="cylon"/></td></tr> : exams.length > 0 ? exams.map((exam, index) => {
                             return <tr key={index}>
                                 <td>{exam.name}</td>
-                                <td><a style={{textDecoration: 'none', color: '#fff'}} onMouseOver={(e) => {e.style.textDecoration= 'underline'}} href={`http://localhost:3000/exams/${exam.id}/${sessionStorage.classId}`}>Entrer les donnees</a></td>
+                                <td><a style={{textDecoration: 'none', color: '#fff'}}  href={`http://localhost:3000/exams/${exam.id}/${sessionStorage.classId}`}>Entrer les donnees</a></td>
                             </tr> }) : <tr> <td colSpan={5} style={{textAlign: 'center'}}>Aucune sequence effectuee pour l'instant. Attendez que l'admin en cree.</td> </tr>
                     }
                 </tbody>

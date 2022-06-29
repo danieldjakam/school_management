@@ -12,7 +12,7 @@ const Trims = () => {
     const [ActualClass, setActualClass ] = useState({});
     const [ActualTrim, setActualTrim ] = useState({});
     const [loading, setLoading ] = useState(false);
-    const {exam_id, class_id, student_id} = useParams();
+    const {exam_id, class_id} = useParams();
     const [notes, setNotes] = useState({});
     const [error, setError] = useState("");
     const [diviser, setDiviser] = useState(1);

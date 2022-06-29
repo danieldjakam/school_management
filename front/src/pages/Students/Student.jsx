@@ -2,7 +2,7 @@ import React from 'react'
 import { useEffect } from "react";
 import { useState } from "react";
 import ReactLoading from 'react-loading';
-import { Link, useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import AddSequence from '../Sequences/AddSequence'
 import {
     Modal
@@ -11,14 +11,10 @@ import AddTrimestre from "../Trimestres/AddTrimestre";
 import AddStudent from "./AddStudent";
 import EditStudent from "./EditStudent";
 import { host } from '../../utils/fetch';
+import { handleChangeCsvFile } from '../../utils/functions';
   
 
 const Student = () => {
-    const navigate = useNavigate()
-    
-    if (sessionStorage.stat !== 'ad') {
-        navigate('/students/'+sessionStorage.classId)
-    }
     const params = useParams();
     const {id} = params;
     const [classs, setClass] = useState({});
@@ -143,6 +139,7 @@ const Student = () => {
         setStudents(data);
         setLoading(false)
     }
+
     return <div style={{padding: '10px 10px'}} className='container'>
             {
                 sessionStorage.stat === 'ad' ? <>
@@ -206,16 +203,19 @@ const Student = () => {
                 <h2 style={{marginLeft  : '40px'}}>Liste des eleves en {classs.name}</h2>
                 <div style={{marginRight: '10px'}} className='nav item'>
                     <ul className="navbar-nav" style={{fontSize: '1.3rem'}}>
-                        <button onClick={() => {setIsAddStudent(v => !v)}} className="btn btn-blue">Ajouter un eleve</button>
-                        <Link to={'/students/'+id+'/add'} style={{marginLeft: '10px'}} className="btn btn-success">Importer les eleves</Link>
+                        {
+                            sessionStorage.stat === 'ad' ? <>
+                                <button onClick={() => {setIsAddStudent(v => !v)}} className="btn btn-blue">Ajouter un eleve</button>
+                                <label htmlFor='csvFile' style={{marginLeft: '10px'}} className="btn btn-success">Importer les eleves</label>
+                                <input type="file" accept='.csv' id='csvFile' style={{display: 'none'}} onChange={(e) => {handleChangeCsvFile(e, '/upload/students/csv', setError)}} />
+                            </> : <></>
+                        }
                         <button onClick={() => {getOrdonnedStudents()}} style={{marginLeft: '10px'}} className="btn btn-blue">Ranger</button>
                     </ul>
                 </div>
+
             </nav>
-            <nav className="navbar navbar-expand-lg navbar-dark " style={{padding: '10px 10px'}}>
-                <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span className="navbar-toggler-icon"></span>
-                </button>
+            <nav className=" " style={{padding: '10px 10px'}}>
                 <div className="collapse navbar-collapse" id="navbarNav">
                 <ul className="navbar-nav" style={{fontSize: '1.3rem'}}>
                     <a target={'_blank'} rel='noreferrer' href={host+'/download/csv/students/'+id} className="btn btn-secondary">Telecharger la liste au format csv</a>
@@ -232,25 +232,39 @@ const Student = () => {
                     <th>Sexe</th>
                     <th>Date de naissance</th>
                     <th>Classe</th>
-                    <th>Actions</th>
+                    {
+                        sessionStorage.stat === 'ad' ? <th>Actions</th> : <></>
+                    }
                 </tr>
             </thead>
             <tbody>
                 {
-                    loading ? <tr ><td colSpan={5} style={{justifyItems: 'center', paddingLeft: '50%'}}><ReactLoading color="#fff" type="cylon"/></td></tr> : students.length > 0 ? students.map((student, id) => {
-                        const date = new Date(student.birthday).getDate() + ' '+ months[new Date(student.birthday).getMonth()] + " " + new Date(student.birthday).getUTCFullYear()
-                        return <tr key={id}>
-                            <td>{id + 1}</td>
-                            <td>{student.name}</td>
-                            <td>{student.subname}</td>
-                            <td>{student.sex === 'm' ? 'Masculin' : 'Feminin'}</td>
-                            <td>{date}</td>
-                            <td>{classs.name}</td>
-                            <td style={{display: 'flex', justifyContent: 'space-between'}}>
-                                <button onClick={() => {setStudentToEditId(student.id); setIsEditStudent(v => !v)}} to={`/students/edit/${student.id}`} className="btn btn-warning"> Editer </button>
-                                <button className="btn btn-danger" onClick={() => {deleteStudent(student.id)}}> {loadingDel ? 'Suppression..' : 'Supprimer'} </button>
-                            </td>
-                        </tr> }) : <tr> <td colSpan={6} style={{textAlign: 'center'}}>Aucun eleve en {classs.name} pour l'instant. Voulez-vous en <button onClick={() => {setIsAddStudent(v => !v)}} className="btn btn-blue">ajouter</button> ? </td> </tr>
+                    loading ? <tr>
+                                <td colSpan={5} style={{justifyItems: 'center', paddingLeft: '50%'}}>
+                                    <ReactLoading color="#fff" type="cylon"/>
+                                </td>
+                            </tr> : students.length > 0 ? students.map((student, id) => {
+                                    const date = new Date(student.birthday).getDate() + ' '+ months[new Date(student.birthday).getMonth()] + " " + new Date(student.birthday).getUTCFullYear()
+                                    return <tr key={id}>
+                                        <td>{id + 1}</td>
+                                        <td>{student.name}</td>
+                                        <td>{student.subname}</td>
+                                        <td>{student.sex === 'm' ? 'Masculin' : 'Feminin'}</td>
+                                        <td>{date}</td>
+                                        <td>{classs.name}</td>
+                                        {
+                                            sessionStorage.stat === 'ad' ? <>
+                                                <td style={{display: 'flex', justifyContent: 'space-between'}}>
+                                                    <button onClick={() => {setStudentToEditId(student.id); setIsEditStudent(v => !v)}} to={`/students/edit/${student.id}`} className="btn btn-warning"> Editer </button>
+                                                    <button className="btn btn-danger" onClick={() => {deleteStudent(student.id)}}> {loadingDel ? 'Suppression..' : 'Supprimer'} </button>
+                                                </td>
+                                            </> : <></>
+                                        }
+                                    </tr> }) : <tr> 
+                                        <td colSpan={6} style={{textAlign: 'center'}}>
+                                            Aucun eleve en {classs.name} pour l'instant. Voulez-vous en <button onClick={() => {setIsAddStudent(v => !v)}} className="btn btn-blue">ajouter</button> ? 
+                                        </td>
+                                    </tr>
                 }
             </tbody>
         </table>

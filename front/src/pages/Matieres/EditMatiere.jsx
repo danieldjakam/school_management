@@ -1,7 +1,6 @@
 import React from 'react'
 import { useEffect } from "react";
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
 import { host } from '../../utils/fetch';
 
 const EditMatiere = ({error, setError, setIsSeq, id}) => {
@@ -137,9 +136,10 @@ const EditMatiere = ({error, setError, setIsSeq, id}) => {
               error === '' ? <></> : <div style={{marginTop: '30px'}} className="alert alert-danger">{error}</div>
             }
             <div className="text-center text-lg-start mt-4 pt-2">
-              <button type="submit" className="btn btn-primary btn-lg" style={{paddingLeft: '2.5rem', paddingRight: '2.5rem'}}>{loading ? 'Ajout...' : 'Editer la \matiere'}</button>
-              <p className="small fw-bold mt-2 pt-1 mb-0"> <button style={{border: 'none', background: 'none'}} onClick={(e) => {e.preventDefault(); setIsSeq(false)}} to="/class"
-                  className="link-danger">Fermer ?</button></p>
+              <button type="submit" className="btn btn-primary btn-lg" style={{paddingLeft: '2.5rem', paddingRight: '2.5rem'}}>{loading ? 'Ajout...' : 'Editer la matiere'}</button>
+             <button style={{border: 'none', background: 'none'}} onClick={(e) => {e.preventDefault(); setIsSeq(false)}} to="/class"
+                  className="link-danger">Fermer ?
+              </button>
             </div>
   
           </form>

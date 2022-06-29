@@ -2,14 +2,20 @@ const pdf = require('pdf-creator-node');
 const optionsPdf = require('../../helpers/optionsPdf')
 
 module.exports.addTeacher = (req, res) => {
-    const {name, subname, classId} = req.body;
+    const {name, subname, birthday, phone_number, sex, classId} = req.body;
     const id = req.jwt.sign(name, req.env.SECRET);
-    if (name && name !== '' && subname && subname !== '' && classId && classId !== '') {
+    if (name && subname && classId && birthday && phone_number && sex) {
         if (name.length < 0) {
             res.status(401).json({success: false, message: 'Le nom de l\'enseignant doit avoir au moins 3 caracteres!!'})
         }
         else if (subname.length < 0) {
             res.status(401).json({success: false, message: 'Le prenom de l\'enseignant doit avoir au moins 3 caracteres!!'})
+        }
+        else if (phone_number < 8) {
+            res.status(401).json({success: false, message: 'Numero invalide'})
+        }
+        else if (sex !== 'f' && sex !== 'm') {
+            res.status(401).json({success: false, message: 'Sexe invalide'})
         }
         else{
             const t = [];
@@ -23,11 +29,12 @@ module.exports.addTeacher = (req, res) => {
                 if (erroorr) {
                     console.log(erroorr);
                 }else{
-                    let {name} = succc[0]
-                    name = name.replace(' ', '')
-                    name = name.toUpperCase()
-                    const code = 'SEM-'+name;
-                    req.connection.query('INSERT INTO teachers(id, name, subname, class_id, matricule, password) VALUES(?, ?, ?, ?, ?, ?)', [id, name, subname, classId, code, password], (err, resp) => {
+                    let {cname} = succc[0]
+                    cname = cname.replace(' ', '')
+                    cname = cname.toUpperCase()
+                    const code = 'SEM-'+cname;
+                    const p = phone_number.toString()
+                    req.connection.query('INSERT INTO teachers(id, name, subname, class_id, matricule, password, sex, phone_number, birthday) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)', [id, name, subname, classId, code, password, sex, p, birthday], (err, resp) => {
                         if(err) console.log(err);
 
                         else {
@@ -48,32 +55,48 @@ module.exports.addTeacher = (req, res) => {
 }
  
 module.exports.updateTeacher = (req, res) => {
-    const {name, subname, class_id, OldclassId} = req.body;
+    const {name, subname, class_id, OldclassId, birthday, phone_number, sex} = req.body;
     const {id} = req.params;
-    if (name && name !== '' && subname && subname !== '' && class_id && class_id !== '') {
+    if (name && subname && class_id && !birthday && !phone_number && !sex) {
         if (name.length < 4) {
             res.status(401).json({success: false, message: 'Le nom de l\'enseignant doit avoir au moins 3 caracteres!!'})
         }
         else if (subname.length < 4) {
             res.status(401).json({success: false, message: 'Le prenom de l\'enseignant doit avoir au moins 3 caracteres!!'})
         }
+        else if (phone_number < 8) {
+            res.status(401).json({success: false, message: 'Numero invalide'})
+        }
+        else if (sex !== 'f' && sex !== 'm') {
+            res.status(401).json({success: false, message: 'Sexe invalide'})
+        }
         else{
-            req.connection.query('UPDATE teachers SET name = ? , subname = ?, class_id = ? WHERE id = ?', [ name, subname, class_id, id], (err, resp) => {
-                if(err) console.log(err);
 
-                else {
-                    req.connection.query('UPDATE class SET teacherId = ? WHERE id = ?', [null, OldclassId], (err2, resp2) => {
-                        if (err2) {
-                            if(!err2) res.status(201).json({success: true})
-                            else console.log(err2);
-                        }else{
-                            req.connection.query('UPDATE class SET teacherId = ? WHERE id = ?', [class_id, OldclassId], (err3, resp2) => {
-                                if(!err3) res.status(201).json({success: true})
-                                else console.log(err3);
-                            })
-                        }
-                    })
-                }
+            req.connection.query('SELECT name FROM class WHERE id = ? ', [class_id], (erroorr, c) => {
+                if(erroorr) console.log(erroorr);
+                
+                let {cname} = c[0]
+                cname = cname.replace(' ', '')
+                cname = cname.toUpperCase()
+                const code = 'SEM-'+cname;
+                const p = phone_number.toString()
+                req.connection.query('UPDATE teachers SET name = ? , subname = ?, class_id = ?, sex = ?, phone_number = ?, birthday = ?, matricule = ? WHERE id = ?', [ name, subname, class_id, sex, p, birthday, code, id], (err, resp) => {
+                    if(err) console.log(err);
+
+                    else {
+                        req.connection.query('UPDATE class SET teacherId = ? WHERE id = ?', [null, OldclassId], (err2, resp2) => {
+                            if (err2) {
+                                if(!err2) res.status(201).json({success: true})
+                                else console.log(err2);
+                            }else{
+                                req.connection.query('UPDATE class SET teacherId = ? WHERE id = ?', [class_id, OldclassId], (err3, resp2) => {
+                                    if(!err3) res.status(201).json({success: true})
+                                    else console.log(err3);
+                                })
+                            }
+                        })
+                    }
+                })
             })
         }
     }else{
