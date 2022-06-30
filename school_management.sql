@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jun 26, 2022 at 08:19 PM
+-- Generation Time: Jun 30, 2022 at 09:30 AM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 8.0.19
 
@@ -217,7 +217,8 @@ INSERT INTO `notes` (`id`, `student_id`, `exam_id`, `class_id`, `matiere_id`, `t
 (99, 'eyJhbGciOiJIUzI1NiJ9.Tmd1ZXBpbnNlIEthbWdhbmc.hKhk7o-VlG-TJa0aldDEClhSB7vWxO3abd383vEB_VY', 'eyJhbGciOiJIUzI1NiJ9.U2VxdWVuY2UgMg.qqDJbgUjKQI2TFWjfpMADrL_slcuKDMyChhGMwDcRxE', 'eyJhbGciOiJIUzI1NiJ9.U2lsIEI.cJlfh-J53quTXCbAFWXImGXV9XWJxASbWf5N2ktBo6Q', 'eyJhbGciOiJIUzI1NiJ9.Q29tcGV0ZW5jZSAyQzogU2NpZW5jZQ.vA9eVQf4Ks1HiVuNLJ_MTynLu2shl07rVpmG6bpVxS4', 'Orale', '2', '2022'),
 (100, 'eyJhbGciOiJIUzI1NiJ9.Tmd1ZXBpbnNlIEthbWdhbmc.hKhk7o-VlG-TJa0aldDEClhSB7vWxO3abd383vEB_VY', 'eyJhbGciOiJIUzI1NiJ9.U2VxdWVuY2UgMg.qqDJbgUjKQI2TFWjfpMADrL_slcuKDMyChhGMwDcRxE', 'eyJhbGciOiJIUzI1NiJ9.U2lsIEI.cJlfh-J53quTXCbAFWXImGXV9XWJxASbWf5N2ktBo6Q', 'eyJhbGciOiJIUzI1NiJ9.Q29tcGV0ZW5jZSAyQzogU2NpZW5jZQ.vA9eVQf4Ks1HiVuNLJ_MTynLu2shl07rVpmG6bpVxS4', 'Ecrit', '2', '2022'),
 (101, 'eyJhbGciOiJIUzI1NiJ9.Tmd1ZXBpbnNlIEthbWdhbmc.hKhk7o-VlG-TJa0aldDEClhSB7vWxO3abd383vEB_VY', 'eyJhbGciOiJIUzI1NiJ9.U2VxdWVuY2UgMg.qqDJbgUjKQI2TFWjfpMADrL_slcuKDMyChhGMwDcRxE', 'eyJhbGciOiJIUzI1NiJ9.U2lsIEI.cJlfh-J53quTXCbAFWXImGXV9XWJxASbWf5N2ktBo6Q', 'eyJhbGciOiJIUzI1NiJ9.Q29tcGV0ZW5jZSAyQzogU2NpZW5jZQ.vA9eVQf4Ks1HiVuNLJ_MTynLu2shl07rVpmG6bpVxS4', 'Savoir Etre', '2', '2022'),
-(102, 'eyJhbGciOiJIUzI1NiJ9.Tmd1ZXBpbnNlIEthbWdhbmc.hKhk7o-VlG-TJa0aldDEClhSB7vWxO3abd383vEB_VY', 'eyJhbGciOiJIUzI1NiJ9.U2VxdWVuY2UgMg.qqDJbgUjKQI2TFWjfpMADrL_slcuKDMyChhGMwDcRxE', 'eyJhbGciOiJIUzI1NiJ9.U2lsIEI.cJlfh-J53quTXCbAFWXImGXV9XWJxASbWf5N2ktBo6Q', 'eyJhbGciOiJIUzI1NiJ9.Q29tcGV0ZW5jZSAyQzogU2NpZW5jZQ.vA9eVQf4Ks1HiVuNLJ_MTynLu2shl07rVpmG6bpVxS4', 'Pratique', '2', '2022');
+(102, 'eyJhbGciOiJIUzI1NiJ9.Tmd1ZXBpbnNlIEthbWdhbmc.hKhk7o-VlG-TJa0aldDEClhSB7vWxO3abd383vEB_VY', 'eyJhbGciOiJIUzI1NiJ9.U2VxdWVuY2UgMg.qqDJbgUjKQI2TFWjfpMADrL_slcuKDMyChhGMwDcRxE', 'eyJhbGciOiJIUzI1NiJ9.U2lsIEI.cJlfh-J53quTXCbAFWXImGXV9XWJxASbWf5N2ktBo6Q', 'eyJhbGciOiJIUzI1NiJ9.Q29tcGV0ZW5jZSAyQzogU2NpZW5jZQ.vA9eVQf4Ks1HiVuNLJ_MTynLu2shl07rVpmG6bpVxS4', 'Pratique', '2', '2022'),
+(103, NULL, NULL, NULL, NULL, NULL, NULL, '2022');
 
 -- --------------------------------------------------------
 
@@ -289,23 +290,22 @@ CREATE TABLE `stats` (
   `student_id` varchar(255) NOT NULL,
   `class_id` varchar(255) NOT NULL,
   `exam_id` varchar(255) NOT NULL,
-  `totalPoints` int(11) NOT NULL DEFAULT 0,
-  `school_id` varchar(255) NOT NULL
+  `totalPoints` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `stats`
 --
 
-INSERT INTO `stats` (`id`, `student_id`, `class_id`, `exam_id`, `totalPoints`, `school_id`) VALUES
-(1, 'eyJhbGciOiJIUzI1NiJ9.VHVjaGU.zo4kH5TAUyoxJeKoHfTDVWqjLe5qXjergf-hNMmCfLk', 'eyJhbGciOiJIUzI1NiJ9.U2lsIEI.cJlfh-J53quTXCbAFWXImGXV9XWJxASbWf5N2ktBo6Q', 'eyJhbGciOiJIUzI1NiJ9.U2VxdWVuY2UgMQ.SEDP_7q6LVw1gH0rbVc4iECXht3acnxDwpL7GVmPwgk', 87, 'eyJhbGciOiJIUzI1NiJ9.TGEgc2VtZW5jZQ.fRwDFJ3L2PVmkUqN4jd2fVM6kbTM_43Bb1LSFMLOOGU'),
-(2, 'eyJhbGciOiJIUzI1NiJ9.VGVzdG9ucw.57sNxYr1AAfNdG5sRTohJxPts42Bro5AajEsge7ptZI', 'eyJhbGciOiJIUzI1NiJ9.U2lsIEI.cJlfh-J53quTXCbAFWXImGXV9XWJxASbWf5N2ktBo6Q', 'eyJhbGciOiJIUzI1NiJ9.U2VxdWVuY2UgMQ.SEDP_7q6LVw1gH0rbVc4iECXht3acnxDwpL7GVmPwgk', 49, 'eyJhbGciOiJIUzI1NiJ9.TGEgc2VtZW5jZQ.fRwDFJ3L2PVmkUqN4jd2fVM6kbTM_43Bb1LSFMLOOGU'),
-(3, 'eyJhbGciOiJIUzI1NiJ9.Tmd1ZXBpbnNlIEthbWdhbmc.hKhk7o-VlG-TJa0aldDEClhSB7vWxO3abd383vEB_VY', 'eyJhbGciOiJIUzI1NiJ9.U2lsIEI.cJlfh-J53quTXCbAFWXImGXV9XWJxASbWf5N2ktBo6Q', 'eyJhbGciOiJIUzI1NiJ9.U2VxdWVuY2UgMQ.SEDP_7q6LVw1gH0rbVc4iECXht3acnxDwpL7GVmPwgk', 66, 'eyJhbGciOiJIUzI1NiJ9.TGEgc2VtZW5jZQ.fRwDFJ3L2PVmkUqN4jd2fVM6kbTM_43Bb1LSFMLOOGU'),
-(4, 'eyJhbGciOiJIUzI1NiJ9.VHVjaGU.zo4kH5TAUyoxJeKoHfTDVWqjLe5qXjergf-hNMmCfLk', 'eyJhbGciOiJIUzI1NiJ9.U2lsIEI.cJlfh-J53quTXCbAFWXImGXV9XWJxASbWf5N2ktBo6Q', 'eyJhbGciOiJIUzI1NiJ9.VHJpbWVzdHJlIDE.6OgKfkiSb6MkH1Wch5pJLHfSCkOAiV0C4XMXsSbcZtw', 83, 'eyJhbGciOiJIUzI1NiJ9.TGEgc2VtZW5jZQ.fRwDFJ3L2PVmkUqN4jd2fVM6kbTM_43Bb1LSFMLOOGU'),
-(5, 'eyJhbGciOiJIUzI1NiJ9.VGVzdG9ucw.57sNxYr1AAfNdG5sRTohJxPts42Bro5AajEsge7ptZI', 'eyJhbGciOiJIUzI1NiJ9.U2lsIEI.cJlfh-J53quTXCbAFWXImGXV9XWJxASbWf5N2ktBo6Q', 'eyJhbGciOiJIUzI1NiJ9.VHJpbWVzdHJlIDE.6OgKfkiSb6MkH1Wch5pJLHfSCkOAiV0C4XMXsSbcZtw', 70, 'eyJhbGciOiJIUzI1NiJ9.TGEgc2VtZW5jZQ.fRwDFJ3L2PVmkUqN4jd2fVM6kbTM_43Bb1LSFMLOOGU'),
-(6, 'eyJhbGciOiJIUzI1NiJ9.Tmd1ZXBpbnNlIEthbWdhbmc.hKhk7o-VlG-TJa0aldDEClhSB7vWxO3abd383vEB_VY', 'eyJhbGciOiJIUzI1NiJ9.U2lsIEI.cJlfh-J53quTXCbAFWXImGXV9XWJxASbWf5N2ktBo6Q', 'eyJhbGciOiJIUzI1NiJ9.VHJpbWVzdHJlIDE.6OgKfkiSb6MkH1Wch5pJLHfSCkOAiV0C4XMXsSbcZtw', 70, 'eyJhbGciOiJIUzI1NiJ9.TGEgc2VtZW5jZQ.fRwDFJ3L2PVmkUqN4jd2fVM6kbTM_43Bb1LSFMLOOGU'),
-(7, 'eyJhbGciOiJIUzI1NiJ9.VGVzdG9ucw.57sNxYr1AAfNdG5sRTohJxPts42Bro5AajEsge7ptZI', 'eyJhbGciOiJIUzI1NiJ9.U2lsIEI.cJlfh-J53quTXCbAFWXImGXV9XWJxASbWf5N2ktBo6Q', 'eyJhbGciOiJIUzI1NiJ9.U2VxdWVuY2UgMg.qqDJbgUjKQI2TFWjfpMADrL_slcuKDMyChhGMwDcRxE', 82, 'eyJhbGciOiJIUzI1NiJ9.TGEgc2VtZW5jZQ.fRwDFJ3L2PVmkUqN4jd2fVM6kbTM_43Bb1LSFMLOOGU'),
-(8, 'eyJhbGciOiJIUzI1NiJ9.Tmd1ZXBpbnNlIEthbWdhbmc.hKhk7o-VlG-TJa0aldDEClhSB7vWxO3abd383vEB_VY', 'eyJhbGciOiJIUzI1NiJ9.U2lsIEI.cJlfh-J53quTXCbAFWXImGXV9XWJxASbWf5N2ktBo6Q', 'eyJhbGciOiJIUzI1NiJ9.U2VxdWVuY2UgMg.qqDJbgUjKQI2TFWjfpMADrL_slcuKDMyChhGMwDcRxE', 70, 'eyJhbGciOiJIUzI1NiJ9.TGEgc2VtZW5jZQ.fRwDFJ3L2PVmkUqN4jd2fVM6kbTM_43Bb1LSFMLOOGU');
+INSERT INTO `stats` (`id`, `student_id`, `class_id`, `exam_id`, `totalPoints`) VALUES
+(1, 'eyJhbGciOiJIUzI1NiJ9.VHVjaGU.zo4kH5TAUyoxJeKoHfTDVWqjLe5qXjergf-hNMmCfLk', 'eyJhbGciOiJIUzI1NiJ9.U2lsIEI.cJlfh-J53quTXCbAFWXImGXV9XWJxASbWf5N2ktBo6Q', 'eyJhbGciOiJIUzI1NiJ9.U2VxdWVuY2UgMQ.SEDP_7q6LVw1gH0rbVc4iECXht3acnxDwpL7GVmPwgk', 87),
+(2, 'eyJhbGciOiJIUzI1NiJ9.VGVzdG9ucw.57sNxYr1AAfNdG5sRTohJxPts42Bro5AajEsge7ptZI', 'eyJhbGciOiJIUzI1NiJ9.U2lsIEI.cJlfh-J53quTXCbAFWXImGXV9XWJxASbWf5N2ktBo6Q', 'eyJhbGciOiJIUzI1NiJ9.U2VxdWVuY2UgMQ.SEDP_7q6LVw1gH0rbVc4iECXht3acnxDwpL7GVmPwgk', 49),
+(3, 'eyJhbGciOiJIUzI1NiJ9.Tmd1ZXBpbnNlIEthbWdhbmc.hKhk7o-VlG-TJa0aldDEClhSB7vWxO3abd383vEB_VY', 'eyJhbGciOiJIUzI1NiJ9.U2lsIEI.cJlfh-J53quTXCbAFWXImGXV9XWJxASbWf5N2ktBo6Q', 'eyJhbGciOiJIUzI1NiJ9.U2VxdWVuY2UgMQ.SEDP_7q6LVw1gH0rbVc4iECXht3acnxDwpL7GVmPwgk', 66),
+(4, 'eyJhbGciOiJIUzI1NiJ9.VHVjaGU.zo4kH5TAUyoxJeKoHfTDVWqjLe5qXjergf-hNMmCfLk', 'eyJhbGciOiJIUzI1NiJ9.U2lsIEI.cJlfh-J53quTXCbAFWXImGXV9XWJxASbWf5N2ktBo6Q', 'eyJhbGciOiJIUzI1NiJ9.VHJpbWVzdHJlIDE.6OgKfkiSb6MkH1Wch5pJLHfSCkOAiV0C4XMXsSbcZtw', 83),
+(5, 'eyJhbGciOiJIUzI1NiJ9.VGVzdG9ucw.57sNxYr1AAfNdG5sRTohJxPts42Bro5AajEsge7ptZI', 'eyJhbGciOiJIUzI1NiJ9.U2lsIEI.cJlfh-J53quTXCbAFWXImGXV9XWJxASbWf5N2ktBo6Q', 'eyJhbGciOiJIUzI1NiJ9.VHJpbWVzdHJlIDE.6OgKfkiSb6MkH1Wch5pJLHfSCkOAiV0C4XMXsSbcZtw', 70),
+(6, 'eyJhbGciOiJIUzI1NiJ9.Tmd1ZXBpbnNlIEthbWdhbmc.hKhk7o-VlG-TJa0aldDEClhSB7vWxO3abd383vEB_VY', 'eyJhbGciOiJIUzI1NiJ9.U2lsIEI.cJlfh-J53quTXCbAFWXImGXV9XWJxASbWf5N2ktBo6Q', 'eyJhbGciOiJIUzI1NiJ9.VHJpbWVzdHJlIDE.6OgKfkiSb6MkH1Wch5pJLHfSCkOAiV0C4XMXsSbcZtw', 70),
+(7, 'eyJhbGciOiJIUzI1NiJ9.VGVzdG9ucw.57sNxYr1AAfNdG5sRTohJxPts42Bro5AajEsge7ptZI', 'eyJhbGciOiJIUzI1NiJ9.U2lsIEI.cJlfh-J53quTXCbAFWXImGXV9XWJxASbWf5N2ktBo6Q', 'eyJhbGciOiJIUzI1NiJ9.U2VxdWVuY2UgMg.qqDJbgUjKQI2TFWjfpMADrL_slcuKDMyChhGMwDcRxE', 82),
+(8, 'eyJhbGciOiJIUzI1NiJ9.Tmd1ZXBpbnNlIEthbWdhbmc.hKhk7o-VlG-TJa0aldDEClhSB7vWxO3abd383vEB_VY', 'eyJhbGciOiJIUzI1NiJ9.U2lsIEI.cJlfh-J53quTXCbAFWXImGXV9XWJxASbWf5N2ktBo6Q', 'eyJhbGciOiJIUzI1NiJ9.U2VxdWVuY2UgMg.qqDJbgUjKQI2TFWjfpMADrL_slcuKDMyChhGMwDcRxE', 70);
 
 -- --------------------------------------------------------
 
@@ -324,18 +324,20 @@ CREATE TABLE `students` (
   `birthday` date DEFAULT NULL,
   `school_year` varchar(255) NOT NULL DEFAULT '2022',
   `status` varchar(255) NOT NULL DEFAULT 'old',
-  `school_id` varchar(255) NOT NULL
+  `school_id` varchar(255) NOT NULL,
+  `fatherName` varchar(255) NOT NULL,
+  `profession` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `students`
 --
 
-INSERT INTO `students` (`id`, `name`, `subname`, `email`, `phone_number`, `class_id`, `sex`, `birthday`, `school_year`, `status`, `school_id`) VALUES
-('eyJhbGciOiJIUzI1NiJ9.VGVzdG9ucw.57sNxYr1AAfNdG5sRTohJxPts42Bro5AajEsge7ptZI', 'Testons', 'Con', 'hhjkkl@jjj.co', '88888888888', 'eyJhbGciOiJIUzI1NiJ9.U2lsIEI.cJlfh-J53quTXCbAFWXImGXV9XWJxASbWf5N2ktBo6Q', 'f', '2022-05-03', '2022', 'new', 'eyJhbGciOiJIUzI1NiJ9.TGEgc2VtZW5jZQ.fRwDFJ3L2PVmkUqN4jd2fVM6kbTM_43Bb1LSFMLOOGU'),
-('eyJhbGciOiJIUzI1NiJ9.Tmd1ZXBpbnNlIEthbWdhbmc.hKhk7o-VlG-TJa0aldDEClhSB7vWxO3abd383vEB_VY', 'Nguepinse Kamgang', 'Tite', 'danidjakam@gmail.com', '655773309', 'eyJhbGciOiJIUzI1NiJ9.U2lsIEI.cJlfh-J53quTXCbAFWXImGXV9XWJxASbWf5N2ktBo6Q', 'm', '2022-04-20', '2022', 'new', 'eyJhbGciOiJIUzI1NiJ9.TGEgc2VtZW5jZQ.fRwDFJ3L2PVmkUqN4jd2fVM6kbTM_43Bb1LSFMLOOGU'),
-('eyJhbGciOiJIUzI1NiJ9.bGxsbGw.5-W5rvE0mESNVGDruW3aY_zt_6zSiZXFT7Yupx8WiqI', 'lllll', 'fddd', 'ffff@ggg.jj', '655773402', 'eyJhbGciOiJIUzI1NiJ9.U2lsIEI.cJlfh-J53quTXCbAFWXImGXV9XWJxASbWf5N2ktBo6Q', 'f', '2022-06-18', '2024', 'new', 'eyJhbGciOiJIUzI1NiJ9.TGEgc2VtZW5jZQ.fRwDFJ3L2PVmkUqN4jd2fVM6kbTM_43Bb1LSFMLOOGU'),
-('eyJhbGciOiJIUzI1NiJ9.bGxsbGw.5-W5rvE0mESNVGDruW3aY_zt_6zSiZXFT7Yupx8WiqI', 'lllll', 'fddd', 'ffff@ggg.jj', '655773402', 'eyJhbGciOiJIUzI1NiJ9.U2lsIEI.cJlfh-J53quTXCbAFWXImGXV9XWJxASbWf5N2ktBo6Q', 'f', '2022-06-18', '2024', 'new', 'eyJhbGciOiJIUzI1NiJ9.TGEgc2VtZW5jZQ.fRwDFJ3L2PVmkUqN4jd2fVM6kbTM_43Bb1LSFMLOOGU');
+INSERT INTO `students` (`id`, `name`, `subname`, `email`, `phone_number`, `class_id`, `sex`, `birthday`, `school_year`, `status`, `school_id`, `fatherName`, `profession`) VALUES
+('eyJhbGciOiJIUzI1NiJ9.VGVzdG9ucw.57sNxYr1AAfNdG5sRTohJxPts42Bro5AajEsge7ptZI', 'Testons', 'Con', 'hhjkkl@jjj.co', '88888888888', 'eyJhbGciOiJIUzI1NiJ9.U2lsIEI.cJlfh-J53quTXCbAFWXImGXV9XWJxASbWf5N2ktBo6Q', 'f', '2022-05-03', '2022', 'new', 'eyJhbGciOiJIUzI1NiJ9.TGEgc2VtZW5jZQ.fRwDFJ3L2PVmkUqN4jd2fVM6kbTM_43Bb1LSFMLOOGU', '', ''),
+('eyJhbGciOiJIUzI1NiJ9.Tmd1ZXBpbnNlIEthbWdhbmc.hKhk7o-VlG-TJa0aldDEClhSB7vWxO3abd383vEB_VY', 'Nguepinse Kamgang', 'Tite', 'danidjakam@gmail.com', '655773309', 'eyJhbGciOiJIUzI1NiJ9.U2lsIEI.cJlfh-J53quTXCbAFWXImGXV9XWJxASbWf5N2ktBo6Q', 'm', '2022-04-20', '2022', 'new', 'eyJhbGciOiJIUzI1NiJ9.TGEgc2VtZW5jZQ.fRwDFJ3L2PVmkUqN4jd2fVM6kbTM_43Bb1LSFMLOOGU', '', ''),
+('eyJhbGciOiJIUzI1NiJ9.bGxsbGw.5-W5rvE0mESNVGDruW3aY_zt_6zSiZXFT7Yupx8WiqI', 'lllll', 'fddd', 'ffff@ggg.jj', '655773402', 'eyJhbGciOiJIUzI1NiJ9.U2lsIEI.cJlfh-J53quTXCbAFWXImGXV9XWJxASbWf5N2ktBo6Q', 'f', '2022-06-18', '2024', 'new', 'eyJhbGciOiJIUzI1NiJ9.TGEgc2VtZW5jZQ.fRwDFJ3L2PVmkUqN4jd2fVM6kbTM_43Bb1LSFMLOOGU', '', ''),
+('eyJhbGciOiJIUzI1NiJ9.bGxsbGw.5-W5rvE0mESNVGDruW3aY_zt_6zSiZXFT7Yupx8WiqI', 'lllll', 'fddd', 'ffff@ggg.jj', '655773402', 'eyJhbGciOiJIUzI1NiJ9.U2lsIEI.cJlfh-J53quTXCbAFWXImGXV9XWJxASbWf5N2ktBo6Q', 'f', '2022-06-18', '2024', 'new', 'eyJhbGciOiJIUzI1NiJ9.TGEgc2VtZW5jZQ.fRwDFJ3L2PVmkUqN4jd2fVM6kbTM_43Bb1LSFMLOOGU', '', '');
 
 -- --------------------------------------------------------
 
@@ -350,18 +352,21 @@ CREATE TABLE `teachers` (
   `class_id` varchar(255) DEFAULT NULL,
   `matricule` varchar(255) DEFAULT NULL,
   `password` varchar(10) NOT NULL DEFAULT '00000',
-  `school_id` varchar(255) NOT NULL
+  `school_id` varchar(255) NOT NULL,
+  `sex` varchar(255) NOT NULL,
+  `birthday` date NOT NULL,
+  `phone_number` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `teachers`
 --
 
-INSERT INTO `teachers` (`id`, `name`, `subname`, `class_id`, `matricule`, `password`, `school_id`) VALUES
-('eyJhbGciOiJIUzI1NiJ9.VGVhY2hlcg.iaLuh-SltkyY36sQLf_2FwOBgYbg1H-oUw2FD7sAKYg', 'Teacher', 'Bigus', 'eyJhbGciOiJIUzI1NiJ9.U2lsIEI.cJlfh-J53quTXCbAFWXImGXV9XWJxASbWf5N2ktBo6Q', 'SEM-779385', '9774', 'eyJhbGciOiJIUzI1NiJ9.TGEgc2VtZW5jZQ.fRwDFJ3L2PVmkUqN4jd2fVM6kbTM_43Bb1LSFMLOOGU'),
-('eyJhbGciOiJIUzI1NiJ9.YmNjYg.MiCy9SMYzA6Rq1qHs4JjAjVHMS0p6ngOjn_IWc_q9Ck', 'bccb', 'cbcbcb', 'eyJhbGciOiJIUzI1NiJ9.Q2xhc3MgMQ.yC4Z-RCT2PUlVDkfXBY070I8TwWaVy2bWHjyOH7Ti7w', 'SEM-820792', '9409', 'eyJhbGciOiJIUzI1NiJ9.TGEgc2VtZW5jZQ.fRwDFJ3L2PVmkUqN4jd2fVM6kbTM_43Bb1LSFMLOOGU'),
-('eyJhbGciOiJIUzI1NiJ9.bGR3ZWQ.8-vlz1RV44_A9aLGF7wJuZ5_ApsNOzk-od2SwNEkb9M', 'CE1 B', 'sfd', 'eyJhbGciOiJIUzI1NiJ9.Q0UxIEI.UTpihmB-5GQdmBP-NkBMZlZNx-EEAvb5hWe7bn9vsLk', 'SEM-CE1 B', '3777', 'eyJhbGciOiJIUzI1NiJ9.TGEgc2VtZW5jZQ.fRwDFJ3L2PVmkUqN4jd2fVM6kbTM_43Bb1LSFMLOOGU'),
-('eyJhbGciOiJIUzI1NiJ9.ZGRk.i-WTaTAqrBc50-UIf_mc28J8ngzylHDryCGqEePGALg', 'SILB', 'dddd', 'eyJhbGciOiJIUzI1NiJ9.U2lsIEI.cJlfh-J53quTXCbAFWXImGXV9XWJxASbWf5N2ktBo6Q', 'SEM-SILB', '3618', 'eyJhbGciOiJIUzI1NiJ9.TGEgc2VtZW5jZQ.fRwDFJ3L2PVmkUqN4jd2fVM6kbTM_43Bb1LSFMLOOGU');
+INSERT INTO `teachers` (`id`, `name`, `subname`, `class_id`, `matricule`, `password`, `school_id`, `sex`, `birthday`, `phone_number`) VALUES
+('eyJhbGciOiJIUzI1NiJ9.VGVhY2hlcg.iaLuh-SltkyY36sQLf_2FwOBgYbg1H-oUw2FD7sAKYg', 'Teacher', 'Bigus', 'eyJhbGciOiJIUzI1NiJ9.U2lsIEI.cJlfh-J53quTXCbAFWXImGXV9XWJxASbWf5N2ktBo6Q', 'SEM-779385', '9774', 'eyJhbGciOiJIUzI1NiJ9.TGEgc2VtZW5jZQ.fRwDFJ3L2PVmkUqN4jd2fVM6kbTM_43Bb1LSFMLOOGU', '', '0000-00-00', ''),
+('eyJhbGciOiJIUzI1NiJ9.YmNjYg.MiCy9SMYzA6Rq1qHs4JjAjVHMS0p6ngOjn_IWc_q9Ck', 'bccb', 'cbcbcb', 'eyJhbGciOiJIUzI1NiJ9.Q2xhc3MgMQ.yC4Z-RCT2PUlVDkfXBY070I8TwWaVy2bWHjyOH7Ti7w', 'SEM-820792', '9409', 'eyJhbGciOiJIUzI1NiJ9.TGEgc2VtZW5jZQ.fRwDFJ3L2PVmkUqN4jd2fVM6kbTM_43Bb1LSFMLOOGU', '', '0000-00-00', ''),
+('eyJhbGciOiJIUzI1NiJ9.bGR3ZWQ.8-vlz1RV44_A9aLGF7wJuZ5_ApsNOzk-od2SwNEkb9M', 'CE1 B', 'sfd', 'eyJhbGciOiJIUzI1NiJ9.Q0UxIEI.UTpihmB-5GQdmBP-NkBMZlZNx-EEAvb5hWe7bn9vsLk', 'SEM-CE1 B', '3777', 'eyJhbGciOiJIUzI1NiJ9.TGEgc2VtZW5jZQ.fRwDFJ3L2PVmkUqN4jd2fVM6kbTM_43Bb1LSFMLOOGU', '', '0000-00-00', ''),
+('eyJhbGciOiJIUzI1NiJ9.ZGRk.i-WTaTAqrBc50-UIf_mc28J8ngzylHDryCGqEePGALg', 'SILB', 'dddd', 'eyJhbGciOiJIUzI1NiJ9.U2lsIEI.cJlfh-J53quTXCbAFWXImGXV9XWJxASbWf5N2ktBo6Q', 'SEM-SILB', '3618', 'eyJhbGciOiJIUzI1NiJ9.TGEgc2VtZW5jZQ.fRwDFJ3L2PVmkUqN4jd2fVM6kbTM_43Bb1LSFMLOOGU', '', '0000-00-00', '');
 
 -- --------------------------------------------------------
 
@@ -435,7 +440,7 @@ ALTER TABLE `stats`
 -- AUTO_INCREMENT for table `notes`
 --
 ALTER TABLE `notes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=103;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=104;
 
 --
 -- AUTO_INCREMENT for table `settings`
