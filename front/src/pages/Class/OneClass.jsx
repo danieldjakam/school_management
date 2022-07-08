@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import * as Swal from 'sweetalert2'
+import { classTraductions } from '../../local/class'
 import { host } from '../../utils/fetch'
+import { getLang } from '../../utils/lang'
 
 function OneClass({clas, key}) {
     const [loadingDel, setLoadingDel] = useState(false)
@@ -35,7 +37,7 @@ function OneClass({clas, key}) {
                 </div>
                 <div className="qq">
                     <span className="q">
-                        Classe:
+                        {classTraductions[getLang()].class}:
                     </span>
                     <span className="r">
                         {clas.name}
@@ -43,16 +45,16 @@ function OneClass({clas, key}) {
                 </div>
                 <div className="qq">
                     <span className="q">
-                        Section:
+                    {classTraductions[getLang()].section}:
                     </span>
                     <span className="r">
-                        {clas.section === 'en' ? 'Anglophone' : clas.section === 'fr' ? 'Francophone' : 'Maternelle'}
+                        {clas.section === 'ma' ? classTraductions[getLang()].mat : clas.section === 'fr' ? classTraductions[getLang()].fr : classTraductions[getLang()].en}
                     </span>
                 </div>
             </div>
             <div className="bottom">
-                <Link to={`/students/${clas.id}`} className="btn btn-primary"> Visiter </Link>
-                <button className="btn btn-danger" onClick={() => {deleteClass(clas.id)}}> {loadingDel ? 'Suppression..' : 'Supprimer'} </button>
+                <Link to={`/students/${clas.id}`} className="btn btn-primary"> {classTraductions[getLang()].class} </Link>
+                <button className="btn btn-danger" onClick={() => {deleteClass(clas.id)}}> {loadingDel ? classTraductions[getLang()].deleting : classTraductions[getLang()].delete} </button>
             </div>  
             </div>
 }

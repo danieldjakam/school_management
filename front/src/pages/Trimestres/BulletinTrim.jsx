@@ -3,7 +3,9 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import BulletinEntete from '../../components/BulletinEntete';
+import { downloadTraductions } from '../../local/bulletin';
 import { host } from '../../utils/fetch';
+import { getLang } from '../../utils/lang';
 
 const BulletinTrim = () => {
 
@@ -200,25 +202,25 @@ const BulletinTrim = () => {
     return <div className="container bulView" style={{color: '#000', fontWeight: '600'}}>
         <nav className="navbar navbar-expand-lg" style={{padding: '10px 10px'}}>
             <div className="collapse navbar-collapse" id="navbarNav">
-                <button type="submit" onClick={() => {}} style={{marginLeft: '10px'}} className="btn btn-primary">Envoyer le bulletin au parent</button>
+                {/* <button type="submit" onClick={() => {}} style={{marginLeft: '10px'}} className="btn btn-primary">Envoyer le bulletin au parent</button> */}
             </div>
             
-            <button onClick={() => {}} className="btn btn-success">Telecharger le bulletin</button>
+            <button onClick={() => {}} className="btn btn-success">{downloadTraductions[getLang()].downloadBul}</button>
         </nav>
         <BulletinEntete student={students} currentClass={ActualClass} actualExam={actualExam}/>
 
         <table className="table table-bordered table-stiped"  style={{margin: '5px 0', marginLeft: '5vw', width: '90vw', textAlign: 'center'}}>
             <thead className="table-dark" >
                 <tr>
-                    <th rowSpan={2}>Competences</th>
-                    <th rowSpan={2}>Sous Competences</th>
-                    <th>Unite d'apprentissage</th>
+                    <th rowSpan={2}>{downloadTraductions[getLang()].com}</th>
+                    <th rowSpan={2}>{downloadTraductions[getLang()].subCom}</th>
+                    <th>{downloadTraductions[getLang()].unit}</th>
                     <th colSpan={2}>UA1</th>
                 </tr>
                 <tr>
-                    <th>Evaluation</th>
-                    <th>Notes</th>
-                    <th>Sur</th>
+                    <th>{downloadTraductions[getLang()].eval}</th>
+                    <th>{downloadTraductions[getLang()].notes}</th>
+                    <th>{downloadTraductions[getLang()].over}</th>
                 </tr>
             </thead>
             <tbody>
@@ -261,7 +263,7 @@ const BulletinTrim = () => {
                                                 })
                                             }
                                             <tr>
-                                                <td>Total</td>
+                                                <td>{downloadTraductions[getLang()].total}</td>
                                                 <td colSpan={2}>{totalNote} / {total}</td>
                                             </tr>
                                         </>
@@ -269,58 +271,58 @@ const BulletinTrim = () => {
 
                                 }
                             </>
-                }) : <>Aucune competence</>
+                }) : <>{downloadTraductions[getLang()].noCom}</>
             } 
             </tbody>
         </table>
         <h6 style={{textAlign: 'center'}}>
-            COTES : NA = Non Acquis, ECA = En Cours d’Acquisition, A = Acquis, A+ = Expert
+            {downloadTraductions[getLang()].help}
         </h6>
         
         <table className="table table-bordered table-light table-striped" style={{margin: '5px 0', marginLeft: '5vw', width: '90vw', textAlign: 'center', marginBottom: '50px'}}>
             <tbody>
                 <tr>
-                    <td>Total des points</td>
+                    <td>{downloadTraductions[getLang()].totalPoints}</td>
                     <td>{totaltPoints} / {diviser}</td>
-                    <td>Cotes</td>
-                    <td colSpan={2}>Conseil de classe</td>
+                    <td>{downloadTraductions[getLang()].cote}</td>
+                    <td colSpan={2}>{downloadTraductions[getLang()].classConseil}</td>
                 </tr>
                 <tr>
-                    <td>Moyenne</td>
+                    <td>{downloadTraductions[getLang()].average}</td>
                     <td>{Math.round((totaltPoints / diviser) * 20 * 100) / 100}</td>
                     <td rowSpan={4}>ECA</td>
-                    <td>Avertissement Conduite</td>
+                    <td>{downloadTraductions[getLang()].avert}</td>
                     <td style={{display: 'flex', justifyContent: 'space-around'}}>
-                        <span><input type="checkbox" />Oui</span>
-                        <span><input type="checkbox" />Non</span>
+                        <span><input type="checkbox" />{downloadTraductions[getLang()].yes}</span>
+                        <span><input type="checkbox" />{downloadTraductions[getLang()].no}</span>
                     </td>
                 </tr>
                 <tr>
-                    <td>Rang</td>
+                    <td>{downloadTraductions[getLang()].rank}</td>
                     <td> {rang} / {studentsAll.length}</td>
-                    <td>Avertissement Travail</td>
+                    <td>{downloadTraductions[getLang()].worlAvertissement}l</td>
                     <td>{((totaltPoints / diviser) * 20) < 10 ? 'Oui' : 'Non'}</td>
                 </tr>
                 <tr>
-                    <td>Moyenne du premier</td>
+                    <td>{downloadTraductions[getLang()].firstAverage}</td>
                     <td>{Math.round((firstAverage / diviser) * 20 * 100) / 100}</td>
-                    <td>Encouragement</td>
+                    <td>{downloadTraductions[getLang()].encou}</td>
                     <td>{((totaltPoints / diviser) * 20) > 15 ? 'Oui' : 'Non'}</td>
                 </tr>
                 <tr>
-                    <td>Moyenne du dernier</td>
+                    <td>{downloadTraductions[getLang()].lastAverage}</td>
                     <td>{Math.round((lastAverage / diviser) * 20 * 100) / 100}</td>
-                    <td>Tableau d'honneur</td>
+                    <td>{downloadTraductions[getLang()].honorRoll}</td>
                     <td>{((totaltPoints / diviser) * 20) > 18 ? 'Oui' : 'Non'}</td>
                 </tr>
                 <tr>
-                    <td colSpan={2}>Observation de l'enseignant</td>
-                    <td>Visa du Parent</td>
-                    <td colSpan={2}>Visa du chef d'etablissement</td>
+                    <td colSpan={2}>{downloadTraductions[getLang()].observation}</td>
+                    <td>{downloadTraductions[getLang()].visa}</td>
+                    <td colSpan={2}>{downloadTraductions[getLang()].chefVisa}</td>
                 </tr>
                 <tr>
                     <td colSpan={2}>
-                        Des efforts s'imposent en: <br /><br />
+                    {downloadTraductions[getLang()].effort} <br /><br />
                         <ul className="list" style={{listStyle: 'none'}}>
                             {
                                 badCompetence.length > 0 ? badCompetence.map((bc, f) => <li key={f} className="list-item">{bc}</li> ) : <li>RAS</li>

@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import * as Swal from 'sweetalert2'
+import { teacherTraductions } from '../../local/teacher'
 import { host } from '../../utils/fetch'
+import { getLang } from '../../utils/lang'
 
 
 function OneTeacher({teacher, key}) {
@@ -34,7 +36,7 @@ function OneTeacher({teacher, key}) {
                 </div>
                 <div className="qq">
                     <span className="q">
-                        Noms: 
+                        {teacherTraductions[getLang()].name}: 
                     </span>
                     <span className="r">
                         {teacher.name}
@@ -42,7 +44,7 @@ function OneTeacher({teacher, key}) {
                 </div>
                 <div className="qq">
                     <span className="q">
-                        Prenoms: 
+                    {teacherTraductions[getLang()].subname}: 
                     </span>
                     <span className="r">
                         {teacher.subname}
@@ -50,7 +52,7 @@ function OneTeacher({teacher, key}) {
                 </div>  
                 <div className="qq">
                     <span className="q">
-                        Classe: 
+                        {teacherTraductions[getLang()].class}: 
                     </span>
                     <span className="r">
                         {teacher.className}
@@ -58,15 +60,17 @@ function OneTeacher({teacher, key}) {
                 </div>
                 <div className="qq">
                     <span className="q">
-                        Section:
+                        {teacherTraductions[getLang()].section}:
                     </span>
                     <span className="r">
-                        {teacher.section === 'en' ? 'Anglophone' : teacher.section === 'fr' ? 'Francophone' : 'Maternelle'}
+                        {
+                            teacher.section === 'ma' ? teacherTraductions[getLang()].mat : teacher.section === 'fr' ? teacherTraductions[getLang()].fr : teacherTraductions[getLang()].en
+                        }    
                     </span>
                 </div>
                 <div className="qq">
                     <span className="q">
-                        Matr.: 
+                    {teacherTraductions[getLang()].mr}: 
                     </span>
                     <span className="r">
                         {teacher.matricule}
@@ -74,7 +78,7 @@ function OneTeacher({teacher, key}) {
                 </div>  
             </div>
             <div className="bottom">
-                <button className="btn btn-danger" onClick={() => {deleteTeacher(teacher.id)}}> {loadingDel ? 'Suppression..' : 'Supprimer'} </button>
+                <button className="btn btn-danger" onClick={() => {deleteTeacher(teacher.id)}}> {loadingDel ? teacherTraductions[getLang()].deleting : teacherTraductions[getLang()].delete } </button>
             </div>  
             </div>
 }

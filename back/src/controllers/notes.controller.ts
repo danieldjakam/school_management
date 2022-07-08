@@ -109,7 +109,8 @@ module.exports.getNotesByTrim = async (req, res) => {
 					let ar = [];
 					fEvalNotes.forEach(n1 => {
 						sEvalNOtes.forEach(n2 => {
-							if (n1.matiere_id === n2.matiere_id && n1.tag_name === n2.tag_name) {
+							
+							if (n1.matiere_id === n2.matiere_id && n1.tag_name === n2.tag_name && n1.student_id === n2.student_id) {
 								let v : string = Math.round((parseFloat(n1.value) + parseFloat(n2.value)) / 2).toString();
 								let obj : {
 									student_id: string,
@@ -117,6 +118,12 @@ module.exports.getNotesByTrim = async (req, res) => {
 									matiere_id: string,
 									tag_name: string,
 									value: string,
+								} = {
+									student_id: '',
+									class_id: '',
+									matiere_id: '',
+									tag_name: '',
+									value: '',
 								};
 								obj.student_id = n1.student_id;
 								obj.class_id = n1.class_id;
@@ -159,6 +166,12 @@ module.exports.getNotesByTrimPeoPle = async (req, res) => {
 									matiere_id: string,
 									tag_name: string,
 									value: string,
+								} = {
+									student_id: '',
+									class_id: '',
+									matiere_id: '',
+									tag_name: '',
+									value: '',
 								};
 								obj.student_id = n1.student_id;
 								obj.class_id = n1.class_id;
@@ -210,7 +223,7 @@ module.exports.addOrUpdateStats = (req, res) => {
 					let ar = [];
 					fEvalNotes.forEach(n1 => {
 						sEvalNOtes.forEach(n2 => {
-							if (n1.matiere_id === n2.matiere_id && n1.tag_name === n2.tag_name) {
+							if (n1.matiere_id === n2.matiere_id && n1.tag_name === n2.tag_name && n1.student_id === n2.student_id) {
 								let v = Math.round((parseFloat(n1.value) + parseFloat(n2.value)) / 2).toString();
 								let obj : {
 									student_id: string,
@@ -218,6 +231,12 @@ module.exports.addOrUpdateStats = (req, res) => {
 									matiere_id: string,
 									tag_name: string,
 									value: string,
+								} = {
+									student_id: '',
+									class_id: '',
+									matiere_id: '',
+									tag_name: '',
+									value: '',
 								};
 								obj.student_id = n1.student_id;
 								obj.class_id = n1.class_id;

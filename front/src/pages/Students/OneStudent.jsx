@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import * as Swal from 'sweetalert2'
+import { studentTraductions } from '../../local/student'
 import { host } from '../../utils/fetch'
+import { getLang } from '../../utils/lang'
 
 
 function Onestudent({student, key}) {
@@ -51,7 +53,7 @@ function Onestudent({student, key}) {
                 </div>
                 <div className="qq">
                     <span className="q">
-                        Noms: 
+                        {studentTraductions[getLang()].name}: 
                     </span>
                     <span className="r">
                         {student.name}
@@ -59,7 +61,7 @@ function Onestudent({student, key}) {
                 </div>
                 <div className="qq">
                     <span className="q">
-                        Prenoms: 
+                    {studentTraductions[getLang()].subname}: 
                     </span>
                     <span className="r">
                         {student.subname}
@@ -67,7 +69,7 @@ function Onestudent({student, key}) {
                 </div> 
                 <div className="qq">
                     <span className="q">
-                        Sexe:
+                    {studentTraductions[getLang()].s}:
                     </span>
                     <span className="r">
                         {student.section === 'm' ? 'Masculin' : 'Feminin'}  
@@ -75,7 +77,7 @@ function Onestudent({student, key}) {
                 </div>  
                 <div className="qq">
                     <span className="q">
-                        Date de naissance: 
+                    {studentTraductions[getLang()].b}: 
                     </span>
                     <span className="r">
                         {date}
@@ -83,7 +85,7 @@ function Onestudent({student, key}) {
                 </div>
                 <div className="qq">
                     <span className="q">
-                        Classe: 
+                    {studentTraductions[getLang()].class}: 
                     </span>
                     <span className="r">
                         {student.className}
@@ -91,7 +93,7 @@ function Onestudent({student, key}) {
                 </div>
             </div>
             <div className="bottom">
-                <button className="btn btn-danger" onClick={() => {deletestudent(student.id)}}> {loadingDel ? 'Suppression..' : 'Supprimer'} </button>
+                <button className="btn btn-danger" onClick={() => {deletestudent(student.id)}}> {loadingDel ? studentTraductions[getLang()].deleting : studentTraductions[getLang()].delete} </button>
             </div>  
             </div>
 }

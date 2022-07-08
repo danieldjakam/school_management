@@ -7,9 +7,10 @@ const userController = require('../controllers/users.controllers');
 
 routerForUsers.get('/getInfos', authGlobalForUsers, authForUsers, userController.getInfos)
 routerForUsers.get('/all', authGlobalForUsers, authAdminForUsers, userController.getAllAdmin)
-routerForUsers.delete('/:id', authGlobalForUsers, authAdminForUsers, userController.deleteAdmin)
+routerForUsers.get('/getTeacherOrAdmin', authGlobalForUsers, authForUsers, userController.getTeacherOrAdmin)
 routerForUsers.post('/login', authGlobalForUsers, userController.login);
 routerForUsers.post('/register', authGlobalForUsers, authAdminForUsers, userController.register);
-routerForUsers.get('/getTeacherOrAdmin', authGlobalForUsers, authForUsers, userController.getTeacherOrAdmin)
+routerForUsers.put('/edit', authGlobalForUsers, authForUsers, userController.updateUserOrAdmin)
+routerForUsers.delete('/:id', authGlobalForUsers, authAdminForUsers, userController.deleteAdmin)
 
 module.exports = routerForUsers;

@@ -1,6 +1,8 @@
 import React from 'react'
 import { useState } from "react";
+import { comTraductions } from '../../local/com';
 import { host } from '../../utils/fetch';
+import { getLang } from '../../utils/lang';
 
 const AddCom = ({ error, setError, setIsAddComp}) => {
 
@@ -29,22 +31,24 @@ const AddCom = ({ error, setError, setIsAddComp}) => {
   } 
   return <div className="card login-card">
     <div className="card-head">
-      <h1>Ajouter une competence</h1>
+      <h1>
+        {comTraductions[getLang()].editCom}
+      </h1>
     </div>
     <form onSubmit={(e) => {handleAdd(e)}}>
       <div className="card-content">
         <div className="field">
-            <div className="label">Nom de la competence</div>
+            <div className="label">{comTraductions[getLang()].addCom}</div>
             <input type="text" value={data.name} onChange={(e) => {setData(val => {return {...val, name: e.target.value}})}} placeholder="Entrer un nom de competence valide" />
         </div> 
         <div className="field">
-            <div className="label">Section</div>
+            <div className="label">{ comTraductions[getLang()].section }</div>
             <select value={data.section} onChange={(e) => {setData(val => {return {...val, section: e.target.value}})}} className="form-control form-control-lg"
             placeholder="Enter password">
-                <option value={''}>--- Selectionner la section ----</option>
-                <option value="fr">Francophone</option>
-                <option value="en">Anglophone</option>
-                <option value="ma">Maternelle</option>
+                <option value={''}>{ comTraductions[getLang()].selectSection }</option>
+                <option value="fr">{ comTraductions[getLang()].fr }</option>
+                <option value="en">{ comTraductions[getLang()].en }</option>
+                <option value="ma">{ comTraductions[getLang()].mat }</option>
             </select>
         </div> 
 
@@ -53,8 +57,8 @@ const AddCom = ({ error, setError, setIsAddComp}) => {
         } 
       </div>
       <div className="card-footer">
-        <button className="btn btn-blue" type="submit">{loading ? 'Enregistrement' : 'Enregistrer'}</button>
-        <button onClick={() => {handleCancel()}} type="submit"> Fermer (Annuler)</button>
+        <button className="btn btn-blue" type="submit">{loading ? comTraductions[getLang()].saving : comTraductions[getLang()].save}</button>
+        <button onClick={() => {handleCancel()}} type="submit"> {comTraductions[getLang()].close} </button>
       </div>
       
     </form>

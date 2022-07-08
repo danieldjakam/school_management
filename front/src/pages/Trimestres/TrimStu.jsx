@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import ReactLoading from 'react-loading'
+import { trimTraductions } from '../../local/trim';
 import { host } from '../../utils/fetch';
+import { getLang } from '../../utils/lang';
 
 function TrimStu() {
     
@@ -25,8 +27,8 @@ function TrimStu() {
             <table className="table table-dark table-bordered table-striped">
                 <thead>
                     <tr>
-                        <th>Nom</th>
-                        <th>Actions</th>
+                        <th>{trimTraductions[getLang()].name}</th>
+                        <th>{trimTraductions[getLang()].action}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -34,8 +36,8 @@ function TrimStu() {
                         loading ? <tr ><td colSpan={5} style={{justifyItems: 'center', paddingLeft: '50%'}}><ReactLoading color="#fff" type="cylon"/></td></tr> : trims.length > 0 ? trims.map((trim, index) => {
                             return <tr key={index}>
                                 <td>{trim.name}</td>
-                                <td><a style={{textDecoration: 'none', color: '#fff'}} href={`/trims/${trim.id}/${sessionStorage.classId}`}>Voir les donnees</a></td>
-                            </tr> }) : <tr> <td colSpan={5} style={{textAlign: 'center'}}>Aucun trimestre effectuee pour l'instant. Attendez que l'admin en ajoute un.</td> </tr>
+                                <td><a style={{textDecoration: 'none', color: '#fff'}} href={`/trims/${trim.id}/${sessionStorage.classId}`}>{trimTraductions[getLang()].seeData}</a></td>
+                            </tr> }) : <tr> <td colSpan={5} style={{textAlign: 'center'}}>{trimTraductions['fr'].nohavetrim}</td> </tr>
                     }
                 </tbody>
             </table>  

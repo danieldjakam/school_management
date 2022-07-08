@@ -1,7 +1,9 @@
 import React from 'react'
 import { useEffect } from "react";
 import { useState } from "react";
+import { trimTraductions } from '../../local/trim';
 import { host } from '../../utils/fetch';
+import { getLang } from '../../utils/lang';
 
 const AddTrimestre = ({error, setError, setIsTrim}) => {
 
@@ -66,22 +68,22 @@ const AddTrimestre = ({error, setError, setIsTrim}) => {
     }
     return <div className="card login-card">
         <div className="card-head">
-          <h1>Ajouter du trimestre</h1>
+          <h1>{trimTraductions[getLang()].addTrim}</h1>
         </div>
         <form onSubmit={(e) => {handleAdd(e)}}>
           <div className="card-content">
             <div className="field">
-                <div className="label">Nom du trimestre</div>
-                <input type="text" value={data.name} onChange={(e) => {setData(val => {return {...val, name: e.target.value}})}} placeholder="Entrer un nom de trimestre valide" />
+                <div className="label">{trimTraductions[getLang()].trimName}</div>
+                <input type="text" value={data.name} onChange={(e) => {setData(val => {return {...val, name: e.target.value}})}} placeholder={trimTraductions[getLang()].addTrim} />
             </div>
             <div className="form-outline mb-4">
-                    <label className="form-label" htmlFor="form3Example3">Ajouter des sequences</label>
+                    <label className="form-label" htmlFor="form3Example3">{trimTraductions[getLang()].selectSeq}</label>
                     {
                         exams.length > 0 ? exams.map((exam) => {
                             return <div class = "checkbox">
                                       <input type="checkbox" checked={data.seqIds.includes(exam.id)} onChange={() => {hasClick(exam.id)}} />{exam.name}
                                   </div>
-                        }) : <>Veuillez ajouter des sequences</>
+                        }) : <>{trimTraductions[getLang()].addSeq}</>
                     }
                 </div>
             {
@@ -89,8 +91,8 @@ const AddTrimestre = ({error, setError, setIsTrim}) => {
             } 
           </div>
           <div className="card-footer">
-            <button className="btn btn-blue" type="submit">{loading ? 'Enregistrement' : 'Enregistrer'}</button>
-            <button onClick={() => {handleCancel()}} type="submit"> Fermer (Annuler)</button>
+            <button className="btn btn-blue" type="submit">{loading ? trimTraductions[getLang()].saving : trimTraductions[getLang()].save}</button>
+            <button onClick={() => {handleCancel()}} type="submit"> {trimTraductions[getLang()].close} </button>
           </div>
           
         </form>

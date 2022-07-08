@@ -1,7 +1,9 @@
 import React from 'react'
 import { useEffect } from "react";
 import { useState } from "react";
+import { comTraductions } from '../../local/com';
 import { host } from '../../utils/fetch';
+import { getLang } from '../../utils/lang';
 
 const EditCom = ({error, setError, setIsEditComp, compToEditId}) => {
     const [comp, setComp] = useState({});
@@ -19,7 +21,7 @@ const EditCom = ({error, setError, setIsEditComp, compToEditId}) => {
                 setLoading(false);
             }
         )()
-    }, [])
+    }, []);
 
     const handleUpdate = (e) => {
         e.preventDefault();
@@ -42,35 +44,37 @@ const EditCom = ({error, setError, setIsEditComp, compToEditId}) => {
     } 
     return <div className="card login-card">
       <div className="card-head">
-        <h1>Editer une competence</h1>
+      <h1>
+        {comTraductions[getLang()].addCom}
+      </h1>
+    </div>
+    <form onSubmit={(e) => {handleUpdate(e)}}>
+      <div className="card-content">
+        <div className="field">
+            <div className="label">{comTraductions[getLang()].addCom}</div>
+            <input type="text" value={comp.name} onChange={(e) => {setComp(val => {return {...val, name: e.target.value}})}} placeholder="Entrer un nom de competence valide" />
+        </div> 
+        <div className="field">
+            <div className="label">{ comTraductions[getLang()].section }</div>
+            <select value={comp.section} onChange={(e) => {setComp(val => {return {...val, section: e.target.value}})}} className="form-control form-control-lg"
+            placeholder="Enter password">
+                <option value={''}>{ comTraductions[getLang()].selectSection }</option>
+                <option value="fr">{ comTraductions[getLang()].fr }</option>
+                <option value="en">{ comTraductions[getLang()].en }</option>
+                <option value="ma">{ comTraductions[getLang()].mat }</option>
+            </select>
+        </div> 
+
+        {
+          error !== '' ? <div className="error">{error}</div> : ''
+        } 
       </div>
-      <form onSubmit={(e) => {handleUpdate(e)}}>
-        <div className="card-content">
-          <div className="field">
-              <div className="label">Nom de la competence</div>
-              <input type="text" value={comp.name} onChange={(e) => {setComp(val => {return {...val, name: e.target.value}})}} placeholder="Entrer un nom de competence valide" />
-          </div> 
-          <div className="field">
-              <div className="label">Section</div>
-              <select value={comp.section} onChange={(e) => {setComp(val => {return {...val, section: e.target.value}})}} className="form-control form-control-lg"
-              placeholder="Enter password">
-                  <option value={''}>--- Selectionner la section ----</option>
-                  <option value="fr">Francophone</option>
-                  <option value="en">Anglophone</option>
-                  <option value="ma">Maternelle</option>
-              </select>
-          </div> 
-  
-          {
-            error !== '' ? <div className="error">{error}</div> : ''
-          } 
-        </div>
-        <div className="card-footer">
-          <button className="btn btn-blue" type="submit">{loading ? 'Enregistrement...' : 'Enregistrer'}</button>
-          <button onClick={() => {handleCancel()}} type="submit"> Fermer (Annuler)</button>
-        </div>
-        
-      </form>
+      <div className="card-footer">
+        <button className="btn btn-blue" type="submit">{loading ? comTraductions[getLang()].saving : comTraductions[getLang()].save}</button>
+        <button onClick={() => {handleCancel()}} type="submit"> {comTraductions[getLang()].close} </button>
+      </div>
+      
+    </form>
     </div>
 }
 

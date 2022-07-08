@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import * as Swal from 'sweetalert2'
-import { host } from '../utils/fetch';
+import { paramsTraductions } from '../../local/params';
+import { host } from '../../utils/fetch';
+import { getLang } from '../../utils/lang';
+import EditProfile from './EditProfile';
+import Profile from './Profile';
 function Params() {
   
   const [data, setData] = useState({
@@ -15,6 +19,8 @@ function Params() {
   const [success, setSuccess] = useState('')
   const [loading, setLoading] = useState(false);
   const [userInfos, setUserInfos] = useState([]);
+
+  const [isEditInfos, setIsEditInfos] = useState(false);
   
   useEffect(() => {
     (
@@ -96,27 +102,27 @@ function Params() {
         <div className="addAdmin">
           <div className="card ">
             <div className="card-head">
-              <h1>Ajouter un administrateur</h1>
+              <h1>{paramsTraductions[getLang()].addAdmin}</h1>
             </div>
             <form onSubmit={(e) => {handleRegister(e)}}>
               <div className="card-content">
                 <div className="field">
-                    <div className="label">Nom d'utilisateur</div>
-                    <input type="text" value={data.username} onChange={(e) => {setData(val => {return {...val, username: e.target.value}})}} placeholder="Entrer un nom d'utilisateur valide" />
+                    <div className="label">{paramsTraductions[getLang()].username}</div>
+                    <input type="text" value={data.username} onChange={(e) => {setData(val => {return {...val, username: e.target.value}})}} placeholder={paramsTraductions[getLang()].username} />
                 </div> 
                 <div className="field">
-                    <div className="label">Email ou Pseudo</div>
-                    <input type="email" value={data.email} onChange={(e) => {setData(val => {return {...val, email: e.target.value}})}} placeholder="Entrer une email valide" />
+                    <div className="label">{paramsTraductions[getLang()].email}</div>
+                    <input type="email" value={data.email} onChange={(e) => {setData(val => {return {...val, email: e.target.value}})}} placeholder={paramsTraductions[getLang()].email} />
                 </div> 
                 <div className="field">
-                    <div className="label">Mot de passe</div>
+                    <div className="label">{paramsTraductions[getLang()].password} </div>
                     <input type="password" value={data.password} onChange={(e) => {setData(val => {return {...val, password: e.target.value}})}}
-                    placeholder="Entrez votre mot de passe" />
+                    placeholder={paramsTraductions[getLang()].password} />
                 </div> 
                 <div className="field">
-                    <div className="label">Mot de passe</div>
+                    <div className="label">{paramsTraductions[getLang()].confirm}</div>
                     <input type="password" value={data.confirm} onChange={(e) => {setData(val => {return {...val, confirm: e.target.value}})}}
-                    placeholder="Confirmez votre mot de passe" />
+                    placeholder={paramsTraductions[getLang()].confirm}/>
                 </div> 
 
                 {
@@ -124,39 +130,20 @@ function Params() {
                 } 
               </div>
               <div className="card-footer">
-                <button type="submit">{loading ? 'Ajout...' : 'Ajouter'}</button>
+                <button type="submit">{loading ? paramsTraductions[getLang()].addind : paramsTraductions[getLang()].add}</button>
               </div>
             </form>
           </div>
         </div>
         <div className="profileBox">
-          <div className="card">
-            <div className="card-content pro">
-              <div className="d">
-                <div className="img">
-                  <img src="assets/1.png" alt="Asset" />
-                </div>
-              </div>
-              <h2>
-                {userInfos.username}
-              </h2>
-              <h5>
-                {userInfos.email}
-              </h5> 
-              <h5>
-                {'Admin'}
-              </h5>
-            </div>
-            <div className="foot">
-              <button className="btn btn-blue" type="submit">{'Editer mon profil'}</button>
-              <button onClick={() => {}} type="submit"> Se deconnecter</button>
-            </div>
-            
-          </div>
+          
+          {
+            isEditInfos ? <EditProfile setIsEditInfos={setIsEditInfos} setError={setError}/> : <Profile userInfos={userInfos} setIsEditInfos={setIsEditInfos}/>
+          }
 
           <div className="card d" style={{marginTop: '20px'}}>
             <div className="card-head">
-              <h1>Tous les administrateurs</h1>
+              <h1>{paramsTraductions[getLang()].allAdmin}</h1>
             </div>
 
             <div className="card-content">
@@ -175,43 +162,18 @@ function Params() {
                           </div>
           
                           <div className="rigth">
-                            <button onClick={() => {deleteAdmin(admin.id)}} type="submit"> Supprimer</button>
+                            <button onClick={() => {deleteAdmin(admin.id)}} type="submit"> {paramsTraductions[getLang()].delete}</button>
                           </div>
                         </div>
                 }) : <div className="adminCard">
-                      <h3>Aucun admin pour l'instant</h3>
+                      <h3>{paramsTraductions[getLang()].noAdmin}</h3>
                     </div>
               }
             </div>
           </div>
         </div>
       </div>
-      : <div className="pro" style={{width: '50%', marginLeft: '25%'}}>
-        
-        <div className="card">
-            <div className="card-content pro">
-              <div className="d">
-                <div className="img">
-                  <img src="assets/1.png" alt="Asset" />
-                </div>
-              </div>
-              <h2>
-                {userInfos.name + " " + userInfos.subname}
-              </h2>
-              <h5>
-                {userInfos.matricule}
-              </h5>
-              <h5>
-                {'Enseignant'}
-              </h5> 
-            </div>
-            <div className="foot">
-              <button className="btn btn-blue" type="submit">{'Editer mon profil'}</button>
-              <button onClick={() => {}} type="submit"> Se deconnecter</button>
-            </div>
-            
-          </div>
-        </div>
+      :  isEditInfos ?<EditProfile setIsEditInfos={setIsEditInfos} setError={setError}/> : <Profile userInfos={userInfos} setIsEditInfos={setIsEditInfos}/>
       }
     </div>
   )

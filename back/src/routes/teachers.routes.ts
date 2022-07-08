@@ -6,8 +6,8 @@ const authGlobalForTeachers = require('../middleware/auth_global');
 const teachersController = require('../controllers/teachers.controller');
 
 routerForTeachers.get('/getAll', authGlobalForTeachers, authForTeachers, teachersController.getAllTeachers);
-routerForTeachers.get('/regeneratePassword', authGlobalForTeachers, authForTeachers, teachersController.generateNewPasswords);
 routerForTeachers.get('/downloadTeachersPassword', authGlobalForTeachers, teachersController.downloadTeachersPassword);
+routerForTeachers.get('/regeneratePassword', authGlobalForTeachers, authAdminForTeachers, teachersController.generateNewPasswords);
 routerForTeachers.get('/:id', authGlobalForTeachers, authForTeachers, teachersController.getOneTeacher);
 routerForTeachers.post('/add', authGlobalForTeachers, authAdminForTeachers, teachersController.addTeacher);
 routerForTeachers.put('/:id', authGlobalForTeachers, authAdminForTeachers, teachersController.updateTeacher);

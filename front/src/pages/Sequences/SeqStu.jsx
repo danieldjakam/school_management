@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import ReactLoading from 'react-loading'
+import { Link } from 'react-router-dom';
+import { sequenceTraductions } from '../../local/sequence';
 import { host } from '../../utils/fetch';
+import { getLang } from '../../utils/lang';
 
 function SeqStu() {
 
@@ -24,8 +27,8 @@ function SeqStu() {
             <table className="table table-dark table-bordered table-striped">
                 <thead>
                     <tr>
-                        <th>Nom</th>
-                        <th>Actions</th>
+                        <th>{sequenceTraductions[getLang()].name}</th>
+                        <th>{sequenceTraductions[getLang()].action}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -33,8 +36,8 @@ function SeqStu() {
                         loading ? <tr ><td colSpan={5} style={{justifyItems: 'center', paddingLeft: '50%'}}><ReactLoading color="#fff" type="cylon"/></td></tr> : exams.length > 0 ? exams.map((exam, index) => {
                             return <tr key={index}>
                                 <td>{exam.name}</td>
-                                <td><a style={{textDecoration: 'none', color: '#fff'}}  href={`/exams/${exam.id}/${sessionStorage.classId}`}>Entrer les donnees</a></td>
-                            </tr> }) : <tr> <td colSpan={5} style={{textAlign: 'center'}}>Aucune sequence effectuee pour l'instant. Attendez que l'admin en cree.</td> </tr>
+                                <td><Link style={{textDecoration: 'none', color: '#fff'}}  to={`/exams/${exam.id}/${sessionStorage.classId}`}>{sequenceTraductions[getLang()].enterData}</Link></td>
+                            </tr> }) : <tr> <td colSpan={5} style={{textAlign: 'center'}}>{sequenceTraductions[getLang()].noSeq}</td> </tr>
                     }
                 </tbody>
             </table>

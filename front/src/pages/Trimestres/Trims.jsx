@@ -2,7 +2,9 @@ import React from 'react'
 import { useEffect } from "react";
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { trimTraductions } from '../../local/trim';
 import { host } from '../../utils/fetch';
+import { getLang } from '../../utils/lang';
 
 const Trims = () => {
 
@@ -135,8 +137,8 @@ const Trims = () => {
             <div className="collapse navbar-collapse" id="navbarNav">
                 <ul className="navbar-nav" style={{fontSize: '1.3rem'}}>
                     <h2 style={{marginLeft  : '40px'}}>{ActualTrim.name} : {ActualClass.name}</h2>
-                    <button onClick={() => {}} className="btn btn-success">Telecharger les bulletins</button>
-                    <button onClick={() => {}} style={{marginLeft: '10px'}} className="btn btn-secondary">Classer</button>
+                    <button onClick={() => {}} className="btn btn-success">{trimTraductions[getLang()].downloadBuls}</button>
+                    <button onClick={() => {}} style={{marginLeft: '10px'}} className="btn btn-secondary">{trimTraductions[getLang()].order}</button>
                 </ul>
             </div>
         </nav>
@@ -152,7 +154,7 @@ const Trims = () => {
                     N
                 </th>
                 <th rowSpan={3}>
-                    Nom
+                    {trimTraductions[getLang()].name}
                 </th>
                 {
                     coms.length > 0 ? coms.map((com, ID) => {
@@ -162,13 +164,13 @@ const Trims = () => {
                             total += tags.length + 1;
                         })
                         return <th key={ID} colSpan={total}>{com.name}</th>
-                    }) : <>Aucune competence</>
+                    }) : <>{trimTraductions[getLang()].noCom}</>
                 }
                 <th colSpan={3} rowSpan={2}>
-                    Essentiel
+                    {trimTraductions[getLang()].essential}
                 </th>
                 <th colSpan={1} rowSpan={3}>
-                    Action
+                    {trimTraductions[getLang()].action}
                 </th>
             </tr>   
             <tr className="table-light">
@@ -191,13 +193,13 @@ const Trims = () => {
                                             return <td>{tag.name} / {tag.over}</td>
                                         })
                             }
-                            <td>Total / {total}</td>
+                            <td>{trimTraductions[getLang()].total} / {total}</td>
                         </>   
                     })        
                 } 
-                <td>Total des points</td>
-                <td>Moyenne</td>
-                <td>Rang</td>
+                <td>{trimTraductions[getLang()].totalOfPoints}</td>
+                <td>{trimTraductions[getLang()].average}</td>
+                <td>{trimTraductions[getLang()].rank}</td>
                 
             </tr>
         </thead>
@@ -254,13 +256,13 @@ const Trims = () => {
                         </td>
                         <td>
                             <Link to={`${student.id}`} className="btn btn-primary">
-                                Voir le Bulletin
+                                {trimTraductions[getLang()].seeBul}
                             </Link>
                         </td>
                     </tr>
                 }) : <tr className={'table-light'}>
                     <td colSpan={144}>
-                        Aucun eleve dans cette classe.                
+                        {trimTraductions[getLang()].noStudent}               
                     </td>
                 </tr>
             }

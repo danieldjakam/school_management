@@ -1,7 +1,9 @@
 import React from 'react'
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { authTraductions } from '../local/login';
 import { host } from '../utils/fetch';
+import { getLang } from '../utils/lang';
 
 const Login = ({setUser}) => {
 
@@ -44,18 +46,18 @@ const Login = ({setUser}) => {
     <div className="login-view login">
       <div className="card login-card">
         <div className="card-head">
-          <h1>Connection</h1>
+          <h1>{authTraductions[getLang()].login}</h1>
         </div>
         <form onSubmit={(e) => {handleLogin(e)}}>
           <div className="card-content">
             <div className="field">
-                <div className="label">Email ou Pseudo</div>
-                <input type="text" value={data.username} onChange={(e) => {setData(val => {return {...val, username: e.target.value}})}} placeholder="Entrer une email valide" />
+                <div className="label">{authTraductions[getLang()].emailOrPseudo}</div>
+                <input type="text" value={data.username} onChange={(e) => {setData(val => {return {...val, username: e.target.value}})}} placeholder={authTraductions[getLang()].emailOrPseudo} />
             </div> 
             <div className="field">
-                <div className="label">Mot de passe</div>
+                <div className="label">{authTraductions[getLang()].password}</div>
                 <input type="password" value={data.password} onChange={(e) => {setData(val => {return {...val, password: e.target.value}})}}
-                placeholder="Entrer votre mot de passe" />
+                placeholder={authTraductions[getLang()].password} />
             </div> 
 
             {
@@ -65,7 +67,7 @@ const Login = ({setUser}) => {
           <div className="card-footer">
             <button type="submit">
               {
-                loading ? 'Connexion...': 'Se connecter'
+                loading ? authTraductions[getLang()].logining : authTraductions[getLang()].login
               }
             </button>
           </div>

@@ -1,6 +1,5 @@
 module.exports.addTrimestre = async (req, res) => {
     const {name, seqIds} = req.body;
-    console.log(seqIds);
     if ( name && name !== '' ) {
         if (name.length < 5 || name.length > 30) {
             res.status(401).json({success: false, message: "Le pseudo doit etre compris entre 5 et 30 caracteres !!"})
@@ -55,7 +54,9 @@ module.exports.updateTrimestre = (req, res) => {
 
 module.exports.deleteTrimestre = (req, res) => {
     const {id} = req.params;
-    req.connection.query('DELETE FROM trim WHERE id = ?', [id], (err, resp) => {
+    console.log(id);
+    
+    req.connection.query('DELETE FROM trims WHERE id = ?', [id], (err, resp) => {
         res.status(201).json({success: true})
     })
 }

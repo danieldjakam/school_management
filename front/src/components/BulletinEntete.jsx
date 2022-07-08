@@ -1,5 +1,7 @@
 import React from 'react';
 import sem from '../images/sem.png'
+import { downloadTraductions } from '../local/bulletin';
+import { getLang } from '../utils/lang';
 const BulletinEntete = ({student, currentClass, actualExam}) => {
         
     const months = [
@@ -46,7 +48,7 @@ const BulletinEntete = ({student, currentClass, actualExam}) => {
             </table>
 
             <h2 style={{textAlign: 'center'}}>
-                BULLETIN D'EVALUATION {actualExam.name} 2021/2022
+                {downloadTraductions[getLang()].evalB} {actualExam.name} 2021/2022
             </h2>
 
             
@@ -54,19 +56,19 @@ const BulletinEntete = ({student, currentClass, actualExam}) => {
             <table className='table table-light table-bordered table-striped' style={{marginLeft: '5vw', width: '90vw'}}>
             <thead style={{textAlign: 'center'}}>
                 <tr>
-                    <th>NOMS ET PRENOMS</th>
+                    <th>{downloadTraductions[getLang()].nameAndSubname}</th>
                     <th colSpan={3}>
                         {student.name} {student.subname}
                     </th>
                 </tr>
                 <tr>
-                    <th>DATE DE NAISSANCE</th>
+                    <th>{downloadTraductions[getLang()].birthday}</th>
                     <th >
                         {
                             date
                         }
                     </th>
-                    <th>SEXE</th>
+                    <th>{downloadTraductions[getLang()].sex}</th>
                     <th>
                         {
                             student.sex === 'm' ? 'Masculin' : 'Feminin'
@@ -74,13 +76,13 @@ const BulletinEntete = ({student, currentClass, actualExam}) => {
                     </th>
                 </tr>
                 <tr>
-                    <th>CLASSE</th>
+                    <th>{downloadTraductions[getLang()].class}</th>
                     <th>
                         {
                             currentClass.name
                         }
                     </th>
-                    <th>ENSEIGNANT</th>
+                    <th>{downloadTraductions[getLang()].teacher}</th>
                     <th>{currentClass.tName} {currentClass.subname}</th>
                 </tr>
             </thead>

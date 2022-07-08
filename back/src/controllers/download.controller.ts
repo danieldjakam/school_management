@@ -3,6 +3,7 @@ var Json2csvParser = require('json2csv').Parser
 const admZip = require('adm-zip');
 const pdf = require('pdf-creator-node');
 const optionsPdf = require('../../helpers/optionsPdf')
+const downloadFs = require('fs');
 
 const months = [
     'Incorrect',
@@ -29,7 +30,7 @@ module.exports.downloadStudentsCsv = (req, res) => {
         const json2csvParser = new Json2csvParser({ csvFields });
         const csv = json2csvParser.parse(jsonUsers);
         const csvFile = `eleves de ${jsonUsers[0].cName}.csv`;
-        req.fs.writeFile(csvFile, csv, function (err, csv) {
+        downloadFs.writeFile(csvFile, csv, function (err, csv) {
             if (err) return console.log(err);
             else res.download(csvFile);
         });
@@ -37,7 +38,7 @@ module.exports.downloadStudentsCsv = (req, res) => {
 }
 
 module.exports.downloadStudentsPdf = (req, res) => {
-    const html = req.fs.readFileSync('templates/studentsList.html', 'utf-8');
+    const html = downloadFs.readFileSync('src/templates/studentsList.html', 'utf-8');
     req.connection.query("SELECT students.name, teachers.name as tName, teachers.subname as tSubname, students.subname,  students.email,  students.phone_number, students.birthday, students.sex, class.name as cName  FROM students LEFT JOIN class ON class.id = students.class_id LEFT JOIN teachers ON teachers.class_id = class.id WHERE students.class_id = ?", [req.params.id], function (err, students, fields) {
         if (err) console.log(err);
         const fileName = `Liste des eleves de ${students[0].cName}.pdf`;
@@ -77,7 +78,7 @@ module.exports.downloadStudentsPdf = (req, res) => {
 
 module.exports.downloadBulletin = (req, res) => {
     const {exam_id, student_id, class_id} = req.params;
-    const html = req.fs.readFileSync('templates/Bulletin.html', 'utf-8');
+    const html = downloadFs.readFileSync('src/templates/Bulletin.html', 'utf-8');
     let badCompetence : string[] = [];
     let totalPoint : number = 0;
     let totalNote : number
@@ -231,11 +232,11 @@ module.exports.downloadBulletinByClass = async (req, res) => {
     const {class_id} = req.params;
     req.connection.query('SELECT students.id, students.name, teachers.name as tName, teachers.subname as tSubname, students.subname, students.birthday, students.sex, class.name as cName  FROM students LEFT JOIN class ON class.id = students.class_id LEFT JOIN teachers ON teachers.class_id = class.id WHERE students.class_id = ?', [class_id], async (err, students) => {
         const dirPath = `docs/${students[0].cName}`;
-        if(!req.fs.existsSync(dirPath)) req.fs.mkdirSync(dirPath);
+        if(!downloadFs.existsSync(dirPath)) downloadFs.mkdirSync(dirPath);
         await new Promise((resolve, reject) => {
             students.forEach(tt => {
                 const {exam_id, class_id} = req.params;
-                const html = req.fs.readFileSync('templates/Bulletin.html', 'utf-8');
+                const html = downloadFs.readFileSync('src/templates/Bulletin.html', 'utf-8');
                 let badCompetence : string[] = [];
                 let totalPoint = 0;
                 let totalNote : number
@@ -373,11 +374,11 @@ module.exports.downloadBulletinByClass = async (req, res) => {
 
         setTimeout(() => {
             students.forEach(student => {
-                zip.addLocalFile(`${dirPath}/${(student.name+' '+student.subname).replaceAll(' ', '_')}.pdf`);            
+                zip.addLocalFile(`${dirPath}/${(student.name+' '+student.subname).replaceAll(' ', '_')}.pdf`); 
+                const zipPath = `${dirPath}/Bulletins en ${students[0].cName}.zip`;
+                downloadFs.writeFileSync(zipPath, zip.toBuffer());
+                res.download(zipPath);           
             })
         }, 3000)
-        const zipPath = `${dirPath}/Bulletins en ${students[0].cName}.zip`;
-        req.fs.writeFileSync(zipPath, zip.toBuffer());
-        res.download(zipPath);
     })
 }

@@ -1,7 +1,9 @@
 import React from 'react'
 import { useEffect } from "react";
 import { useState } from "react";
+import { classTraductions } from '../../local/class';
 import { host } from '../../utils/fetch';
+import { getLang } from '../../utils/lang';
 
 const EditClass = ({error, setError, setIsEditClass, classToEditId}) => {
     const [classs, setClasss] = useState({});
@@ -42,26 +44,28 @@ const EditClass = ({error, setError, setIsEditClass, classToEditId}) => {
     }
     return <div className="card login-card">
       <div className="card-head">
-        <h1>Editer une classe</h1>
+        <h1>
+          {classTraductions[getLang()].editClass}
+        </h1>
       </div>
       <form onSubmit={(e) => {handleUpdate(e)}}>
         <div className="card-content">
           <div className="field">
-              <div className="label">Nom de la classe</div>
-              <input type="text" value={classs.name} onChange={(e) => {setClasss  (val => {return {...val, name: e.target.value}})}} placeholder="Entrer un nom de classe valide" />
+              <div className="label">{ classTraductions[getLang()].className }</div>
+              <input type="text" value={classs.name} onChange={(e) => {setClasss(val => {return {...val, name: e.target.value}})}} placeholder="Entrer un nom de classe valide" />
           </div> 
-        <div className="field">
-            <div className="label">Niveau de la classe</div>
-            <input type="number" value={classs.level} onChange={(e) => {setClasss(val => {return {...val, level: e.target.value}})}} placeholder="Entrer un niveau compris" />
-        </div> 
           <div className="field">
-              <div className="label">Section</div>
-              <select value={classs.section} onChange={(e) => {setClasss  (val => {return {...val, section: e.target.value}})}} className="form-control form-control-lg"
+              <div className="label">{ classTraductions[getLang()].classLevel }</div>
+              <input type="number" value={classs.level} onChange={(e) => {setClasss(val => {return {...val, level: e.target.value}})}} placeholder="Entrer un nom de classe valide" />
+          </div> 
+          <div className="field">
+              <div className="label">{ classTraductions[getLang()].section }</div>
+              <select value={classs.section} onChange={(e) => {setClasss(val => {return {...val, section: e.target.value}})}} className="form-control form-control-lg"
               placeholder="Enter password">
-                  <option value={''}>--- Selectionner la section ----</option>
-                  <option value="fr">Francophone</option>
-                  <option value="en">Anglophone</option>
-                  <option value="ma">Maternelle</option>
+                  <option value={''}>{ classTraductions[getLang()].selectSection }</option>
+                  <option value="fr">{ classTraductions[getLang()].fr }</option>
+                  <option value="en">{ classTraductions[getLang()].en }</option>
+                  <option value="ma">{ classTraductions[getLang()].mat }</option>
               </select>
           </div> 
   
@@ -70,8 +74,8 @@ const EditClass = ({error, setError, setIsEditClass, classToEditId}) => {
           } 
         </div>
         <div className="card-footer">
-          <button className="btn btn-blue" type="submit">{loading ? 'Enregistrement' : 'Enregistrer'}</button>
-          <button onClick={() => {handleCancel()}} type="submit">Fermer (Annuler)</button>
+          <button className="btn btn-blue" type="submit">{loading ? classTraductions[getLang()].saving : classTraductions[getLang()].save}</button>
+          <button onClick={() => {handleCancel()}} type="submit"> {classTraductions[getLang()].close} </button>
         </div>
         
       </form>

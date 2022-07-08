@@ -2,7 +2,7 @@ module.exports.addClass = (req : any, res : any) => {
     let {name, section, level} = req.body;
     level = parseInt(level)
     if (name && name !== '' && section && section !== '' && level) {
-        if (name.length < 4) {
+        if (name.length < 3) {
             res.status(401).json({success: false, message: 'Le nom de la classe doit avoir au moins 3 caracteres!!'})
         }
         else if (section !== 'fr' && section !== 'en' && section !== 'ma') {
@@ -30,7 +30,7 @@ module.exports.updateClass = (req : any, res : any) => {
     level = parseInt(level)
     const {id} = req.params;
     if (name && name !== '' && section && section !== '') {
-        if (name.length < 4) {
+        if (name.length < 3) {
             res.status(401).json({success: false, message: 'le nom doit avoir au moins 3 caracteres!!'})
         }
         else if (section !== 'fr' && section !== 'en' && section !== 'ma') {
@@ -66,17 +66,16 @@ module.exports.getAllOClass = (req : any, res : any) => {
 }
 
 module.exports.getSpecialClass = (req : any, res : any) => {
-    req.connection.query('SELECT teachers.name as tName, teachers.subname as tSubname, class.id, teachers.subname as ts, class.name, class.section, teachers.id as tId, teachers.subname FROM class LEFT JOIN teachers ON class.id = teachers.class_id WHERE class.id = ? AND class.school_id', [req.params.id, req.payload.school_id], (err: any, resp : any) => {
+    req.connection.query('SELECT teachers.name as tName, teachers.subname as tSubname, class.id, teachers.subname as ts, class.name, class.section, teachers.id as tId, teachers.subname FROM class LEFT JOIN teachers ON class.id = teachers.class_id WHERE class.id = ? AND class.school_id = ?', [req.params.id, req.payload.school_id], (err: any, resp : any) => {
+        if(err) console.log(err);
         res.status(201).json(resp[0]);
     })
 }
-
 module.exports.getOneClass = (req : any, res : any) => {
     req.connection.query('SELECT * FROM class WHERE id = ? AND school_id = ?', [req.params.id, req.payload.school_id], (err: any, resp : any) => {
         res.status(201).json(resp[0])
     })
 }
-
 module.exports.deleteClass = (req : any, res : any) => {
     const {id} = req.params;
     req.connection.query('DELETE FROM class WHERE id = ? AND school_id = ?', [id, req.payload.school_id], (err: any, resp : any) => {

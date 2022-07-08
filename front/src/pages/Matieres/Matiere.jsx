@@ -2,14 +2,16 @@ import React from 'react'
 import { useEffect } from "react";
 import { useState } from "react";
 import ReactLoading from 'react-loading';
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import * as Swal from 'sweetalert2';
 import {
     Modal
 } from "reactstrap"
 import AddMatiere from "./AddMatiere";
-import EditMatiere from "./EditMatiere";
+// import EditMatiere from "./EditMatiere";
 import { host } from '../../utils/fetch';
+import { subjectTraductions } from '../../local/subject';
+import { getLang } from '../../utils/lang';
 
 const Matiere = () => {
     const navigate = useNavigate()
@@ -22,8 +24,8 @@ const Matiere = () => {
     const [error, setError] = useState('');
     const [loadingDel, setLoadingDel] = useState(false);
     const [isAddMatier, setIsAddMatiere] = useState(false);
-    const [id, setId] = useState('');
-    const [isEditMatier, setIsEditMatiere] = useState(false);
+    // const [id, setId] = useState('');
+    // const [isEditMatier, setIsEditMatiere] = useState(false);
 
     useEffect(() => {
         (
@@ -64,15 +66,15 @@ const Matiere = () => {
     return <div style={{padding: '10px 10px'}} className='container'>
         
         <div style={{marginBottom: '10px'}}>
-            <button onClick={() => {setIsAddMatiere(v => !v)}} className="btn btn-blue">Ajouter une maitiere</button>
+            <button onClick={() => {setIsAddMatiere(v => !v)}} className="btn btn-blue">{subjectTraductions['fr'].addSubject}</button>
         </div>
         <table className="table table-dark table-bordered table-striped">
             <thead>
                 <tr>
-                    <th>Nom</th>
-                    <th>Slug</th>
-                    <th>Types</th>
-                    <th>Action</th>
+                    <th>{subjectTraductions['fr'].name}</th>
+                    <th>{subjectTraductions['fr'].slug}</th>
+                    <th>{subjectTraductions['fr'].type}</th>
+                    <th>{subjectTraductions['fr'].action}</th>
                 </tr>
             </thead>
             <tbody>
@@ -87,23 +89,23 @@ const Matiere = () => {
                             </td>
                             <td>
                                 {
-                                    matiere.section === 'en' ? 'Matiere anglophone' : matiere.section === 'fr' ? 'Matiere francophone' : 'Matiere maternelle'
+                                    matiere.section === 'ma' ?subjectTraductions[getLang()].mat : matiere.section === 'fr' ?subjectTraductions[getLang()].fr :subjectTraductions[getLang()].en
                                 }
                             </td>
                             <td style={{display: 'flex', justifyContent: 'space-between'}}>
-                                <button onClick={(e) => {setId(matiere.id); setIsEditMatiere(true)}} className="btn btn-warning"> Modifier </button>
+                                {/* <button onClick = { () => {setIsEditMatiere(matiere.id); setIsEditMatiere(v => !v  )}} className="btn btn-warning"> {subjectTraductions[getLang()].edit} </button> */}
                                 <button className="btn btn-danger" onClick={() => {deleteMatiere(matiere.id)}}> {loadingDel ? 'Suppression..' : 'Supprimer'} </button>
                             </td>
-                        </tr> }) : <tr> <td colSpan={4} style={{textAlign: 'center'}}>Aucune matiere pour l'instant. Voulez-vous en <Link to={'/matiere/add'}> ajouter</Link> ?</td> </tr>
+                        </tr> }) : <tr> {subjectTraductions[getLang()].nohavesubject + ' ' +subjectTraductions[getLang()].doyou} <button onClick={() => {setIsAddMatiere(v => !v)}} className="btn btn-blue"> {subjectTraductions[getLang()].add} </button></tr>
                 }
             </tbody>
         </table>
         <Modal isOpen={isAddMatier}>
             <AddMatiere  error={error} setError={setError} setIsSeq={setIsAddMatiere}/>
         </Modal>
-        <Modal isOpen={isEditMatier}>
+        {/* <Modal isOpen={isEditMatier}>
             <EditMatiere  error={error} setError={setError} setIsSeq={setIsEditMatiere} id={id}/>
-        </Modal>
+        </Modal> */}
     </div>
 }
 export default Matiere;

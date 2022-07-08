@@ -17,8 +17,8 @@ module.exports.register = async (req, res) => {
             res.status(401).json({success: false, message: "Les deux mot de passe ne correspondent pas !!"})
         }
         else{
-            const salt = bcrypt.genSalt()
-            const passwordCrypted = bcrypt.hash(password, salt)
+            const salt = await bcrypt.genSalt()
+            const passwordCrypted = await bcrypt.hash(password, salt)
             req.connection.query('INSERT INTO users(id, username, email, password) VALUES(?, ?, ?, ?)', [req.jwt.sign(username, req.env.SECRET), username, email, passwordCrypted], (err, resp) => {
                 if(!err) res.status(201).json({success: true})
                 else console.log(err);
@@ -33,6 +33,8 @@ module.exports.login = (req, res) => {
     const {username, password} = req.body;
     if (username && username !== '' && password && password !== '') {
         req.connection.query('SELECT * FROM users WHERE username = ?', [username], async (err, resp) => {
+            if (err) console.log(err);
+            
             if(resp.length < 1){
                 req.connection.query('SELECT * FROM teachers WHERE matricule = ?', [username], (err2, resp2) => {
                     if(resp2.length < 1){
@@ -100,5 +102,53 @@ module.exports.getTeacherOrAdmin = (req, res) => {
             if(err) console.log(err);
             else res.status(201).json(resp[0]);
         })
+    }
+}
+
+module.exports.updateUserOrAdmin = async (req: any, res: any) => {
+    if (req.payload.role === 'admin') {
+        const {email, username, password, confirm} = req.body;
+        console.log(req.body);
+        
+        if (email && username && password && confirm) {
+            if (password !== confirm) {
+                res.status(401).json({success: false, message: 'Les deux mots de passe ne correspondent pas !!'})
+            } else {
+                const salt = await bcrypt.genSalt()
+                const passwordCrypted = await bcrypt.hash(password, salt)
+                req.connection.query('UPDATE users SET username = ?, email = ?, password = ? WHERE id = ?', [username, email, passwordCrypted, req.payload.id], (err, resp) => {
+                    if(err) console.log(err);
+                    else res.status(201).json({success: false});
+                })
+            }
+        }else{
+            res.status(401).json({success: false, message: 'Svp remplissez tous les champs !!'})
+        }
+    } else {
+        const {name, subname, birthday, phone_number, sex} = req.body;
+        
+        if (name && subname && birthday && phone_number && sex) {
+            if (name.length < 4) {
+                res.status(401).json({success: false, message: 'Le nom de l\'enseignant doit avoir au moins 3 caracteres!!'})
+            }
+            else if (subname.length < 4) {
+                res.status(401).json({success: false, message: 'Le prenom de l\'enseignant doit avoir au moins 3 caracteres!!'})
+            }
+            else if (phone_number < 8) {
+                res.status(401).json({success: false, message: 'Numero invalide'})
+            }
+            else if (sex !== 'f' && sex !== 'm') {
+                res.status(401).json({success: false, message: 'Sexe invalide'})
+            }
+            else{
+                const p = phone_number.toString()
+                req.connection.query('UPDATE teachers SET name = ? , subname = ?, sex = ?, phone_number = ? WHERE id = ?', [ name, subname, sex, p, req.payload.id], (err, resp) => {
+                    if(err) console.log(err);
+                    else res.status(401).json({success: true})
+                })
+            }
+        }else{
+            res.status(401).json({success: false, message: 'Svp remplissez tous les champs !!'})
+        }
     }
 }

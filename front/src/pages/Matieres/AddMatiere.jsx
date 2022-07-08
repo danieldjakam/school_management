@@ -1,7 +1,9 @@
 import React from 'react'
 import { useEffect } from "react";
 import { useState } from "react";
+import { subjectTraductions } from '../../local/subject';
 import { host } from '../../utils/fetch';
+import { getLang } from '../../utils/lang';
 
 const AddMatiere = ({error, setError, setIsSeq}) => {
   const [trims, setTrims] = useState({});
@@ -55,38 +57,37 @@ const AddMatiere = ({error, setError, setIsSeq}) => {
   }
   return <div className="card login-card">
     <div className="card-head">
-      <h1>Ajouter une matiere</h1>
+      <h1>{ subjectTraductions[getLang()].addSubject }</h1>
     </div>
     <form onSubmit={(e) => {handleAdd(e)}}>
       <div className="card-content">
         <div className="field">
-          <div className="label">Nom de la matiere</div>
-          <input type="text" value={data.name} onChange={(e) => {setData(val => {return {...val, name: e.target.value}})}} placeholder="Entrer un nom de matiere valide" />
+          <div className="label">{ subjectTraductions[getLang()].subjectName }</div>
+          <input type="text" value={data.name} onChange={(e) => {setData(val => {return {...val, name: e.target.value}})}} placeholder={ subjectTraductions[getLang()].subjectName } />
         </div> 
         <div className="field">
-          <div className="label">Slug de la matiere</div>
-          <input type="text" value={data.slug} onChange={(e) => {setData(val => {return {...val, slug: e.target.value}})}} placeholder="Entrer un nom de matiere valide" />
+          <div className="label">{ subjectTraductions[getLang()].slug }</div>
+          <input type="text" value={data.slug} onChange={(e) => {setData(val => {return {...val, slug: e.target.value}})}} placeholder={ subjectTraductions[getLang()].slugName } />
         </div> 
         <div className="field">
-            <div className="label">Section</div>
-            <select value={data.section} onChange={(e) => {setData(val => {return {...val, section: e.target.value}})}} className="form-control form-control-lg"
+            <div className="label">{ subjectTraductions[getLang()].section }</div>
+            <select value={data.section}  className="form-control form-control-lg" onChange={(e) => {setData(val => {return {...val, section: e.target.value}})}}
             placeholder="Enter password">
-                <option value={''}>--- Selectionner la section ----</option>
-                <option value="fr">Francophone</option>
-                <option value="en">Anglophone</option>
-                <option value="ma">Maternelle</option>
+                <option value={''}>{ subjectTraductions[getLang()].selectSection }</option>
+                <option value="fr">{ subjectTraductions[getLang()].fr }</option>
+                <option value="en">{ subjectTraductions[getLang()].en }</option>
+                <option value="ma">{ subjectTraductions[getLang()].mat }</option>
             </select>
-        </div> 
+        </div>
         <div className="field">
-          <div className="label">Competence </div>
-          <select value={data.comId} onChange={(e) => {setData(val => {return {...val, comId: e.target.value}})}} className="form-control form-control-lg"
-                placeholder="Enter password">
-                  <option value={''}>--- Selectionner la competence ----</option>
+          <div className="label">{ subjectTraductions[getLang()].competence } </div>
+          <select value={data.comId}  className="form-control form-control-lg" onChange={(e) => {setData(val => {return {...val, comId: e.target.value}})}}>
+                  <option value={''}>{ subjectTraductions[getLang()].selectCompetence }</option>
                   {
                     trims.length > 0 ? trims.map(trim => {
                                           return <option value={trim.id}>{trim.name}</option>                    
                                         })
-                                  : <option value={''}>Veuilez ajouter des competences pour continuer</option>
+                                  : <option value={''}>{ subjectTraductions[getLang()].addCom }</option>
                   }
                 </select>
         </div> 
@@ -95,9 +96,9 @@ const AddMatiere = ({error, setError, setIsSeq}) => {
         <table className="table table-bordered">
               <thead className="table-dark" style={{textAlign :'center'}}>
                 <tr>
-                  <th>Selectionne ?</th>
-                  <th>Nom</th>
-                  <th>Sur</th>
+                  <th>{ subjectTraductions[getLang()].select } ?</th>
+                  <th>{ subjectTraductions[getLang()].name }</th>
+                  <th>{ subjectTraductions[getLang()].over }</th>
                 </tr>
               </thead>
               <tbody>
@@ -106,7 +107,7 @@ const AddMatiere = ({error, setError, setIsSeq}) => {
                     <input type="checkbox" checked={data.orale} onChange={(e) => {setData(val => {return {...val, orale: !data.orale}})}} />
                   </td>
                   <td>
-                    <label className="check-label" htmlFor="form3Example3">Orale</label>
+                    <label className="check-label">{ subjectTraductions[getLang()].oral }</label>
                   </td>
                   <td>
                     {
@@ -119,7 +120,7 @@ const AddMatiere = ({error, setError, setIsSeq}) => {
                     <input type="checkbox" checked={data.ecrit} onChange={(e) => {setData(val => {return {...val, ecrit: !data.ecrit}})}} />
                   </td>
                   <td>
-                    <label className="check-label" htmlFor="form3Example3">Ecrit</label>
+                    <label className="check-label">{ subjectTraductions[getLang()].ecrit }</label>
                   </td>
                   <td>
                     {
@@ -132,7 +133,7 @@ const AddMatiere = ({error, setError, setIsSeq}) => {
                     <input type="checkbox" checked={data.savEtre} onChange={(e) => {setData(val => {return {...val, savEtre: !data.savEtre}})}} />
                   </td>
                   <td>
-                    <label className="check-label" htmlFor="form3Example3">Savoir Etre</label>
+                    <label className="check-label">{ subjectTraductions[getLang()].savoirEtre }</label>
                   </td>
                   <td>
                     {
@@ -145,7 +146,7 @@ const AddMatiere = ({error, setError, setIsSeq}) => {
                     <input type="checkbox" checked={data.pratique} onChange={(e) => {setData(val => {return {...val, pratique: !data.pratique}})}} />
                   </td>
                   <td>
-                    <label className="check-label" htmlFor="form3Example3">pratique</label>
+                    <label className="check-label">{ subjectTraductions[getLang()].pratic }</label>
                   </td>
                   <td>
                     {
@@ -161,8 +162,8 @@ const AddMatiere = ({error, setError, setIsSeq}) => {
         } 
       </div>
       <div className="card-footer">
-            <button className="btn btn-blue" type="submit">{loading ? 'Enregistrement' : 'Enregistrer'}</button>
-        <button onClick={() => {handleCancel()}} type="submit">Fermer (Annuler)</button>
+        <button className="btn btn-blue" type="submit">{loading ? subjectTraductions[getLang()].saving : subjectTraductions[getLang()].save}</button>
+        <button onClick={() => {handleCancel()}} type="submit"> {subjectTraductions[getLang()].close} </button>
       </div>
       
     </form>

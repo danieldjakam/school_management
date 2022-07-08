@@ -1,5 +1,6 @@
 const pdf = require('pdf-creator-node');
 const optionsPdf = require('../../helpers/optionsPdf')
+const fsTeacher = require('fs');
 
 module.exports.addTeacher = (req, res) => {
     const {name, subname, birthday, phone_number, sex, classId} = req.body;
@@ -20,7 +21,7 @@ module.exports.addTeacher = (req, res) => {
         else{
             const t = [];
             for (let i = 0; i < 4; i++) {
-              const i = Math.round(Math.random() * 10);
+              const i = Math.round((Math.random() * 10));
               t.push(i);
             }
             const password = t.join('')
@@ -29,7 +30,7 @@ module.exports.addTeacher = (req, res) => {
                 if (erroorr) {
                     console.log(erroorr);
                 }else{
-                    let {cname} = succc[0]
+                    let cname = succc[0].name;
                     cname = cname.replace(' ', '')
                     cname = cname.toUpperCase()
                     const code = 'SEM-'+cname;
@@ -57,7 +58,8 @@ module.exports.addTeacher = (req, res) => {
 module.exports.updateTeacher = (req, res) => {
     const {name, subname, class_id, OldclassId, birthday, phone_number, sex} = req.body;
     const {id} = req.params;
-    if (name && subname && class_id && !birthday && !phone_number && !sex) {
+    
+    if (name && subname && class_id && birthday && phone_number && sex) {
         if (name.length < 4) {
             res.status(401).json({success: false, message: 'Le nom de l\'enseignant doit avoir au moins 3 caracteres!!'})
         }
@@ -72,26 +74,32 @@ module.exports.updateTeacher = (req, res) => {
         }
         else{
 
-            req.connection.query('SELECT name FROM class WHERE id = ? AND school_id ', [class_id, req.payload.school_id], (erroorr, c) => {
+            req.connection.query('SELECT name FROM class WHERE id = ? AND school_id = ? ', [class_id, req.payload.school_id], (erroorr, c) => {
                 if(erroorr) console.log(erroorr);
                 
-                let {cname} = c[0]
+                let cname = c[0].name
                 cname = cname.replace(' ', '')
                 cname = cname.toUpperCase()
                 const code = 'SEM-'+cname;
                 const p = phone_number.toString()
-                req.connection.query('UPDATE teachers SET name = ? , subname = ?, class_id = ?, sex = ?, phone_number = ?, birthday = ?, matricule = ? WHERE id = ?', [ name, subname, class_id, sex, p, birthday, code, id], (err, resp) => {
+                req.connection.query('UPDATE teachers SET name = ? , subname = ?, class_id = ?, sex = ?, phone_number = ?, matricule = ? WHERE id = ?', [ name, subname, class_id, sex, p, code, id], (err, resp) => {
                     if(err) console.log(err);
 
                     else {
-                        req.connection.query('UPDATE class SET teacherId = ? WHERE id = ? AND school_id', [null, OldclassId, req.payload.school_id], (err2, resp2) => {
+                        req.connection.query('UPDATE class SET teacherId = ? WHERE id = ? AND school_id = ?', [class_id, OldclassId, req.payload.school_id], (err2, resp2) => {
                             if (err2) {
                                 if(!err2) res.status(201).json({success: true})
-                                else console.log(err2);
+                                else {
+                                    res.status(401).json({success: false, message: err2})
+                                    console.log(err2);
+                                }
                             }else{
-                                req.connection.query('UPDATE class SET teacherId = ? WHERE id = ? AND school_id', [class_id, OldclassId, req.payload.school_id], (err3, resp2) => {
+                                req.connection.query('UPDATE class SET teacherId = ? WHERE id = ? AND school_id = ?', [class_id, OldclassId, req.payload.school_id], (err3, resp2) => {
                                     if(!err3) res.status(201).json({success: true})
-                                    else console.log(err3);
+                                    else {
+                                        res.status(401).json({success: false, message: err3})
+                                        console.log(err3);
+                                    }
                                 })
                             }
                         })
@@ -112,7 +120,7 @@ module.exports.getAllTeachers = (req, res) => {
 }
 
 module.exports.getOneTeacher = (req, res) => {
-    req.connection.query('SELECT * FROM teachers WHERE id = ? AND school_id', [req.params.id, req.payload.school_id] , (err, resp) => {
+    req.connection.query('SELECT * FROM teachers WHERE id = ? AND school_id = ?', [req.params.id, req.payload.school_id] , (err, resp) => {
         if(err) console.log(err);
         res.status(201).json(resp[0])
     })
@@ -120,13 +128,13 @@ module.exports.getOneTeacher = (req, res) => {
 
 module.exports.deleteTeacher = (req, res) => {
     const {id} = req.params;
-    req.connection.query('DELETE FROM teachers WHERE id = ? AND school_id', [id, req.payload.school_id], (err, resp) => {
+    req.connection.query('DELETE FROM teachers WHERE id = ? AND school_id = ?', [id, req.payload.school_id], (err, resp) => {
         res.status(201).json({success: true})
     })
 }
 
 module.exports.downloadTeachersPassword = (req, res) => {
-    const html = req.fs.readFileSync('templates/teachersPassword.html', 'utf-8');
+    const html = fsTeacher.readFileSync('src/templates/teachersPassword.html', 'utf-8');
     
     req.connection.query('SELECT teachers.name, subname, matricule, password, class.name as class FROM teachers LEFT JOIN class ON teachers.class_id = class.id', [], (errr, teachers) => {
         
@@ -149,7 +157,7 @@ module.exports.downloadTeachersPassword = (req, res) => {
 }
 
 module.exports.generateNewPasswords = (req, res) => {
-    req.connection.query('SELECT * FROM teachers WHERE school_id', [req.payload.school_id], (err, teachers) => {
+    req.connection.query('SELECT * FROM teachers WHERE school_id = ?', [req.payload.school_id], (err, teachers) => {
         try {
             teachers.forEach(teacher => {
                 const t = []

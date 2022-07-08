@@ -15,7 +15,7 @@ import BulletinTrim from './pages/Trimestres/BulletinTrim';
 import Sidebar from './components/Sidebar';
 import Login from './pages/Login';
 import SearchView from './pages/Search';
-import Params from './pages/Params';
+import Params from './pages/Profile/Params';
 import Error404 from './pages/Error404';
 import TrimStu from './pages/Trimestres/TrimStu';
 import SeqStu from './pages/Sequences/SeqStu';

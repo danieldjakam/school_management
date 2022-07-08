@@ -13,6 +13,8 @@ import EditTeacher from "./EditTeacher";
 import ShowMdp from './ShowMdp';
 import { host } from '../../utils/fetch';
 import { handleChangeCsvFile } from '../../utils/functions';
+import { teacherTraductions } from '../../local/teacher';
+import { getLang } from '../../utils/lang';
 
 
 const Teachers = () => {
@@ -73,12 +75,10 @@ const Teachers = () => {
         setGenerating(true)
         fetch(host+'/teachers/regeneratePassword', {headers: {'Authorization': sessionStorage.user}})
             .then((res) => res.json())
-            .then((res) => { 
-                console.log(res);
+            .then((res) => {
                 if (res.success) {
                     window.location.reload();
                 }else{
-                    console.log(res.message);
                     setError(res.message)
                 }
             })
@@ -87,11 +87,11 @@ const Teachers = () => {
     return <div style={{padding: '10px 10px'}} className='container'>
         
         <div style={{marginBottom: '10px'}}>
-            <button onClick={() => {setIsAddTeacher(v => !v)}} className="btn btn-blue">Ajouter un enseignant</button>
-            <label htmlFor='csvFile' style={{marginLeft: '10px'}} className="btn btn-success">Importer les enseignants</label>
+            <button onClick={() => {setIsAddTeacher(v => !v)}} className="btn btn-blue">{teacherTraductions[getLang()].addTeacher}</button>
+            <label htmlFor='csvFile' style={{marginLeft: '10px'}} className="btn btn-success">{teacherTraductions[getLang()].importTeacher}</label>
             <input type="file" accept='.csv' id='csvFile' style={{display: 'none'}} onChange={(e) => {handleChangeCsvFile(e, '/upload/teachers/csv', setError)}} />
-            <button onClick={() => {regeneratePassword()}} style={{marginLeft: '10px'}} className="btn btn-blue">{generating ? 'En ocurs...' : 'Generer les nouveaux mdp'}</button>
-            <a href={host+"/teachers/downloadTeachersPassword"} target="_blank" rel="noopener noreferrer" style={{marginLeft: '10px'}} className="btn btn-blue">Telecharger la liste des mdp</a>
+            <button onClick={() => {regeneratePassword()}} style={{marginLeft: '10px'}} className="btn btn-blue">{generating ? teacherTraductions[getLang()].loading : teacherTraductions[getLang()].generateNewMdp}</button>
+            <a href={host+"/teachers/downloadTeachersPassword"} target="_blank" rel="noopener noreferrer" style={{marginLeft: '10px'}} className="btn btn-blue">{teacherTraductions[getLang()].downloadTeacherMdp}</a>
         </div>
         <div className="allClas col-md-12">
             {
@@ -103,7 +103,7 @@ const Teachers = () => {
                                 </div>
                                 <div className="qq">
                                     <span className="q">
-                                        Noms: 
+                                        {teacherTraductions['fr'].name}: 
                                     </span>
                                     <span className="r">
                                         {teacher.name}
@@ -111,7 +111,7 @@ const Teachers = () => {
                                 </div>
                                 <div className="qq">
                                     <span className="q">
-                                        Prenoms: 
+                                    {teacherTraductions['fr'].subname}: 
                                     </span>
                                     <span className="r">
                                         {teacher.subname}
@@ -119,7 +119,7 @@ const Teachers = () => {
                                 </div>  
                                 <div className="qq">
                                     <span className="q">
-                                        Classe: 
+                                        {teacherTraductions['fr'].class}: 
                                     </span>
                                     <span className="r">
                                         {teacher.className}
@@ -127,15 +127,17 @@ const Teachers = () => {
                                 </div>
                                 <div className="qq">
                                     <span className="q">
-                                        Section:
+                                        {teacherTraductions['fr'].section}:
                                     </span>
                                     <span className="r">
-                                        {teacher.section === 'en' ? 'Anglophone' : teacher.section === 'fr' ? 'Francophone' : 'Maternelle'}
+                                        {
+                                            teacher.section === 'ma' ? teacherTraductions[getLang()].mat : teacher.section === 'fr' ? teacherTraductions[getLang()].fr : teacherTraductions[getLang()].en
+                                        }    
                                     </span>
                                 </div>
                                 <div className="qq">
                                     <span className="q">
-                                        Matr.: 
+                                    {teacherTraductions['fr'].mr}: 
                                     </span>
                                     <span className="r">
                                         {teacher.matricule}
@@ -143,14 +145,14 @@ const Teachers = () => {
                                 </div>  
                             </div>
                             <div className="bottom">
-                                <button onClick={() => {setMdp(teacher.password); setIsMdp(v => !v);}} className="btn btn-warning"> Voir le mdp </button>
-                                <button onClick={() => {setIsEditTeacher(v => !v); setTeacherToEditId(teacher.id)}} className="btn btn-success"> Editer</button>
-                                <button className="btn btn-danger" onClick={() => {deleteTeacher(teacher.id)}}> {loadingDel ? 'Suppression..' : 'Supprimer'} </button>
+                                <button onClick={() => {setMdp(teacher.password); setIsMdp(v => !v);}} className="btn btn-warning"> {teacherTraductions[getLang()].seeMdp} </button>
+                                <button onClick={() => {setIsEditTeacher(v => !v); setTeacherToEditId(teacher.id)}} className="btn btn-success"> {teacherTraductions[getLang()].edit}</button>
+                                <button className="btn btn-danger" onClick={() => {deleteTeacher(teacher.id)}}> {loadingDel ? teacherTraductions[getLang()].deleting : teacherTraductions[getLang()].delete} </button>
                             </div>  
                         </div> }) : <div className="i">
                                         <div className="empty monINfos">
-                                            Aucun enseignant pour l'instant <br />
-                                            Voulez-vous en <button onClick={() => {setIsAddTeacher(v => !v)}} className="btn btn-blue">ajouter ?</button>
+                                            {teacherTraductions[getLang()].noTeacher} <br />
+                                            {teacherTraductions[getLang()].doYou} <button onClick={() => {setIsAddTeacher(v => !v)}} className="btn btn-blue"> {teacherTraductions[getLang()].add} </button>
                                         </div>
                                     </div>
                 }

@@ -12,6 +12,8 @@ import {
 import { useNavigate } from "react-router-dom";
 import { host } from '../../utils/fetch';
 import { handleChangeCsvFile } from '../../utils/functions';
+import { getLang } from '../../utils/lang';
+import { classTraductions } from '../../local/class';
 
 const Class = () => {
     const navigate = useNavigate()
@@ -81,7 +83,7 @@ const Class = () => {
                             </div>
                             <div className="qq">
                                 <span className="q">
-                                    Classe:
+                                {classTraductions[getLang()].class}:
                                 </span>
                                 <span className="r">
                                     {classs.name}
@@ -89,15 +91,15 @@ const Class = () => {
                             </div>
                             <div className="qq">
                                 <span className="q">
-                                    Section:
+                                {classTraductions[getLang()].section}:
                                 </span>
                                 <span className="r">
-                                    {classs.section === 'en' ? 'Anglo' : classs.section === 'fr' ? 'Franco' : 'Maternelle'}
+                                    {classs.section === 'ma' ? classTraductions[getLang()].mat : classs.section === 'fr' ? classTraductions[getLang()].fr : classTraductions[getLang()].en}
                                 </span>
                             </div>
                             <div className="qq">
                                 <span className="q">
-                                    Niveau:
+                                    {classTraductions[getLang()].level}:
                                 </span>
                                 <span className="r">
                                     {classs.level}
@@ -105,15 +107,15 @@ const Class = () => {
                             </div>
                         </div>
                         <div className="bottom">
-                            <Link to={`/students/${classs.id}`} className="btn btn-primary"> Visiter </Link>
-                            <button onClick={() => { setClassToEditId(classs.id); setIsEditClass(v => !v)}} className="btn btn-warning"> Editer </button>
-                            <button className="btn btn-danger" onClick={() => {deleteClass(classs.id)}}> {loadingDel ? 'Suppression..' : 'Supprimer'} </button>
+                            <Link to={`/students/${classs.id}`} className="btn btn-primary"> {classTraductions[getLang()].visite} </Link>
+                            <button onClick={() => { setClassToEditId(classs.id); setIsEditClass(v => !v)}} className="btn btn-warning"> {classTraductions[getLang()].edit} </button>
+                <button className="btn btn-danger" onClick={() => {deleteClass(classs.id)}}> {loadingDel ? classTraductions[getLang()].deleting : classTraductions[getLang()].delete} </button>
                         </div>  
                     </div>
                 }) : <div className="i">
                         <div className="empty monINfos">
-                            Aucune classe pour l'instant <br />
-                            Voulez-vous en <button onClick={() => {setIsAddClass(v => !v)}} className="btn btn-blue">ajouter ?</button>
+                            {classTraductions[getLang()].nohaveclass} <br />
+                            {classTraductions[getLang()].doyou} <button onClick={() => {setIsAddClass(v => !v)}} className="btn btn-blue"> {classTraductions[getLang()].add} </button>
                         </div>
                     </div>
         }

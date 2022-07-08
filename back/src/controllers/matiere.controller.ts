@@ -1,6 +1,5 @@
 module.exports.addMatiere = async (req, res) => {
     const {name, slug, section, comId, orale, ecrit, savEtre, pratique, oraleOver, ecritOver, savOver, pratiqueOver} = req.body;
-    console.log(req.body);
     if ( name && name !== '' && slug && slug !== '' &&  section && section !== '' &&  comId && comId !== '' ) {
         if (name.length < 3 || name.length > 50) {
             res.status(401).json({success: false, message: "Le nom doit etre compris entre 5 et 50 caracteres !!"})
@@ -25,19 +24,19 @@ module.exports.addMatiere = async (req, res) => {
                     over: ecritOver
                 }]
             }
-            if (savEtre) {
-                tag = [...tag, {
-                    name: 'Savoir Etre',
-                    over: savOver
-                }]
-            }
             if (pratique) {
                 tag = [...tag, {
                     name: 'Pratique',
                     over: pratiqueOver
                 }]
             }
-            req.connection.query('INSERT INTO matiere(id, name, slug, section, comId, tags) VALUES(?, ?, ?, ?, ?, ?)', [req.sign(name, req.env.SECRET), name, slug, section, comId, JSON.stringify(tag)], (err, resp) => {
+            if (savEtre) {
+                tag = [...tag, {
+                    name: 'Savoir Etre',
+                    over: savOver
+                }]
+            }
+            req.connection.query('INSERT INTO matiere(id, name, slug, section, comId, tags) VALUES(?, ?, ?, ?, ?, ?)', [req.jwt.sign(name, req.env.SECRET), name, slug, section, comId, JSON.stringify(tag)], (err, resp) => {
                 if(!err) res.status(201).json({success: true})
                 else console.log(err);
             })
@@ -70,7 +69,6 @@ module.exports.getOneMatiere = (req, res) => {
 
 module.exports.updateMatiere = (req, res) => {
     const {name, slug, section, comId, orale, ecrit, savEtre, pratique, oraleOver, ecritOver, savOver, pratiqueOver} = req.body;
-    console.log(req.body);
     if ( name && name !== '' && slug && slug !== '' &&  section && section !== '' &&  comId && comId !== ''  ) {
         if (name.length < 3 || name.length > 50) {
             res.status(401).json({success: false, message: "Le nom doit etre compris entre 5 et 50 caracteres !!"})

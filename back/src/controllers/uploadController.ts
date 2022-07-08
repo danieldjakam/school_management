@@ -7,6 +7,7 @@ module.exports.uploadStudentCsv = (req: any, res:any ) => {
         .fromString(csvText)
         .then((students)=>{ 
             students.forEach(student => {
+                
                 req.connection.query('SELECT year_school FROM settings WHERE id = 1', (rerr, respe) => {
                     const {year_school} = respe[0];
                     const {name, subname, birthday, fatherName, phone_number, profession, class_name, email, sex, status} = student
@@ -92,16 +93,17 @@ module.exports.uploadNoteCsv = (req: any, res:any ) => {
     csvtojson()
         .fromString(csvText)
         .then((notes)=>{ 
-            notes.forEach(note => {
-                const {value, exam_id, student_id, class_id, matiere_id, tag_name} = note;
-                let val: number = 0;
-                val = parseFloat(value) > 0 ? value : 0;  
-                val = parseFloat(value) > 20 ? 20 : value;
-                req.connection.query('INSERT INTO notes(student_id, exam_id, class_id, matiere_id, tag_name, value) VALUES(?, ?, ?, ?, ?, ?)', [student_id, exam_id, class_id, matiere_id, tag_name, val], (err, respp) => {
-                    if(err) console.log(err);
-                    else res.status(201).json({success: true})
-                })
-            })
+            
+            // notes.forEach(note => {
+            //     const {value, exam_id, student_id, class_id, matiere_id, tag_name} = note;
+            //     let val: number = 0;
+            //     val = parseFloat(value) > 0 ? value : 0;  
+            //     val = parseFloat(value) > 20 ? 20 : value;
+            //     req.connection.query('INSERT INTO notes(student_id, exam_id, class_id, matiere_id, tag_name, value) VALUES(?, ?, ?, ?, ?, ?)', [student_id, exam_id, class_id, matiere_id, tag_name, val], (err, respp) => {
+            //         if(err) console.log(err);
+            //         else res.status(201).json({success: true})
+            //     })
+            // })
         })
         .catch(err => {
             console.error(err);

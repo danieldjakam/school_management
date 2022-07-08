@@ -11,7 +11,6 @@ let mailTrasporter = nodemailer.createTransport({
 
 module.exports.sendBulletinToParentByEmail = (req, res) => {
     const {id} = req.params;
-    console.log('g');
 
     req.connection.query('SELECT email FROM students WHERE id = ?', [id], (err, resp) => {
         const {email} = resp[0];

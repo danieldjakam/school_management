@@ -6,6 +6,8 @@ import OneClass from './Class/OneClass';
 import OneTeacher from './Teachers/OneTeacher';
 import Onestudent from './Students/OneStudent';
 import { host } from '../utils/fetch';
+import { searchTraductions } from '../local/search';
+import { getLang } from '../utils/lang';
 
 function SearchView() {
   const [searchValue, setSearchValue] = useState('');
@@ -111,7 +113,7 @@ function SearchView() {
   return (
     <div className='container'>
         <form onSubmit={(e) => {handleSubmit(e)}} className="searchForm">
-          <input type="search" value={searchValue} onChange={(e) => {setSearchValue(e.target.value)}} placeholder={'Rechercher un eleve, enseignant ou classe par son nom, prenom ou matricule (uniquement les enseignants)'} />
+          <input type="search" value={searchValue} onChange={(e) => {setSearchValue(e.target.value)}} placeholder={searchTraductions[getLang()].placeholder} />
           <button className="btn btn-elementary">
             <Search/>
           </button>
@@ -120,15 +122,15 @@ function SearchView() {
         {
           isQuestionSearch ? <div className="optionsSearch">
                               <div onClick={() => {handleSearch('s')}} className={`${searchColumn === 's' ? 'isthis' : ''} option`}>
-                                <PeopleFill/> Rechercher parmi les eleves
+                                <PeopleFill/> {searchTraductions[getLang()].searchInStudent}
                               </div>
                               {
                                 sessionStorage.stat === 'ad' ? <> 
                                   <div onClick={() => {handleSearch('t')}} className={`${searchColumn === 't' ? 'isthis' : ''} option`}>
-                                    <PeopleFill/> Rechercher parmi les enseignants
+                                    <PeopleFill/> {searchTraductions[getLang()].searchInTeacher}
                                   </div>
                                   <div onClick={() => {handleSearch('c')}} className={`${searchColumn === 'c' ? 'isthis' : ''} option`}>
-                                    <HospitalFill/> Rechercher parmi les classes
+                                    <HospitalFill/> {searchTraductions[getLang()].searchInClass}
                                   </div>
                                 </> : <></>
                               }
@@ -158,8 +160,8 @@ function SearchView() {
                   </div>
                 : <div className="i">
                     <div className="empty monINfos">
-                      Aucun resultat pour votre recherche! <br />
-                      Essayez de choisir un autre endroit de recherche
+                      {searchTraductions[getLang()].noResult} <br />
+                      {searchTraductions[getLang()].help}
                     </div>
                   </div>
         }

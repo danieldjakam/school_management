@@ -2,6 +2,7 @@ import React from 'react'
 import { useEffect, useRef } from "react";
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { sequenceTraductions } from '../../local/sequence';
 import { host } from '../../utils/fetch';
 import { handleChangeCsvFile } from '../../utils/functions';
 
@@ -159,9 +160,9 @@ const Exams = () => {
             <div className="collapse navbar-collapse" id="navbarNav">
                 <ul className="navbar-nav" style={{fontSize: '1.3rem', display:"flex", justifyContent:'space-between'}}>
                     <h2 style={{marginLeft  : '40px'}}>{actualExam.name} : {ActualClass.name}</h2>
-                    <a href={host+"/download/pdf/bul/"+class_id+'/'+exam_id} target={'_blank'} className="btn btn-success">Telecharger les bulletins</a>
-                    <button onClick={() => {}} style={{marginLeft: '10px'}} className="btn btn-primary">Calculer les moyennes</button>
-                    <label htmlFor='csvFile' style={{marginLeft: '10px'}} className="btn btn-success">Importer les notes</label>
+                    <a href={host+"/download/pdf/bul/"+class_id+'/'+exam_id} target={'_blank'} className="btn btn-success">{sequenceTraductions['fr'].downloadBuls}</a>
+                    {/* <button onClick={() => {}} style={{marginLeft: '10px'}} className="btn btn-primary">Calculer les moyennes</button> */}
+                    <label htmlFor='csvFile' style={{marginLeft: '10px'}} className="btn btn-success">{sequenceTraductions['fr'].importNotes}</label>
                     <input type="file" accept='.csv' id='csvFile' style={{display: 'none'}} onChange={(e) => {handleChangeCsvFile(e, '/upload/notes/csv', setError)}} />
                 </ul>
             </div>
@@ -178,7 +179,7 @@ const Exams = () => {
                     N
                 </th>
                 <th rowSpan={3}>
-                    Nom
+                {sequenceTraductions['fr'].name}
                 </th>
                 {
                     coms.length > 0 ? coms.map((com, ID) => {
@@ -188,13 +189,13 @@ const Exams = () => {
                             total += tags.length + 1;
                         })
                         return <th key={ID} colSpan={total}>{com.name}</th>
-                    }) : <>Aucune competence</>
+                    }) : <>{sequenceTraductions['fr'].noCom}</>
                 }
                 <th colSpan={3} rowSpan={2}>
-                    Essentiel
+                    {sequenceTraductions['fr'].essential}
                 </th>
                 <th colSpan={1} rowSpan={3}>
-                    Action
+                    {sequenceTraductions['fr'].action}
                 </th>
             </tr>   
             <tr className="table-light">
@@ -217,13 +218,13 @@ const Exams = () => {
                                             return <td>{tag.name} / {tag.over}</td>
                                         })
                             }
-                            <td>Total / {total}</td>
+                            <td>{sequenceTraductions['fr'].total} / {total}</td>
                         </>   
                     })        
                 } 
-                <td>Total des points</td>
-                <td>Moyenne</td>
-                <td>Rang</td>
+                <td>{sequenceTraductions['fr'].totalOfPoints}</td>
+                <td>{sequenceTraductions['fr'].average}</td>
+                <td>{sequenceTraductions['fr'].rank}</td>
                 
             </tr>
         </thead>
@@ -280,13 +281,13 @@ const Exams = () => {
                         </td>
                         <td>
                             <Link to={`${student.id}`} className="btn btn-primary">
-                                Voir le Bulletin
+                                {sequenceTraductions['fr'].seeBul}
                             </Link>
                         </td>
                     </tr>
                 }) : <tr className={'table-light'}>
                     <td colSpan={144}>
-                        Aucun eleve dans cette classe.                
+                    {sequenceTraductions['fr'].noStudent}                
                     </td>
                 </tr>
             }

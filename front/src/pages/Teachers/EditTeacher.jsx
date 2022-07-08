@@ -1,7 +1,9 @@
 import React from 'react'
 import { useEffect } from "react";
 import { useState } from "react";
+import { teacherTraductions } from '../../local/teacher';
 import { host } from '../../utils/fetch';
+import { getLang } from '../../utils/lang';
 
 const EditTeacher = ({error, setError, setIsEditClass, teacherToEditId}) => {
     const [oldC, setOldC] = useState('')
@@ -14,7 +16,7 @@ const EditTeacher = ({error, setError, setIsEditClass, teacherToEditId}) => {
                 setLoading(true)
                 const resp = await fetch(host+'/class/getOAll', {headers: {
                     'Authorization': sessionStorage.user
-                }})
+                }}).catch(e => setError(e))
                 const data = await resp.json();
                 setClasss(data);
                 setLoading(false);
@@ -27,7 +29,7 @@ const EditTeacher = ({error, setError, setIsEditClass, teacherToEditId}) => {
                 setLoading(true)
                 const resp = await fetch(host+'/teachers/'+teacherToEditId, {headers: {
                   'Authorization': sessionStorage.user
-                }})
+                }}).catch(e => setError(e))
                 const data = await resp.json();
                 setOldC(data.class_id)
                 setTeacher(data);
@@ -43,14 +45,13 @@ const EditTeacher = ({error, setError, setIsEditClass, teacherToEditId}) => {
         fetch(host+'/teachers/'+teacherToEditId, {method: 'PUT', body: JSON.stringify(teacher), headers: {'Content-Type': 'application/json', 'Authorization': sessionStorage.user}})
         .then((res) => res.json())
         .then(res => {
-          console.log(res);
-          if (res.success) {
-          }else{
-              setError('message')
+            if (res.success) {
+                window.location.reload()
+            }else{
+                setError(res.message)
             }
-        })
+        }).catch(e => setError(e))
         setLoading(false)
-        window.location.reload()
     }
     const handleCancel = () => {
       setIsEditClass(v => !v)
@@ -59,57 +60,53 @@ const EditTeacher = ({error, setError, setIsEditClass, teacherToEditId}) => {
     
     return <div className="card login-card">
       <div className="card-head">
-        <h1>Editer un enseignant</h1>
+      <h1>{teacherTraductions[getLang()].editTeacher}</h1>
+    </div>
+    <form onSubmit={(e) => {handleUpdate(e)}}>
+      <div className="card-content">
+        <div className="field">
+            <div className="label">{teacherTraductions[getLang()].teacherName}</div>
+            <input type="text" value={teacher.name} onChange={(e) => {setTeacher(val => {return {...val, name: e.target.value}})}} placeholder={teacherTraductions[getLang()].teacherName} />
+        </div> 
+        <div className="field">
+            <div className="label">{teacherTraductions[getLang()].teacherSubname}</div>
+            <input type="text" value={teacher.subname} onChange={(e) => {setTeacher(val => {return {...val, subname: e.target.value}})}} placeholder={teacherTraductions[getLang()].teacherSubname} />
+        </div> 
+        <div className="field">
+            <div className="label">{teacherTraductions[getLang()].teacherClassname}</div>
+            <select value={teacher.class_id} onChange={(e) => {setTeacher(val => {return {...val, class_id: e.target.value}})}} className="form-control"
+                placeholder={teacherTraductions[getLang()].teacherClassname}>
+                    <option value={''}>{teacherTraductions[getLang()].selectClass}</option>
+                    {
+                        classs.length > 0 ? classs.map((classG) => {
+                            return <option value={classG.id}>{classG.name}</option>
+                        }) : <option value={''}>{teacherTraductions[getLang()].noClass}</option>
+                    }
+                </select>
+        </div> 
+        <div className="field">
+            <div className="label">{teacherTraductions[getLang()].number}</div>
+            <input type="tel" value={teacher.phone_number} onChange={(e) => {setTeacher(val => {return {...val, phone_number: e.target.value}})}} placeholder={teacherTraductions[getLang()].number} />
+        </div>
+        <div className="field">
+            <div className="label">{teacherTraductions[getLang()].sex}</div>
+            <select value={teacher.sex} onChange={(e) => {setTeacher(val => {return {...val, sex: e.target.value}})}} className="form-control">
+                    <option value={''}>{teacherTraductions[getLang()].selectSex}</option>
+                    <option value="m">{teacherTraductions[getLang()].m}</option>
+                    <option value="f">{teacherTraductions[getLang()].f}</option>
+                </select>
+        </div>
+
+        {
+          error !== '' ? <div className="error">{error}</div> : ''
+        } 
       </div>
-      <form onSubmit={(e) => {handleUpdate(e)}}>
-        <div className="card-content">
-          <div className="field">
-              <div className="label">Nom de l'enseignant</div>
-              <input type="text" value={teacher.name} onChange={(e) => {setTeacher(val => {return {...val, name: e.target.value}})}} placeholder="Entrer un nom valide" />
-          </div> 
-          <div className="field">
-              <div className="label">Prenom de l'enseignant</div>
-              <input type="text" value={teacher.subname} onChange={(e) => {setTeacher(val => {return {...val, subname: e.target.value}})}} placeholder="Entrer un prenom valide" />
-          </div> 
-          <div className="field">
-              <div className="label">Selectionner la classe de l'enseignant</div>
-              <select value={teacher.classId} onChange={(e) => {setTeacher(val => {return {...val, classId: e.target.value}})}} className="form-control"
-                  placeholder="Enter password">
-                      <option value={''}>--- Selectionner la classe ----</option>
-                      {
-                          classs.length > 0 ? classs.map((classG) => {
-                              return <option value={classG.id}>{classG.name}</option>
-                          }) : <option>Aucune classe veuillez en ajouter pour continuer</option>
-                      }
-                  </select>
-          </div> 
-          <div className="field">
-              <div className="label">Numero de telephone de l'enseignant</div>
-              <input type="tel" value={teacher.phone_number} onChange={(e) => {setTeacher(val => {return {...val, phone_number: e.target.value}})}} placeholder="Entrer le numero du parent" />
-          </div>
-          <div className="field">
-              <div className="label">Date de naissance de l'enseignant</div>
-              <input type="date" value={teacher.birthday} onChange={(e) => {setTeacher(val => {return {...val, birthday: e.target.value}})}} placeholder="Entrer la date naissance de l'enfant" />
-          </div>
-          <div className="field">
-              <div className="label">Sexe de l'enseignant</div>
-              <select value={teacher.sex} onChange={(e) => {setTeacher(val => {return {...val, sex: e.target.value}})}} className="form-control form-control-lg">
-                      <option value={''}>--- Selectionner le sexe de l'enseignant ----</option>
-                      <option value="m">Masculin</option>
-                      <option value="f">Feminin</option>
-                  </select>
-          </div>
-  
-          {
-            error !== '' ? <div className="error">{error}</div> : ''
-          } 
-        </div>
-        <div className="card-footer">
-          <button className="btn btn-blue" type="submit">{loading ? 'Enregistrement' : 'Enregistrer'}</button>
-          <button onClick={() => {handleCancel()}} type="submit">Fermer (Annuler)</button>
-        </div>
-        
-      </form>
+      <div className="card-footer">
+        <button className="btn btn-blue" type="submit">{loading ? teacherTraductions[getLang()].saving : teacherTraductions[getLang()].save}</button>
+        <button onClick={() => {handleCancel()}} type="submit"> {teacherTraductions[getLang()].close} </button>
+      </div>
+      
+    </form>
     </div>
 }
 

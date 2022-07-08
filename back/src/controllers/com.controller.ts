@@ -1,8 +1,8 @@
 module.exports.addCompetence = async (req : any, res : any) => {
     const {name, section} = req.body;
     if ( name && name !== '' && section && section !== '' ) {
-        if (name.length < 5 || name.length > 30) {
-            res.status(401).json({success: false, message: "Le nom doit etre compris entre 5 et 30 caracteres !!"})
+        if (name.length < 5) {
+            res.status(401).json({success: false, message: "Le nom doit avoir au moins 5 caracteres !!"})
         }
         else if (section !== 'en' && section !== 'fr' && section !== 'ma') {
             res.status(401).json({success: false, message: "section invalide !!"})
@@ -35,8 +35,8 @@ module.exports.getOneCompetence = (req : any, res : any) => {
 module.exports.updateCompetence = (req : any, res : any) => {
     const {name, section} = req.body;
     if ( name && name !== '' && section && section !== '' ) {
-        if (name.length < 5 || name.length > 30) {
-            res.status(401).json({success: false, message: "Le nom doit etre compris entre 5 et 30 caracteres !!"})
+        if (name.length < 5) {
+            res.status(401).json({success: false, message: "Le nom doit avoir au moins 5 caracteres !!"})
         }
         else if (section !== 'en' && section !== 'fr' && section !== 'ma') {
             res.status(401).json({success: false, message: "section invalide !!"})

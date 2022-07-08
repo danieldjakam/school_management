@@ -870,3 +870,22 @@ div.check > label.checked::after{
   background: var(--check-cursor);
   transform: translateX(1em);
 }
+
+.changeAvatar{
+  position: absolute;
+  background: rgb(95, 202, 186);
+  top: 60%;
+  right: -10px;
+  color: #fff;
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+}
+
+.avatar-img{
+  position: relative;
+}

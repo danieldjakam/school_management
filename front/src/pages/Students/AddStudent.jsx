@@ -1,7 +1,9 @@
 import React from 'react'
 import { useEffect, useState } from "react";
 import {useParams } from "react-router-dom";
+import { studentTraductions } from '../../local/student';
 import { host } from '../../utils/fetch';
+import { getLang } from '../../utils/lang';
 
 const AddStudent = ({setIsAddStudent, error, setError}) => {
   const params = useParams();
@@ -13,7 +15,10 @@ const AddStudent = ({setIsAddStudent, error, setError}) => {
     sex: '',
     email: '',
     phone_number: '',
-    status: 'old'
+    status: 'old',
+    fatherName: '',
+    profession: '',
+    birthday_place: ''
   })
   const [classs, setClass] = useState({});
   const [loading, setLoading] = useState(false);
@@ -38,7 +43,7 @@ const AddStudent = ({setIsAddStudent, error, setError}) => {
       .then((res) => res.json())
       .then(res => {
         if (res.success) {
-
+          window.location.reload();
         }else{
           setError(res.message)
         }
@@ -52,50 +57,62 @@ const AddStudent = ({setIsAddStudent, error, setError}) => {
   }
   return <div className="card login-card">
         <div className="card-head">
-          <h1>Ajouter un eleve en {classs.name}</h1>
+          <h1>{studentTraductions[getLang()].addStudent} {classs.name}</h1>
         </div>
         <form onSubmit={(e) => {handleAdd(e)}}>
           <div className="card-content">
             <div className="field">
-                <div className="label">Nom de l'eleve</div>
-                <input type="text" value={data.name} onChange={(e) => {setData(val => {return {...val, name: e.target.value}})}} placeholder="Entrer un nom d'eleve valide" />
+                <div className="label">{studentTraductions[getLang()].studentName}</div>
+                <input type="text" value={data.name} onChange={(e) => {setData(val => {return {...val, name: e.target.value}})}} placeholder={studentTraductions[getLang()].studentName}/>
             </div>
             <div className="field">
-                <div className="label">prenom de l'eleve</div>
-                <input type="text" value={data.subname} onChange={(e) => {setData(val => {return {...val, subname: e.target.value}})}} placeholder="Entrer un prenom d'eleve valide" />
+                <div className="label">{studentTraductions[getLang()].studentSubname}</div>
+                <input type="text" value={data.subname} onChange={(e) => {setData(val => {return {...val, subname: e.target.value}})}} placeholder={studentTraductions[getLang()].studentSubname} />
             </div>
             <div className="field">
-                <div className="label">Numero de telephone du parent</div>
-                <input type="tel" value={data.phone_number} onChange={(e) => {setData(val => {return {...val, phone_number: e.target.value}})}} placeholder="Entrer le numero du parent" />
+                <div className="label">{studentTraductions[getLang()].birthday}</div>
+                <input type="date" value={data.birthday} onChange={(e) => {setData(val => {return {...val, birthday: e.target.value}})}} placeholder={studentTraductions[getLang()].birthday} />
             </div>
             <div className="field">
-                <div className="label">Email du parent</div>
-                <input type="email" value={data.email} onChange={(e) => {setData(val => {return {...val, email: e.target.value}})}} placeholder="Entrer l'email du parent" />
+                <div className="label">{studentTraductions[getLang()].birthday_place}</div>
+                <input type="text" value={data.birthday_place} onChange={(e) => {setData(val => {return {...val, birthday_place: e.target.value}})}} placeholder={studentTraductions[getLang()].birthday_place} />
             </div>
             <div className="field">
-                <div className="label">Date de naissance de l'eleve</div>
-                <input type="date" value={data.birthday} onChange={(e) => {setData(val => {return {...val, birthday: e.target.value}})}} placeholder="Entrer la date naissance de l'enfant" />
-            </div>
-            <div className="field">
-                <div className="label">Sex de l'eleve</div>
+                <div className="label">{studentTraductions[getLang()].sex}</div>
                 <select value={data.sex} onChange={(e) => {setData(val => {return {...val, sex: e.target.value}})}} className="form-control form-control-lg">
-                        <option value={''}>--- Selectionner le sexe de l'eleve ----</option>
-                        <option value="m">Masculin</option>
-                        <option value="f">Feminin</option>
+                        <option value={''}>{studentTraductions[getLang()].selectSex}</option>
+                        <option value="m">{studentTraductions[getLang()].m}</option>
+                        <option value="f">{studentTraductions[getLang()].f}</option>
                     </select>
             </div>
+            <div className="field">
+                <div className="label">{studentTraductions[getLang()].fatherName}</div>
+                <input type="tel" value={data.fatherName} onChange={(e) => {setData(val => {return {...val, fatherName: e.target.value}})}} placeholder={studentTraductions[getLang()].fatherName} />
+            </div>
+            <div className="field">
+                <div className="label">{studentTraductions[getLang()].fatherNumber}</div>
+                <input type="tel" value={data.phone_number} onChange={(e) => {setData(val => {return {...val, phone_number: e.target.value}})}} placeholder={studentTraductions[getLang()].fatherNumber} />
+            </div>
+            <div className="field">
+                <div className="label">{studentTraductions[getLang()].fatherEmail}</div>
+                <input type="email" value={data.email} onChange={(e) => {setData(val => {return {...val, email: e.target.value}})}} placeholder={studentTraductions[getLang()].fatherEmail} />
+            </div>
+            <div className="field">
+                <div className="label">{studentTraductions[getLang()].fatherProfession}</div>
+                <input type="tel" value={data.profession} onChange={(e) => {setData(val => {return {...val, profession: e.target.value}})}} placeholder={studentTraductions[getLang()].fatherProfession} />
+            </div>
             <div className="field check " style={{display:'flex'}}>
-                <label className={`label ${data.status === 'new' ? 'checked' : ''}`} htmlFor='check'>Nouveau eleve ?</label>
+                <label className={`label ${data.status === 'new' ? 'checked' : ''}`} htmlFor='check'>{studentTraductions[getLang()].newStudent}</label>
                 <input type="checkbox" checked={data.status === 'new' ? true : false} onChange={(e) => {setData(val => {return{...val, status: data.status === 'new' ? 'old' : 'new'}})}} id="check" />
             </div> 
             {
               error !== '' ? <div className="error">{error}</div> : ''
             } 
           </div>
-          <div className="card-footer">
-            <button className="btn btn-blue" type="submit">{loading ? 'Enregistrement' : 'Enregistrer'}</button>
-            <button onClick={() => {handleCancel()}} type="submit"> Fermer (Annuler)</button>
-          </div>
+      <div className="card-footer">
+        <button className="btn btn-blue" type="submit">{loading ? studentTraductions[getLang()].saving : studentTraductions[getLang()].save}</button>
+        <button onClick={() => {handleCancel()}} type="submit"> {studentTraductions[getLang()].close}</button>
+      </div>
           
         </form>
     </div>

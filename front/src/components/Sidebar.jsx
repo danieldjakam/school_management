@@ -18,7 +18,7 @@ function Sidebar() {
                 setLoading(true);
             const resp = await fetch('http://localhost:4000/users/getTeacherOrAdmin/', {headers: {
               'Authorization': sessionStorage.user
-            }})
+            }}).catch(e => console.log(e))
             const data = await resp.json();
             setUserInfos(data);
             setLoading(false);
