@@ -18,6 +18,7 @@ const trimRoutes = require('./src/routes/trim.routes');
 const comRoutes = require('./src/routes/com.routes');
 const notesRoutes = require('./src/routes/notes.routes');
 const uploadRoutes = require('./src/routes/upload.routes');
+const sectionRoutes = require('./src/routes/section.routes');
 
 app.use(bodyparser.json());
 app.use(
@@ -33,13 +34,14 @@ app.use('/students', studentRoutes)
 app.use('/teachers', teachersRoutes)
 app.use('/matiere', matiereRoutes)
 app.use('/download', downloadRoutes)
-app.use('/seq', seqRoutes)
-app.use('/trim', trimRoutes)
-app.use('/com', comRoutes)
-app.use('/notes', notesRoutes)
+app.use('/seq', seqRoutes);
+app.use('/trim', trimRoutes);
+app.use('/com', comRoutes);
+app.use('/notes', notesRoutes);
 app.use('/settings', settingsRoutes)
-app.use('/send', sendRoutes)
-app.use('/upload', uploadRoutes)
+app.use('/send', sendRoutes);
+app.use('/upload', uploadRoutes);
+app.use('/sections', sectionRoutes);
 
 app.listen(process.env.PORT, () => {
     console.log(`Listenning on ${process.env.PORT}`);

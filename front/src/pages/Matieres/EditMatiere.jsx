@@ -6,6 +6,7 @@ import { host } from '../../utils/fetch';
 const EditMatiere = ({error, setError, setIsSeq, id}) => {
     
     const [matiere, setMatiere] = useState({});
+    const [sections, setSections] = useState([]);
     const [loading, setLoading] = useState(false);
     useEffect(() => {
         (
@@ -40,6 +41,20 @@ const EditMatiere = ({error, setError, setIsSeq, id}) => {
         setLoading(false)
     }
 
+    useEffect(() => {
+      (
+          async () => {
+              setLoading(true)
+              const resp = await fetch(host+'/sections/all', {headers: {
+                  'Authorization': sessionStorage.user
+                }})
+              const data = await resp.json();
+              setSections(data);
+              setLoading(false);
+          }
+      )()
+    }, [])
+
     return <section style={{marginTop: '40px'}}>
     <div className="container-fluid h-custom">
       <div className="row d-flex justify-content-center align-items-center h-100">
@@ -62,9 +77,9 @@ const EditMatiere = ({error, setError, setIsSeq, id}) => {
                 <select value={matiere.section} onChange={(e) => {setMatiere(val => {return {...val, section: e.target.value}})}} className="form-control form-control-lg"
                     placeholder="Enter password">
                     <option value={''}>--- Selectionner la section ----</option>
-                    <option value="fr">Francophone</option>
-                    <option value="en">Anglophone</option>
-                    <option value="ma">Maternelle</option>
+                    {
+                      sections.map(section => <option value={section.id} key={section.id}>{section.name}</option>)
+                    }
                 </select>
               <label className="form-label" htmlFor="form3Example4">Selectionner la section</label>
             </div>

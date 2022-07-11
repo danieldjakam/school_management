@@ -127,6 +127,9 @@ function EditProfile({setIsEditInfos, setError}) {
                     </div>       
                 </form>     
             </div>
+            {
+                loading ? 'Chargement' : ''
+            }
         </div>
     )
 }

@@ -8,6 +8,7 @@ import { getLang } from '../../utils/lang';
 const EditClass = ({error, setError, setIsEditClass, classToEditId}) => {
     const [classs, setClasss] = useState({});
     const [loading, setLoading] = useState(false);
+    const [sections, setSections] = useState([]);
     useEffect(() => {
         (
             async () => {
@@ -22,6 +23,19 @@ const EditClass = ({error, setError, setIsEditClass, classToEditId}) => {
         )()
     }, [])
 
+    useEffect(() => {
+      (
+          async () => {
+              setLoading(true)
+              const resp = await fetch(host+'/sections/all', {headers: {
+                  'Authorization': sessionStorage.user
+                }})
+              const data = await resp.json();
+              setSections(data);
+              setLoading(false);
+          }
+      )()
+    }, [])
     const handleUpdate = (e) => {
         e.preventDefault();
         setLoading(true);
@@ -62,10 +76,11 @@ const EditClass = ({error, setError, setIsEditClass, classToEditId}) => {
               <div className="label">{ classTraductions[getLang()].section }</div>
               <select value={classs.section} onChange={(e) => {setClasss(val => {return {...val, section: e.target.value}})}} className="form-control form-control-lg"
               placeholder="Enter password">
-                  <option value={''}>{ classTraductions[getLang()].selectSection }</option>
-                  <option value="fr">{ classTraductions[getLang()].fr }</option>
-                  <option value="en">{ classTraductions[getLang()].en }</option>
-                  <option value="ma">{ classTraductions[getLang()].mat }</option>
+                  
+                  <option value={''}>--- Selectionner la section ----</option>
+                  {
+                    sections.map(section => <option value={section.id} key={section.id}>{section.name}</option>)
+                  }
               </select>
           </div> 
   

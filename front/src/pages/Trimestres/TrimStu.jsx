@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import ReactLoading from 'react-loading'
+import { useNavigate } from 'react-router-dom';
 import { trimTraductions } from '../../local/trim';
 import { host } from '../../utils/fetch';
 import { getLang } from '../../utils/lang';
@@ -21,6 +22,10 @@ function TrimStu() {
             }
         )()
     }, [])
+    if (sessionStorage.getItem('section_id') === null) {
+      const navigate = useNavigate();
+      navigate('/')
+    }
     return (
         <div className='container' style={{paddingTop: '20px'}}>
             

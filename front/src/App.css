@@ -889,3 +889,80 @@ div.check > label.checked::after{
 .avatar-img{
   position: relative;
 }
+.choices{
+  margin-top: 10px;
+  margin-left: 30px;
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.choices > .choice{
+  border: 2px solid #30363d;
+  width: 200px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.choices > .choice > .exemple{
+  height: 150px;
+  pointer-events: none;
+  background: #fff;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.choices > .choice > .name{
+  padding: 10px;
+  pointer-events: none;
+  background: #0D1117;
+  color: #fff;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.choice > .exemple > .header{
+  width: 100%;
+  pointer-events: none;
+  display: flex;
+  height: 20px;
+  padding: 0 10px;
+  box-sizing: border-box;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  justify-content: space-between;
+}
+
+
+#lang_choice .example{
+  background: #1ce;
+  width: 100%;
+  pointer-events: none;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  height: 150px;
+}
+
+#lang_choice .example > img{
+  width: 100%;
+  border-top-left-radius: 10px;
+  height: 100%;
+  border-top-right-radius: 10px;
+  pointer-events: none;
+}
+#lang_choice {
+  text-decoration: none;
+}
+
+.dL{
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+.dL > .choices{
+  width: 450px;
+}
+.choice.checked{
+    border: 2px solid #1ce !important;
+}

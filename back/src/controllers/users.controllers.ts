@@ -19,7 +19,7 @@ module.exports.register = async (req, res) => {
         else{
             const salt = await bcrypt.genSalt()
             const passwordCrypted = await bcrypt.hash(password, salt)
-            req.connection.query('INSERT INTO users(id, username, email, password) VALUES(?, ?, ?, ?)', [req.jwt.sign(username, req.env.SECRET), username, email, passwordCrypted], (err, resp) => {
+            req.connection.query('INSERT INTO users(id, username, email, password, school_id) VALUES(?, ?, ?, ?, ?)', [req.jwt.sign(username, req.env.SECRET), username, email, passwordCrypted], (err, resp) => {
                 if(!err) res.status(201).json({success: true})
                 else console.log(err);
             })

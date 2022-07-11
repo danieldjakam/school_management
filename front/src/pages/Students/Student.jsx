@@ -2,7 +2,7 @@ import React from 'react'
 import { useEffect } from "react";
 import { useState } from "react";
 import ReactLoading from 'react-loading';
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import AddSequence from '../Sequences/AddSequence'
 import {
     Modal
@@ -30,6 +30,7 @@ const Student = () => {
     const [isSeq, setIsSeq] = useState(false);
     const [isTrim, setIsTrim] = useState(false);
     const [isAddStudent, setIsAddStudent] = useState(false);
+    const [isAddAnnualExam, setIsAnnualExam] = useState(false);
     const [isEditStudent, setIsEditStudent] = useState(false);
     const [studentToEditId, setStudentToEditId] = useState('')
 
@@ -48,6 +49,10 @@ const Student = () => {
         'Novembre',
         'Decembre'
     ]
+    if (sessionStorage.getItem('section_id') === null) {
+      const navigate = useNavigate();
+      navigate('/')
+    }
 
     useEffect(() => {
         (
@@ -150,6 +155,12 @@ const Student = () => {
         
     }
   
+    
+
+    if (sessionStorage.getItem('section_id') === null) {
+        const navigate = useNavigate();
+        navigate('/')
+    }
 
     const deleteSeq = (id) => {
         Swal.fire({
@@ -235,6 +246,33 @@ const Student = () => {
                                     </tr> }) : <tr> <td colSpan={5} style={{textAlign: 'center'}}>{studentTraductions[getLang()].noTrim} {studentTraductions['fr'].doYou} <button onClick={() => {setIsTrim(v => !v)}} className="btn btn-blue">{studentTraductions['fr'].add}</button> ?</td> </tr>
                             }
                         </tbody>
+                    </table>
+                    
+                    <hr />
+
+                    <div style={{marginBottom: '10px'}}>
+                        <button onClick={() => {setIsTrim(v => !v)}} className="btn btn-blue">{studentTraductions[getLang()].addAnnualExam}</button>
+                    </div>
+                    <table className="table table-dark table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>{studentTraductions[getLang()].name}</th>
+                                <th>{studentTraductions[getLang()].specialAnnualExam}</th>
+                                <th>{studentTraductions[getLang()].action}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {
+                                loading ? <tr ><td colSpan={5} style={{justifyItems: 'center', paddingLeft: '50%'}}><ReactLoading color="#fff" type="cylon"/></td></tr> : trims.length > 0 ? trims.map((trim, index) => {
+                                    return <tr key={index}>
+                                        <td>{trim.name}</td>
+                                        <td><a style={{textDecoration: 'none', color: '#fff'}} onMouseOver={(e) => {e.target.style.color= '#dedede'}} href={`/trims/${trim.id}/${id}`}>{studentTraductions[getLang()].seeData}</a></td>
+                                        <td style={{display: 'flex', justifyContent: 'space-between'}}>
+                                            <button className="btn btn-danger" onClick={() => {deleteTrim(trim.id)}}> {loadingDel ? studentTraductions[getLang()].deleting : studentTraductions[getLang()].delete} </button>
+                                        </td>
+                                    </tr> }) : <tr> <td colSpan={5} style={{textAlign: 'center'}}>{studentTraductions[getLang()].noAnnualExam} {studentTraductions['fr'].doYou} <button onClick={() => {setIsTrim(v => !v)}} className="btn btn-blue">{studentTraductions['fr'].add}</button> ?</td> </tr>
+                            }
+                        </tbody>
                     </table>                                                                
 
                     <hr />
@@ -303,7 +341,7 @@ const Student = () => {
                                             </> : <></>
                                         }
                                     </tr> }) : <tr> 
-                                        <td colSpan={6} style={{textAlign: 'center'}}>
+                                        <td colSpan={7} style={{textAlign: 'center'}}>
                                         {` ${studentTraductions[getLang()].noStudent} ${classs.name} ${studentTraductions[getLang()].now} ${studentTraductions[getLang()].doYou}`} <button onClick={() => {setIsAddStudent(v => !v)}} className="btn btn-blue">{studentTraductions[getLang()].add}</button> ? 
                                         </td>
                                     </tr>

@@ -100,9 +100,9 @@ function Sidebar() {
     if(sessionStorage.user !== undefined){
         return <div className="sidebar">
             <div className="toggler"></div>
-            <div className="sidebar-brand">
+            <Link to='/' className="sidebar-brand">
                 <img src={logo} alt="application logo" style={{width: '100px', height: '120px'}} className="sidebar-brand-logo" />
-            </div>
+            </Link>
             <div className="sidebar-links">
                 {
                     links.map((link, k) => {

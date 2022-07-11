@@ -7,6 +7,7 @@ import { getLang } from '../../utils/lang';
 
 const EditCom = ({error, setError, setIsEditComp, compToEditId}) => {
     const [comp, setComp] = useState({});
+    const [sections, setSections] = useState([]);
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
@@ -22,6 +23,19 @@ const EditCom = ({error, setError, setIsEditComp, compToEditId}) => {
             }
         )()
     }, []);
+    useEffect(() => {
+      (
+          async () => {
+              setLoading(true)
+              const resp = await fetch(host+'/sections/all', {headers: {
+                  'Authorization': sessionStorage.user
+                }})
+              const data = await resp.json();
+              setSections(data);
+              setLoading(false);
+          }
+      )()
+    }, [])
 
     const handleUpdate = (e) => {
         e.preventDefault();
@@ -58,10 +72,10 @@ const EditCom = ({error, setError, setIsEditComp, compToEditId}) => {
             <div className="label">{ comTraductions[getLang()].section }</div>
             <select value={comp.section} onChange={(e) => {setComp(val => {return {...val, section: e.target.value}})}} className="form-control form-control-lg"
             placeholder="Enter password">
-                <option value={''}>{ comTraductions[getLang()].selectSection }</option>
-                <option value="fr">{ comTraductions[getLang()].fr }</option>
-                <option value="en">{ comTraductions[getLang()].en }</option>
-                <option value="ma">{ comTraductions[getLang()].mat }</option>
+                <option value={''}>--- Selectionner la section ----</option>
+                  {
+                    sections.map(section => <option value={section.id} key={section.id}>{section.name}</option>)
+                  }
             </select>
         </div> 
 

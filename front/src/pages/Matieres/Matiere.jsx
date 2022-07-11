@@ -40,6 +40,9 @@ const Matiere = () => {
             }
         )()
     }, [])
+    if (sessionStorage.getItem('section_id') === null) {
+      navigate('/')
+    }
 
     const deleteMatiere = (id) => {
         Swal.fire({

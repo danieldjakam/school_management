@@ -1,7 +1,7 @@
 export const paramsTraductions = {
     en: {
         add: 'Ajouter',
-        addAdmin: 'Ajouter un administrateur',
+        addAdmin: 'Add administrator',
         addind: 'Ajout...',
         admin: 'Administrateur',
         allAdmin: 'Tous les administrateurs',

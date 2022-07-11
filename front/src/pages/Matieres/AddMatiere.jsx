@@ -7,6 +7,7 @@ import { getLang } from '../../utils/lang';
 
 const AddMatiere = ({error, setError, setIsSeq}) => {
   const [trims, setTrims] = useState({});
+  const [sections, setSections] = useState([]);
   useEffect(() => {
       (
           async () => {
@@ -32,6 +33,7 @@ const AddMatiere = ({error, setError, setIsSeq}) => {
     oraleOver: 5,
     ecritOver: 5,
     savOver: 5,
+    section: parseInt(sessionStorage.getItem('section_id')),
     pratiqueOver: 15,
   })
   const [loading, setLoading] = useState(false);
@@ -51,6 +53,20 @@ const AddMatiere = ({error, setError, setIsSeq}) => {
       setLoading(false)
   } 
 
+  useEffect(() => {
+    (
+        async () => {
+            setLoading(true)
+            const resp = await fetch(host+'/sections/all', {headers: {
+                'Authorization': sessionStorage.user
+              }})
+            const data = await resp.json();
+            setSections(data);
+            setLoading(false);
+        }
+    )()
+  }, [])
+
   const handleCancel = () => {
     setIsSeq(false)
     setError('')
@@ -59,7 +75,7 @@ const AddMatiere = ({error, setError, setIsSeq}) => {
     <div className="card-head">
       <h1>{ subjectTraductions[getLang()].addSubject }</h1>
     </div>
-    <form onSubmit={(e) => {handleAdd(e)}}>
+    <form onSubmit={(e) => {handleAdd(e)}}>{sessionStorage.getItem('school_id')}
       <div className="card-content">
         <div className="field">
           <div className="label">{ subjectTraductions[getLang()].subjectName }</div>
@@ -73,10 +89,10 @@ const AddMatiere = ({error, setError, setIsSeq}) => {
             <div className="label">{ subjectTraductions[getLang()].section }</div>
             <select value={data.section}  className="form-control form-control-lg" onChange={(e) => {setData(val => {return {...val, section: e.target.value}})}}
             placeholder="Enter password">
-                <option value={''}>{ subjectTraductions[getLang()].selectSection }</option>
-                <option value="fr">{ subjectTraductions[getLang()].fr }</option>
-                <option value="en">{ subjectTraductions[getLang()].en }</option>
-                <option value="ma">{ subjectTraductions[getLang()].mat }</option>
+              <option value={''}>--- Selectionner la section ----</option>
+                {
+                  sections.map(section => <option value={section.id} key={section.id}>{section.name}</option>)
+                }
             </select>
         </div>
         <div className="field">

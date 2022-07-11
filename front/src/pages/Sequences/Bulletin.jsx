@@ -1,7 +1,7 @@
 import React from 'react'
 import { useEffect } from "react";
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import BulletinEntete from '../../components/BulletinEntete';
 import { downloadTraductions } from '../../local/bulletin';
 import { host } from '../../utils/fetch';
@@ -25,8 +25,15 @@ const Bulletin = () => {
     const [rang, setRang] = useState(0);
     const [firstAverage, setFirstAverage] = useState(0);
     const [lastAverage, setLastAverage] = useState(0);
-    const [error, setError] = useState('');
-    const [success, setSuccess] = useState('');
+    // const [error, setError] = useState('');
+    // const [success, setSuccess] = useState('');
+
+
+    if (sessionStorage.getItem('section_id') === null) {
+        const navigate = useNavigate();
+        navigate('/')
+    }
+
     useEffect(() => {
         (
             async () => {
@@ -203,26 +210,26 @@ const Bulletin = () => {
         )()
     }, []);
 
-    const sendToParent = () => {
-        fetch(host+'/send/bulByEmail/'+student_id, {headers: {
-                'Authorization': sessionStorage.user
-            }})
-            .then(r => r.json())
-            .then(r => {
-                if(r.success){
-                    setSuccess('Envoi reussi !!')
-                    setTimeout(() => {
-                        setSuccess('')
-                    }, 5000)
-                }else{
-                    setError(r.message)
-                    setTimeout(() => {
-                        setError('')
-                    }, 5000)
-                }
-            })
-            .catch(err => setError('Erreur survenue: '+err))
-    }
+    // const sendToParent = () => {
+    //     fetch(host+'/send/bulByEmail/'+student_id, {headers: {
+    //             'Authorization': sessionStorage.user
+    //         }})
+    //         .then(r => r.json())
+    //         .then(r => {
+    //             if(r.success){
+    //                 setSuccess('Envoi reussi !!')
+    //                 setTimeout(() => {
+    //                     setSuccess('')
+    //                 }, 5000)
+    //             }else{
+    //                 setError(r.message)
+    //                 setTimeout(() => {
+    //                     setError('')
+    //                 }, 5000)
+    //             }
+    //         })
+    //         .catch(err => setError('Erreur survenue: '+err))
+    // }
     return <div className="container bulView" style={{color: '#000', fontWeight: '600'}}>
         <nav className="navbar navbar-expand-lg" style={{padding: '10px 10px'}}>
             <div className="collapse navbar-collapse" id="navbarNav">
@@ -231,6 +238,13 @@ const Bulletin = () => {
             
             <button onClick={() => {}} className="btn btn-success">{downloadTraductions[getLang()].downloadBul}</button>
         </nav>
+
+        {/* {
+            success !== '' ? <div className="alert alert-success">{success}</div> : <></>
+        }
+        {
+          error !== '' ? <div className="alert alert-error">{error}</div> : <></>
+        } */}
         <BulletinEntete student={students} currentClass={ActualClass} actualExam={actualExam}/>
 
         <table className="table table-bordered table-stiped"  style={{margin: '5px 0', marginLeft: '5vw', width: '90vw', textAlign: 'center'}}>
@@ -364,8 +378,6 @@ const Bulletin = () => {
             loading ? totalPointsClass : ''
         }
     </div>
-
-    return 'ff'
 }
 
 export default Bulletin;

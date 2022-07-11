@@ -1,7 +1,7 @@
 import React from 'react'
 import { useEffect, useRef } from "react";
 import { useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { sequenceTraductions } from '../../local/sequence';
 import { host } from '../../utils/fetch';
 import { handleChangeCsvFile } from '../../utils/functions';
@@ -20,6 +20,11 @@ const Exams = () => {
     const [diviser, setDiviser] = useState(1);
     const [studentsPoints, setStudentsPoints] = useState([]);
     const bulRef = useRef();
+    
+    if (sessionStorage.getItem('section_id') === null) {
+      const navigate = useNavigate();
+      navigate('/')
+    }
     useEffect(() => {
         (
             async () => {

@@ -23,6 +23,9 @@ const Teachers = () => {
     if (sessionStorage.stat !== 'ad') {
         navigate('/students/'+sessionStorage.classId)
     }
+    if (sessionStorage.getItem('section_id') === null) {
+      navigate('/')
+    }
     const [teachers, setTeachers] = useState({});
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');

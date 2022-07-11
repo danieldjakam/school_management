@@ -5,15 +5,6 @@ module.exports.addClass = (req : any, res : any) => {
         if (name.length < 3) {
             res.status(401).json({success: false, message: 'Le nom de la classe doit avoir au moins 3 caracteres!!'})
         }
-        else if (section !== 'fr' && section !== 'en' && section !== 'ma') {
-            res.status(401).json({success: false, message: 'Mauvaise section!!'})
-        }
-        else if( (section === 'fr' || section === 'en') && (level < 1 || level > 6)){
-            res.status(401).json({success: false, message: 'Les niveaux de classe du secteur primaire doit etre compris entre 1 et 6!!'})
-        }
-        else if( section === 'ma' && (level < 1 || level > 3)){
-            res.status(401).json({success: false, message: 'Les niveaux de classe du secteur maternelle doit etre compris entre 1 et 3!!'})
-        }
         else{
             req.connection.query('INSERT INTO class(id, name, level, section, school_id) VALUES(?, ?, ?, ?, ?)', [req.jwt.sign(name, req.env.SECRET), name, level, section, req.payload.school_id], (err: any, resp : any) => {
                 if(err) console.log(err);
@@ -33,15 +24,6 @@ module.exports.updateClass = (req : any, res : any) => {
         if (name.length < 3) {
             res.status(401).json({success: false, message: 'le nom doit avoir au moins 3 caracteres!!'})
         }
-        else if (section !== 'fr' && section !== 'en' && section !== 'ma') {
-            res.status(401).json({success: false, message: 'La section doit avoir au moins 3 caracteres!!'})
-        }
-        else if( (section === 'fr' || section === 'en') && (level < 1 || level > 6)){
-            res.status(401).json({success: false, message: 'Les niveaux de classe du secteur primaire doit etre compris entre 1 et 6!!'})
-        }
-        else if( section === 'ma' && (level < 1 || level > 3)){
-            res.status(401).json({success: false, message: 'Les niveaux de classe du secteur maternelle doit etre compris entre 1 et 3!!'})
-        }
         else{
             req.connection.query('UPDATE class SET name = ? , section = ?, level = ? WHERE id = ?', [ name, section, level, id], (err: any, resp : any) => {
                 if(err) console.log(err);
@@ -55,12 +37,12 @@ module.exports.updateClass = (req : any, res : any) => {
 }
 
 module.exports.getAllClass = (req : any, res : any) => {
-    req.connection.query('SELECT teachers.name as tName, class.id, teachers.subname as ts, class.name, class.section, teachers.id as tId, teachers.subname FROM teachers LEFT JOIN class ON class.id = teachers.class_id WHERE class.school_id = ?', [req.payload.school_id], (err: any, resp : any) => {
+    req.connection.query('SELECT teachers.name as tName, class.id, teachers.subname as ts, class.name, class.section, teachers.id as tId, teachers.subname FROM teachers LEFT JOIN class ON class.id = teachers.class_id WHERE class.school_id = ? AND section = ?', [req.payload.school_id, req.section_id], (err: any, resp : any) => {
         res.status(201).json(resp);
     })
 }
 module.exports.getAllOClass = (req : any, res : any) => {
-    req.connection.query('SELECT * FROM class WHERE school_id = ?', [req.payload.school_id], (err: any, resp : any) => {
+    req.connection.query('SELECT * FROM class WHERE school_id = ? AND section = ?', [req.payload.school_id, req.params.section_id], (err: any, resp : any) => {
         res.status(201).json(resp);
     })
 }

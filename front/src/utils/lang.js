@@ -11,19 +11,11 @@ export const getLang = () => {
     return lang;
 }
 
-export const setLang = (lang) => {
-    let resp = {};
+export const setLang = (lang, setError) => {
     if (acceptablesLangues.includes(localStorage.getItem('lang'))) {
         localStorage.setItem('lang', lang);
-        resp = {
-            success: true
-        }
-        return resp;
+        window.location.reload();
     }else{
-        resp = {
-            success: false,
-            message: langTraductions['fr'].error
-        }
-        return
+        setError(langTraductions['fr'].error)
     }
 }

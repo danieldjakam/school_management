@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import * as Swal from 'sweetalert2'
 import { paramsTraductions } from '../../local/params';
 import { host } from '../../utils/fetch';
 import { getLang } from '../../utils/lang';
+import EditLanguage from './EditLanguage';
 import EditProfile from './EditProfile';
 import Profile from './Profile';
 function Params() {
@@ -37,6 +39,10 @@ function Params() {
         }
     )()
   }, [])
+  if (sessionStorage.getItem('section_id') === null) {
+    const navigate = useNavigate();
+    navigate('/')
+  }
    
   useEffect(() => {
     (
@@ -175,6 +181,7 @@ function Params() {
       </div>
       :  isEditInfos ?<EditProfile setIsEditInfos={setIsEditInfos} setError={setError}/> : <Profile userInfos={userInfos} setIsEditInfos={setIsEditInfos}/>
       }
+      <EditLanguage setError={setError}/>
     </div>
   )
 }

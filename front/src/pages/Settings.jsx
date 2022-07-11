@@ -29,6 +29,9 @@ function Settings() {
     )()
   }, [])
   const navigate = useNavigate();
+  if (sessionStorage.getItem('section_id') === null) {
+    navigate('/')
+  }
   const handleChangeSettings = (e) => {
     setLoading(true);
     e.preventDefault();

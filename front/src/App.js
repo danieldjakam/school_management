@@ -20,6 +20,7 @@ import Error404 from './pages/Error404';
 import TrimStu from './pages/Trimestres/TrimStu';
 import SeqStu from './pages/Sequences/SeqStu';
 import Settings from './pages/Settings';
+import Home from './pages/Home';
 
 function App() {
   let val = null;
@@ -34,6 +35,7 @@ function App() {
         <Routes>
           {
             user ? <>
+                    <Route path='/' element={<Home/>} />
                     <Route path='/class' element={<Class/>} /> 
                     <Route path='/students/:id' element={<Student/>} />
                     <Route path='/teachers' element={<Teachers/>} />

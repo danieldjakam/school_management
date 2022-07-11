@@ -24,7 +24,6 @@ export const sequenceTraductions = {
         action: 'Actions',
         editCom: 'Editer une competence',
         competence: 'Compentece',
-        downloadBul: 'Télécharger les bulletins',
         order: 'Classer',
         noCom: 'Aucune competence',
         essential: 'Essentiel',
@@ -63,7 +62,7 @@ export const sequenceTraductions = {
         action: 'Actions',
         editCom: 'Editer une competence',
         competence: 'Compentece',
-        downloadBul: 'Télécharger les bulletins',
+        downloadBuls: 'Télécharger les bulletins',
         order: 'Classer',
         noCom: 'Aucune competence',
         essential: 'Essentiel',
@@ -74,7 +73,6 @@ export const sequenceTraductions = {
         seeBul: 'Voir le bulletin',
         noStudent: 'Aucun élève dans cette classe',
         downloadBul: 'Télécharger le bulletin',
-        downloadBuls: 'Télécharger le bulletins',
         importNotes: 'Importer les notes',
     }
 }

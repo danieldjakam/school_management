@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from "react";
 import { comTraductions } from '../../local/com';
 import { host } from '../../utils/fetch';
@@ -8,9 +8,23 @@ const AddCom = ({ error, setError, setIsAddComp}) => {
 
   const [data, setData] = useState({
     name: '',
-    section: 'fr'
+    section: parseInt(sessionStorage.getItem('section_id')),
   })
   const [loading, setLoading] = useState(false);
+  const [sections, setSections] = useState([]);
+  useEffect(() => {
+    (
+        async () => {
+            setLoading(true)
+            const resp = await fetch(host+'/sections/all', {headers: {
+                'Authorization': sessionStorage.user
+              }})
+            const data = await resp.json();
+            setSections(data);
+            setLoading(false);
+        }
+    )()
+  }, [])
   const handleAdd = (e) => {
     e.preventDefault();
     setLoading(true);
@@ -45,10 +59,10 @@ const AddCom = ({ error, setError, setIsAddComp}) => {
             <div className="label">{ comTraductions[getLang()].section }</div>
             <select value={data.section} onChange={(e) => {setData(val => {return {...val, section: e.target.value}})}} className="form-control form-control-lg"
             placeholder="Enter password">
-                <option value={''}>{ comTraductions[getLang()].selectSection }</option>
-                <option value="fr">{ comTraductions[getLang()].fr }</option>
-                <option value="en">{ comTraductions[getLang()].en }</option>
-                <option value="ma">{ comTraductions[getLang()].mat }</option>
+                <option value={''}>--- Selectionner la section ----</option>
+                {
+                  sections.map(section => <option value={section.id} key={section.id}>{section.name}</option>)
+                }
             </select>
         </div> 
 
@@ -56,6 +70,7 @@ const AddCom = ({ error, setError, setIsAddComp}) => {
           error !== '' ? <div className="error">{error}</div> : ''
         } 
       </div>
+      
       <div className="card-footer">
         <button className="btn btn-blue" type="submit">{loading ? comTraductions[getLang()].saving : comTraductions[getLang()].save}</button>
         <button onClick={() => {handleCancel()}} type="submit"> {comTraductions[getLang()].close} </button>

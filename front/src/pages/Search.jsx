@@ -8,6 +8,7 @@ import Onestudent from './Students/OneStudent';
 import { host } from '../utils/fetch';
 import { searchTraductions } from '../local/search';
 import { getLang } from '../utils/lang';
+import { useNavigate } from 'react-router-dom';
 
 function SearchView() {
   const [searchValue, setSearchValue] = useState('');
@@ -18,6 +19,12 @@ function SearchView() {
   const [students, setStudents] = useState([])
   const [classes, setClasses] = useState([])
   const [teachers, setTeachers] = useState([])
+  
+  if (sessionStorage.getItem('section_id') === null) {
+    const navigate = useNavigate();
+    navigate('/')
+  }
+
   useEffect(() => {
     (
       async () => {
@@ -48,7 +55,7 @@ function SearchView() {
     (
         async () => {
             setLoading(true)
-            const resp = await fetch(host+'/class/getOAll', {headers: {
+            const resp = await fetch(host+'/class/getOAll/'+sessionStorage.getItem('section_id'), {headers: {
                 'Authorization': sessionStorage.user
               }})
             const data = await resp.json();

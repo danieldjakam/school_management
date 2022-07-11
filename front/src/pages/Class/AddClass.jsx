@@ -3,14 +3,16 @@ import React from 'react'
 import { host } from "../../utils/fetch";
 import { classTraductions } from "../../local/class";
 import { getLang } from "../../utils/lang";
+import { useEffect } from "react";
 
 const AddClass = ({ error, setError, setIsAddClass}) => {
 
   const [data, setData] = useState({
     name: '',
-    section: 'fr',
+    section: parseInt(sessionStorage.getItem('section_id')),
     level: 1
   })
+  const [sections, setSections] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const handleAdd = (e) => {
@@ -28,6 +30,20 @@ const AddClass = ({ error, setError, setIsAddClass}) => {
       })
       setLoading(false)
   }
+
+  useEffect(() => {
+    (
+        async () => {
+            setLoading(true)
+            const resp = await fetch(host+'/sections/all', {headers: {
+                'Authorization': sessionStorage.user
+              }})
+            const data = await resp.json();
+            setSections(data);
+            setLoading(false);
+        }
+    )()
+  }, [])
 
   const handleCancel = () => {
     setIsAddClass(v => !v)
@@ -51,12 +67,12 @@ const AddClass = ({ error, setError, setIsAddClass}) => {
         </div> 
         <div className="field">
             <div className="label">{ classTraductions[getLang()].section }</div>
-            <select value={data.section} onChange={(e) => {setData(val => {return {...val, section: e.target.value}})}} className="form-control form-control-lg"
-            placeholder="Enter password">
-                <option value={''}>{ classTraductions[getLang()].selectSection }</option>
-                <option value="fr">{ classTraductions[getLang()].fr }</option>
-                <option value="en">{ classTraductions[getLang()].en }</option>
-                <option value="ma">{ classTraductions[getLang()].mat }</option>
+            <select value={data.section} onChange={(e) => {setData(val => {return {...val, section: e.target.value}})}} className="form-control form-control-lg" placeholder="Enter password">
+              
+            <option value={''}>--- Selectionner la section ----</option>
+              {
+                sections.map(section => <option value={section.id} key={section.id}>{section.name}</option>)
+              }
             </select>
         </div> 
 

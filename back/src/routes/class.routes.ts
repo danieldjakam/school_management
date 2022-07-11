@@ -6,7 +6,7 @@ const authGlobalForClass = require('../middleware/auth_global');
 const classController = require('../controllers/class.controller');
 
 routerForClass.get('/getAll', authGlobalForClass, authForClass, classController.getAllClass)
-routerForClass.get('/getOAll', authGlobalForClass, authForClass, classController.getAllOClass)
+routerForClass.get('/getOAll/:section_id', authGlobalForClass, authForClass, classController.getAllOClass)
 routerForClass.get('/special/:id', authGlobalForClass, authForClass, classController.getSpecialClass)
 routerForClass.get('/:id', authGlobalForClass, authForClass, classController.getOneClass)
 routerForClass.post('/add', authGlobalForClass, authAdminForClass, classController.addClass)

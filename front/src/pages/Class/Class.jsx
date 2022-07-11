@@ -21,6 +21,10 @@ const Class = () => {
     if (sessionStorage.stat !== 'ad') {
         navigate('/students/'+sessionStorage.classId)
     }
+
+    if (sessionStorage.getItem('section_id') === null) {
+        navigate('/')
+    }
     const [Classes, setClass] = useState({});
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
@@ -33,7 +37,7 @@ const Class = () => {
         (
             async () => {
                 setLoading(true)
-                const resp = await fetch(host+'/class/getOAll', {headers: {
+                const resp = await fetch(host+'/class/getOAll/'+sessionStorage.getItem('section_id'), {headers: {
                     'Authorization': sessionStorage.user
                   }})
                 const data = await resp.json();
