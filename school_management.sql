@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jul 08, 2022 at 04:25 PM
+-- Generation Time: Jul 11, 2022 at 01:34 PM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 8.0.19
 
@@ -20,6 +20,19 @@ SET time_zone = "+00:00";
 --
 -- Database: `school_management`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `annual_exams`
+--
+
+CREATE TABLE `annual_exams` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `section_id` varchar(255) NOT NULL,
+  `school_year` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -47,7 +60,8 @@ INSERT INTO `class` (`id`, `name`, `section`, `teacherId`, `level`, `school_id`)
 ('eyJhbGciOiJIUzI1NiJ9.Q0UyIEE.LxKJf3O-NG5tJJRC9byuUexbIubmCB7qvUGsf8ghLdY', 'CE2 A', 'fr', 'eyJhbGciOiJIUzI1NiJ9.bGxsbGw.5-W5rvE0mESNVGDruW3aY_zt_6zSiZXFT7Yupx8WiqI', 4, 'eyJhbGciOiJIUzI1NiJ9.TGEgc2VtZW5jZQ.fRwDFJ3L2PVmkUqN4jd2fVM6kbTM_43Bb1LSFMLOOGU'),
 ('eyJhbGciOiJIUzI1NiJ9.bGxsbGw.5-W5rvE0mESNVGDruW3aY_zt_6zSiZXFT7Yupx8WiqI', 'CE2A', 'fr', 'eyJhbGciOiJIUzI1NiJ9.U2lsIEI.cJlfh-J53quTXCbAFWXImGXV9XWJxASbWf5N2ktBo6Q', 4, 'eyJhbGciOiJIUzI1NiJ9.TGEgc2VtZW5jZQ.fRwDFJ3L2PVmkUqN4jd2fVM6kbTM_43Bb1LSFMLOOGU'),
 ('eyJhbGciOiJIUzI1NiJ9.Z2JiZw.cirmzP3yNWf0s_dB06uVgIbThs1et4KR2OUIshRp2Y8', 'Sil A', 'fr', NULL, 1, 'eyJhbGciOiJIUzI1NiJ9.TGEgc2VtZW5jZQ.fRwDFJ3L2PVmkUqN4jd2fVM6kbTM_43Bb1LSFMLOOGU'),
-('eyJhbGciOiJIUzI1NiJ9.aGht.f2B0ch_G3XgDxkj_cCdlzYXYf1AjhMGsiHgr_eh1yg4', 'Test', 'ma', NULL, 2, 'eyJhbGciOiJIUzI1NiJ9.TGEgc2VtZW5jZQ.fRwDFJ3L2PVmkUqN4jd2fVM6kbTM_43Bb1LSFMLOOGU');
+('eyJhbGciOiJIUzI1NiJ9.aGht.f2B0ch_G3XgDxkj_cCdlzYXYf1AjhMGsiHgr_eh1yg4', 'Test', 'ma', NULL, 2, 'eyJhbGciOiJIUzI1NiJ9.TGEgc2VtZW5jZQ.fRwDFJ3L2PVmkUqN4jd2fVM6kbTM_43Bb1LSFMLOOGU'),
+('eyJhbGciOiJIUzI1NiJ9.ZmRm.IJKLpRDRSG5Sb4P6kJcgB2pTOM8etd_mOz4V4DcSzrc', 'fdf', '9', NULL, 1, 'eyJhbGciOiJIUzI1NiJ9.TGEgc2VtZW5jZQ.fRwDFJ3L2PVmkUqN4jd2fVM6kbTM_43Bb1LSFMLOOGU');
 
 -- --------------------------------------------------------
 
@@ -204,6 +218,26 @@ CREATE TABLE `schools` (
 
 INSERT INTO `schools` (`id`, `name`, `secret_code`, `created_at`) VALUES
 ('eyJhbGciOiJIUzI1NiJ9.TGEgc2VtZW5jZQ.fRwDFJ3L2PVmkUqN4jd2fVM6kbTM_43Bb1LSFMLOOGU', 'La semence', '$2b$10$/lG72..EAFI.aPBzKYYfa.9CM2cSRbtibsshpaoqRn4x36GEY80Oy', '2022-06-26 12:27:44');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sections`
+--
+
+CREATE TABLE `sections` (
+  `id` int(10) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `type` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `sections`
+--
+
+INSERT INTO `sections` (`id`, `name`, `type`) VALUES
+(7, 'Test', 2),
+(9, 'fafa', 3);
 
 -- --------------------------------------------------------
 
@@ -380,9 +414,21 @@ INSERT INTO `users` (`id`, `username`, `email`, `password`, `school_id`) VALUES
 --
 
 --
+-- Indexes for table `annual_exams`
+--
+ALTER TABLE `annual_exams`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `notes`
 --
 ALTER TABLE `notes`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `sections`
+--
+ALTER TABLE `sections`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -402,10 +448,22 @@ ALTER TABLE `stats`
 --
 
 --
+-- AUTO_INCREMENT for table `annual_exams`
+--
+ALTER TABLE `annual_exams`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `notes`
 --
 ALTER TABLE `notes`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
+
+--
+-- AUTO_INCREMENT for table `sections`
+--
+ALTER TABLE `sections`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `settings`
