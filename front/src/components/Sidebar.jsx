@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import {HospitalFill, PeopleFill, GearFill, People, Search, BookFill, FileTextFill, ArrowLeftCircleFill} from 'react-bootstrap-icons'
+import {HospitalFill, HouseHeartFill, PeopleFill, GearFill, People, Search, BookFill, FileTextFill, ArrowLeftCircleFill} from 'react-bootstrap-icons'
 // import Home from '../pages/Home';
 import logo from '../images/sem.png'
 import avatar from '../images/1.png'
@@ -29,9 +29,14 @@ function Sidebar() {
 
     const links = sessionStorage.stat === 'ad' ? [
         {
+            name: 'Sections',
+            href: '/',
+            icon: <HospitalFill/>
+        },
+        {
             name: 'Classes',
             href: '/class',
-            icon: <HospitalFill/>
+            icon: <HouseHeartFill/>
         },
         {
             name: 'Enseignants',

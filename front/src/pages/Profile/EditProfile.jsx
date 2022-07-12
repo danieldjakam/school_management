@@ -61,7 +61,7 @@ function EditProfile({setIsEditInfos, setError}) {
                                     <label htmlFor='avatar' className="changeAvatar">
                                         <CameraFill/>
                                     </label>
-                                    <input type="file" onChange={(e) => {handleChangeAvatar(e)}} accept='image/*' style={{ display: 'none' }} id='avatar' />
+                                    <input type="file" capture={'user'} onChange={(e) => {handleChangeAvatar(e)}} accept='image/*' style={{ display: 'none' }} id='avatar' />
                                 </div>
                             </div>
                             <div className="field">
@@ -90,7 +90,7 @@ function EditProfile({setIsEditInfos, setError}) {
                                         <label htmlFor='avatar' className="changeAvatar">
                                             <CameraFill/>
                                         </label>
-                                        <input type="file" onChange={(e) => {handleChangeAvatar(e)}} accept='image/*' style={{ display: 'none' }} id='avatar' />
+                                        <input type="file" capture={'user'} onChange={(e) => {handleChangeAvatar(e)}} accept='image/*' style={{ display: 'none' }} id='avatar' />
                                     </div>
                                 </div>
                                 <div className="field">

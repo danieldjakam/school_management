@@ -6,6 +6,7 @@ const authGlobalForMatiere = require('../middleware/auth_global');
 const matiereController = require('../controllers/matiere.controller');
 
 routerForMatiere.get('/getAll', authGlobalForMatiere, authForMatiere, matiereController.getAllMatiere);
+routerForMatiere.get('/getAll/:section_id', authGlobalForMatiere, authForMatiere, matiereController.getAllMatiereForBul);
 routerForMatiere.get('/getAllByCom/:id', authGlobalForMatiere, authForMatiere, matiereController.getAllMatiere);
 routerForMatiere.get('/:id', authGlobalForMatiere, authForMatiere, matiereController.getOneMatiere);
 routerForMatiere.post('/add', authGlobalForMatiere, authAdminForMatiere, matiereController.addMatiere);

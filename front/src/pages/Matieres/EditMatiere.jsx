@@ -1,13 +1,29 @@
 import React from 'react'
 import { useEffect } from "react";
 import { useState } from "react";
+import { subjectTraductions } from '../../local/subject';
 import { host } from '../../utils/fetch';
+import { getLang } from '../../utils/lang';
 
 const EditMatiere = ({error, setError, setIsSeq, id}) => {
     
     const [matiere, setMatiere] = useState({});
-    const [sections, setSections] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [coms, setComs] = useState({});
+    const [sections, setSections] = useState([]);
+    useEffect(() => {
+        (
+            async () => {
+                setLoading(true)
+                const resp = await fetch(host+'/com/getAll', {headers: {
+                    'Authorization': sessionStorage.user
+                  }})
+                const data = await resp.json();
+                setComs(data);
+                setLoading(false);
+            }
+        )()
+    }, [])
     useEffect(() => {
         (
             async () => {
@@ -54,114 +70,87 @@ const EditMatiere = ({error, setError, setIsSeq, id}) => {
           }
       )()
     }, [])
-
-    return <section style={{marginTop: '40px'}}>
-    <div className="container-fluid h-custom">
-      <div className="row d-flex justify-content-center align-items-center h-100">
-        
-        <div className="col-md-12">
-          <form onSubmit={(e) => {handleEdit(e)}}>
-            <h1>Editer une matiere</h1>
-            <div className="form-outline mb-4">
-              <input type="text" value={matiere.name} onChange={(e) => {setMatiere(val => {return {...val, name: e.target.value}})}}  id="form3Example3" className="form-control form-control-lg"
-                placeholder="Nom de la matiere" />
-              <label className="form-label" htmlFor="form3Example3">Nom</label>
-            </div>
-            <div className="form-outline mb-4">
-              <input type="text" value={matiere.slug} onChange={(e) => {setMatiere(val => {return {...val, slug: e.target.value}})}}  id="form3Example3" className="form-control form-control-lg"
-                placeholder="Slug de la matiere" />
-              <label className="form-label" htmlFor="form3Example3">Slug</label>
-            </div>
-            {matiere.type}
-            <div className="form-outline mb-3">
-                <select value={matiere.section} onChange={(e) => {setMatiere(val => {return {...val, section: e.target.value}})}} className="form-control form-control-lg"
-                    placeholder="Enter password">
-                    <option value={''}>--- Selectionner la section ----</option>
-                    {
-                      sections.map(section => <option value={section.id} key={section.id}>{section.name}</option>)
-                    }
-                </select>
-              <label className="form-label" htmlFor="form3Example4">Selectionner la section</label>
-            </div>
-            
-            <table className="table table-bordered">
-              <thead className="table-dark" style={{textAlign :'center'}}>
-                <tr>
-                  <th>Selectionne ?</th>
-                  <th>Nom</th>
-                  <th>Sur</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr className="form-outline mb-4">
-                  <td>
-                    <input type="checkbox" checked={matiere.orale} onChange={(e) => {setMatiere(val => {return {...val, orale: !matiere.orale}})}} />
-                  </td>
-                  <td>
-                    <label className="check-label" htmlFor="form3Example3">Orale</label>
-                  </td>
-                  <td>
-                    {
-                      matiere.orale ? <input type="number" value={matiere.oraleOver} min={5} max={20} onChange={(e) => {setMatiere(val => {return {...val, oraleOver: e.target.value }})}} placeholder="Sur" />: <></>
-                    }
-                  </td>
-                </tr>
-                <tr className="form-outline mb-4">
-                  <td>
-                    <input type="checkbox" checked={matiere.ecrit} onChange={(e) => {setMatiere(val => {return {...val, ecrit: !matiere.ecrit}})}} />
-                  </td>
-                  <td>
-                    <label className="check-label" htmlFor="form3Example3">Ecrit</label>
-                  </td>
-                  <td>
-                    {
-                      matiere.ecrit ? <input type="number" value={matiere.ecritOver} min={5} max={20} onChange={(e) => {setMatiere(val => {return {...val, ecritOver: e.target.value }})}} placeholder="Sur" />: <></>
-                    }
-                  </td>
-                </tr>
-                <tr className="form-outline mb-4">
-                  <td>
-                    <input type="checkbox" checked={matiere.savEtre} onChange={(e) => {setMatiere(val => {return {...val, savEtre: !matiere.savEtre}})}} />
-                  </td>
-                  <td>
-                    <label className="check-label" htmlFor="form3Example3">Savoir Etre</label>
-                  </td>
-                  <td>
-                    {
-                      matiere.savEtre ? <input type="number" value={matiere.savOver} min={2} max={20} onChange={(e) => {setMatiere(val => {return {...val, savOver: e.target.value }})}} placeholder="Sur" />: <></>
-                    }
-                  </td>
-                </tr>
-                <tr className="form-outline mb-4">
-                  <td>
-                    <input type="checkbox" checked={matiere.pratique} onChange={(e) => {setMatiere(val => {return {...val, pratique: !matiere.pratique}})}} />
-                  </td>
-                  <td>
-                    <label className="check-label" htmlFor="form3Example3">pratique</label>
-                  </td>
-                  <td>
-                    {
-                      matiere.pratique ? <input type="number" value={matiere.pratiqueOver} min={2} max={20} onChange={(e) => {setMatiere(val => {return {...val, pratiqueOver: e.target.value }})}} placeholder="Sur" />: <></>
-                    }
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-            {
-              error === '' ? <></> : <div style={{marginTop: '30px'}} className="alert alert-danger">{error}</div>
+    useEffect(() => {
+      (
+          async () => {
+              setLoading(true)
+              const resp = await fetch(host+'/sections/all', {headers: {
+                  'Authorization': sessionStorage.user
+                }})
+              const data = await resp.json();
+              setSections(data);
+              setLoading(false);
+          }
+      )()
+    }, [])
+    const handleAdd = (e) => {
+        e.preventDefault();
+        setLoading(true);
+        fetch(host+'/matiere/'+id, {method: 'PUT', body: JSON.stringify(matiere), headers: {'Content-Type': 'application/json', 'Authorization': sessionStorage.user}})
+        .then((res) => res.json())
+        .then(res => {
+            if (res.success) {
+                window.location.reload();
+            }else{
+                setError(res.message)
             }
-            <div className="text-center text-lg-start mt-4 pt-2">
-              <button type="submit" className="btn btn-primary btn-lg" style={{paddingLeft: '2.5rem', paddingRight: '2.5rem'}}>{loading ? 'Ajout...' : 'Editer la matiere'}</button>
-             <button style={{border: 'none', background: 'none'}} onClick={(e) => {e.preventDefault(); setIsSeq(false)}} to="/class"
-                  className="link-danger">Fermer ?
-              </button>
-            </div>
-  
-          </form>
-        </div>
-      </div>
+        })
+        .catch(err => setError(`Erreur: ${err}`))
+        setLoading(false)
+    } 
+    const handleCancel = () => {
+      setIsSeq(false)
+      setError('')
+    }
+
+    return <div className="card login-card">
+    <div className="card-head">
+      <h1>{ subjectTraductions[getLang()].addSubject }</h1>
     </div>
-  </section>
+    <form onSubmit={(e) => {handleAdd(e)}}>
+      <div className="card-content">
+        <div className="field">
+          <div className="label">{ subjectTraductions[getLang()].subjectName }</div>
+          <input type="text" value={matiere.name} onChange={(e) => {setMatiere(val => {return {...val, name: e.target.value}})}} placeholder={ subjectTraductions[getLang()].subjectName } />
+        </div> 
+        <div className="field">
+          <div className="label">{ subjectTraductions[getLang()].slug }</div>
+          <input type="text" value={matiere.slug} onChange={(e) => {setMatiere(val => {return {...val, slug: e.target.value}})}} placeholder={ subjectTraductions[getLang()].slugName } />
+        </div> 
+        <div className="field">
+            <div className="label">{ subjectTraductions[getLang()].section }</div>
+            <select value={matiere.section}  className="form-control form-control-lg" onChange={(e) => {setMatiere(val => {return {...val, section: e.target.value}})}}
+            placeholder="Enter password">
+              <option value={''}>--- Selectionner la section ----</option>
+                {
+                  sections.map(section => <option value={section.id} key={section.id}>{section.name}</option>)
+                }
+            </select>
+        </div>
+        <div className="field">
+          <div className="label">{ subjectTraductions[getLang()].competence } </div>
+          <select value={matiere.comId}  className="form-control form-control-lg" onChange={(e) => {setMatiere(val => {return {...val, comId: e.target.value}})}}>
+                  <option value={''}>{ subjectTraductions[getLang()].selectCompetence }</option>
+                  {
+                    coms.length > 0 ? coms.map(coms => {
+                                          return <option value={coms.id}>{coms.name}</option>                    
+                                        })
+                                  : <option value={''}>{ subjectTraductions[getLang()].addCom }</option>
+                  }
+                </select>
+        </div> 
+
+        {
+          error !== '' ? <div className="error">{error}</div> : ''
+        } 
+      </div>
+      <div className="card-footer">
+        <button className="btn btn-blue" type="submit">{loading ? subjectTraductions[getLang()].saving : subjectTraductions[getLang()].save}</button>
+        <button onClick={() => {handleCancel()}} type="submit"> {subjectTraductions[getLang()].close} </button>
+      </div>
+      
+    </form>
+  </div>
 }
 
 export default EditMatiere;

@@ -1,7 +1,7 @@
 import React from 'react'
 import { useEffect } from "react";
 import { useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { trimTraductions } from '../../local/trim';
 import { host } from '../../utils/fetch';
 import { getLang } from '../../utils/lang';
@@ -129,10 +129,6 @@ const Trims = () => {
     }, []);
     useEffect(() => {
     }, []);
-    if (sessionStorage.getItem('section_id') === null) {
-      const navigate = useNavigate();
-      navigate('/')
-    }
     return <div className="container">
         <nav className="navbar navbar-expand-lg" style={{padding: '10px 10px'}}>
             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">

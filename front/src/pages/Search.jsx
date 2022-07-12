@@ -8,7 +8,6 @@ import Onestudent from './Students/OneStudent';
 import { host } from '../utils/fetch';
 import { searchTraductions } from '../local/search';
 import { getLang } from '../utils/lang';
-import { useNavigate } from 'react-router-dom';
 
 function SearchView() {
   const [searchValue, setSearchValue] = useState('');
@@ -20,11 +19,6 @@ function SearchView() {
   const [classes, setClasses] = useState([])
   const [teachers, setTeachers] = useState([])
   
-  if (sessionStorage.getItem('section_id') === null) {
-    const navigate = useNavigate();
-    navigate('/')
-  }
-
   useEffect(() => {
     (
       async () => {
@@ -69,32 +63,32 @@ function SearchView() {
     setLoading(true)
 
     setTimeout(() => {
-      setLoading(false)
+		setLoading(false)
     }, 3000)
     switch (column) {
-      case 't':
-        const resultsTeachersByName = teachers.filter(teacher => teacher.name.toLowerCase().includes(searchValue.toLocaleLowerCase()))
-        const resultsTeachersBySubname = teachers.filter(teacher => teacher.subname.toLowerCase().includes(searchValue.toLocaleLowerCase()))
-        const finallyTeachersResults = [...new Set([...resultsTeachersByName, ...resultsTeachersBySubname])]
-        setResults(finallyTeachersResults)
-        break;
+		case 't':
+			const resultsTeachersByName = teachers.filter(teacher => teacher.name.toLowerCase().includes(searchValue.toLocaleLowerCase()))
+			const resultsTeachersBySubname = teachers.filter(teacher => teacher.subname.toLowerCase().includes(searchValue.toLocaleLowerCase()))
+			const finallyTeachersResults = [...new Set([...resultsTeachersByName, ...resultsTeachersBySubname])]
+			setResults(finallyTeachersResults)
+			break;
     
-      case 's':
-        const resultsStudentsByName = students.filter(student => student.name.toLowerCase().includes(searchValue.toLocaleLowerCase()))
-        const resultsStudentsBySubname = students.filter(student => student.subname.toLowerCase().includes(searchValue.toLocaleLowerCase()))
-        const finallyStudentsResults = [...new Set([...resultsStudentsByName, ...resultsStudentsBySubname])]
-        setResults(finallyStudentsResults)
-        break;
-    
-      case 'c':
-        const resultsClassesByName = classes.filter(c => c.name.toLowerCase().includes(searchValue.toLocaleLowerCase()))
-        console.log(resultsClassesByName, searchValue);
-        const finallyClassResults = [...new Set([...resultsClassesByName])]
-        setResults(finallyClassResults)
-        break;
-      
-      default:
-        break;
+		case 's':
+			const resultsStudentsByName = students.filter(student => student.name.toLowerCase().includes(searchValue.toLocaleLowerCase()))
+			const resultsStudentsBySubname = students.filter(student => student.subname.toLowerCase().includes(searchValue.toLocaleLowerCase()))
+			const finallyStudentsResults = [...new Set([...resultsStudentsByName, ...resultsStudentsBySubname])]
+			setResults(finallyStudentsResults)
+			break;
+		
+		case 'c':
+			const resultsClassesByName = classes.filter(c => c.name.toLowerCase().includes(searchValue.toLocaleLowerCase()))
+			console.log(resultsClassesByName, searchValue);
+			const finallyClassResults = [...new Set([...resultsClassesByName])]
+			setResults(finallyClassResults)
+			break;
+		
+		default:
+			break;
     }
   }
   const handleSubmit = (e) => {
@@ -172,8 +166,6 @@ function SearchView() {
                     </div>
                   </div>
         }
-
-
         <div className="results"></div>
     </div>
   )

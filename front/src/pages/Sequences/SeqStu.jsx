@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import ReactLoading from 'react-loading'
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { sequenceTraductions } from '../../local/sequence';
 import { host } from '../../utils/fetch';
 import { getLang } from '../../utils/lang';
@@ -9,10 +9,6 @@ function SeqStu() {
 
     const [exams, setExams] = useState({});
     const [loading, setLoading] = useState(false);
-    if (sessionStorage.getItem('section_id') === null) {
-      const navigate = useNavigate();
-      navigate('/')
-    }
     useEffect(() => {
         (
             async () => {

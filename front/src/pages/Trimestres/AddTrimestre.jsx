@@ -83,7 +83,7 @@ const AddTrimestre = ({error, setError, setIsTrim}) => {
                             return <div class = "checkbox">
                                       <input type="checkbox" checked={data.seqIds.includes(exam.id)} onChange={() => {hasClick(exam.id)}} />{exam.name}
                                   </div>
-                        }) : <>{trimTraductions[getLang()].addSeq}</>
+                        }) : <div>{trimTraductions[getLang()].addSeq}</div>
                     }
                 </div>
             {

@@ -1,7 +1,6 @@
-import React from 'react'
-import { useEffect } from 'react'
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import React from 'react';
+import { useEffect } from 'react';
+import { useState } from 'react';
 import { settingTraductions } from '../local/setting'
 import { available_years } from '../utils/date'
 import { host } from '../utils/fetch'
@@ -28,10 +27,6 @@ function Settings() {
       }
     )()
   }, [])
-  const navigate = useNavigate();
-  if (sessionStorage.getItem('section_id') === null) {
-    navigate('/')
-  }
   const handleChangeSettings = (e) => {
     setLoading(true);
     e.preventDefault();

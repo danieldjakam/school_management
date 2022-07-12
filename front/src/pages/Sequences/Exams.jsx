@@ -1,13 +1,12 @@
 import React from 'react'
 import { useEffect, useRef } from "react";
 import { useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { sequenceTraductions } from '../../local/sequence';
 import { host } from '../../utils/fetch';
 import { handleChangeCsvFile } from '../../utils/functions';
 
 const Exams = () => {
-
     const [students, setStudents ] = useState([]);
     const [coms, setComs ] = useState([]);
     const [mat, setMat ] = useState([]);
@@ -21,10 +20,6 @@ const Exams = () => {
     const [studentsPoints, setStudentsPoints] = useState([]);
     const bulRef = useRef();
     
-    if (sessionStorage.getItem('section_id') === null) {
-      const navigate = useNavigate();
-      navigate('/')
-    }
     useEffect(() => {
         (
             async () => {
@@ -76,21 +71,16 @@ const Exams = () => {
                 const data = await resp.json();
                 setActualClass(data);
                 setLoading(false);
-            }
-        )()
-    }, []);
-    useEffect(() => {
-        (
-            async () => {
-                setLoading(true)
-                const resp = await fetch(host+'/matiere/getAll', {headers: {
+
+
+                const resp2 = await fetch(host+'/matiere/getAll/'+data.section, {headers: {
                     'Authorization': sessionStorage.user
                   }})
-                const data = await resp.json();
-                setMat(data);
+                const data2 = await resp2.json();
+                setMat(data2);
                 setLoading(false);
                 let total = 0;
-                data.forEach(m => {
+                data2.forEach(m => {
                     const tags = JSON.parse(m.tags);
                     tags.forEach(tag => {
                                 total += parseFloat(tag.over);
@@ -98,18 +88,13 @@ const Exams = () => {
                             })
                 })
                 setDiviser(total);
-            }
-        )()
-    }, []);
-    useEffect(() => {
-        (
-            async () => {
-                setLoading(true)
-                fetch(host+'/com/getAll', {headers: { 'Authorization': sessionStorage.user}})
+
+
+                fetch(host+'/com/getAll/'+data.section, {headers: { 'Authorization': sessionStorage.user}})
                     .then(competences => competences.json())
                     .then(competences => {
                         competences.forEach(com => {
-                            fetch(host+'/matiere/getAll', {headers: { 'Authorization': sessionStorage.user}})
+                            fetch(host+'/matiere/getAll/'+data.section, {headers: { 'Authorization': sessionStorage.user}})
                                 .then(matieres => matieres.json())
                                 .then(matieres => {
                                     com.sub = matieres.filter(mat => mat.comId === com.id)
@@ -117,6 +102,20 @@ const Exams = () => {
                         })
                         setComs(competences)
                     })
+            }
+        )()
+    }, []);
+    useEffect(() => {
+        (
+            async () => {
+                setLoading(true)
+            }
+        )()
+    }, []);
+    useEffect(() => {
+        (
+            async () => {
+                setLoading(true)
             }
         )()
     }, []);
@@ -172,7 +171,6 @@ const Exams = () => {
                 </ul>
             </div>
         </nav>
-
         
         {
             error === '' ? <></> : <div style={{marginTop: '30px'}} className="alert alert-danger">{error}</div>

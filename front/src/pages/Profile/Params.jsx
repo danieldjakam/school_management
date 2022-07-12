@@ -39,11 +39,6 @@ function Params() {
         }
     )()
   }, [])
-  if (sessionStorage.getItem('section_id') === null) {
-    const navigate = useNavigate();
-    navigate('/')
-  }
-   
   useEffect(() => {
     (
         async () => {

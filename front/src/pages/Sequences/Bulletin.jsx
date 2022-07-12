@@ -1,7 +1,7 @@
 import React from 'react'
 import { useEffect } from "react";
 import { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import BulletinEntete from '../../components/BulletinEntete';
 import { downloadTraductions } from '../../local/bulletin';
 import { host } from '../../utils/fetch';
@@ -27,12 +27,6 @@ const Bulletin = () => {
     const [lastAverage, setLastAverage] = useState(0);
     // const [error, setError] = useState('');
     // const [success, setSuccess] = useState('');
-
-
-    if (sessionStorage.getItem('section_id') === null) {
-        const navigate = useNavigate();
-        navigate('/')
-    }
 
     useEffect(() => {
         (
@@ -190,7 +184,7 @@ const Bulletin = () => {
             }
         )()
     }, []);
-    useEffect(() => {
+    useEffect(() => {  
         (
             async () => {
                 setLoading(true)
@@ -236,7 +230,7 @@ const Bulletin = () => {
                 {/* <button type="submit" onClick={() => {}} style={{marginLeft: '10px'}} className="btn btn-primary">Envoyer le bulletin au parent</button> */}
             </div>
             
-            <button onClick={() => {}} className="btn btn-success">{downloadTraductions[getLang()].downloadBul}</button>
+            {/* <button onClick={() => {}} className="btn btn-success">{downloadTraductions[getLang()].downloadBul}</button> */}
         </nav>
 
         {/* {
@@ -245,9 +239,9 @@ const Bulletin = () => {
         {
           error !== '' ? <div className="alert alert-error">{error}</div> : <></>
         } */}
-        <BulletinEntete student={students} currentClass={ActualClass} actualExam={actualExam}/>
+        {/* <BulletinEntete student={students} currentClass={ActualClass} actualExam={actualExam}/> */}
 
-        <table className="table table-bordered table-stiped"  style={{margin: '5px 0', marginLeft: '5vw', width: '90vw', textAlign: 'center'}}>
+        {/* <table className="table table-bordered table-stiped"  style={{margin: '5px 0', marginLeft: '5vw', width: '90vw', textAlign: 'center'}}>
             <thead className="table-dark" >
                 <tr>
                     <th rowSpan={2}>{downloadTraductions[getLang()].com}</th>
@@ -372,7 +366,7 @@ const Bulletin = () => {
                     <td colSpan={2}></td>
                 </tr>
             </tbody>
-        </table>
+        </table> */}
 
         {
             loading ? totalPointsClass : ''

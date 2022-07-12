@@ -11,9 +11,6 @@ function Profile({userInfos, setIsEditInfos}) {
         navigate('/login')
         window.location.reload()
     }
-    if (sessionStorage.getItem('section_id') === null) {
-      navigate('/')
-    }
     return (<>
         {
             sessionStorage.stat === 'ad' ? <div className="profile">

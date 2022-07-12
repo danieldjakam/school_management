@@ -27,9 +27,6 @@ const Comp = () => {
     const [isAddComp, setIsAddComp] = useState(false);
     const [isEditComp, setIsEditComp] = useState(false);
 
-    if (sessionStorage.getItem('section_id') === null) {
-        navigate('/')
-      }
     useEffect(() => {
         (
             async () => {

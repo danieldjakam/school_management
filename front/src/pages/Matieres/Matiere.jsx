@@ -8,7 +8,7 @@ import {
     Modal
 } from "reactstrap"
 import AddMatiere from "./AddMatiere";
-// import EditMatiere from "./EditMatiere";
+import EditMatiere from "./EditMatiere";
 import { host } from '../../utils/fetch';
 import { subjectTraductions } from '../../local/subject';
 import { getLang } from '../../utils/lang';
@@ -24,8 +24,8 @@ const Matiere = () => {
     const [error, setError] = useState('');
     const [loadingDel, setLoadingDel] = useState(false);
     const [isAddMatier, setIsAddMatiere] = useState(false);
-    // const [id, setId] = useState('');
-    // const [isEditMatier, setIsEditMatiere] = useState(false);
+    const [id, setId] = useState('');
+    const [isEditMatier, setIsEditMatiere] = useState(false);
 
     useEffect(() => {
         (
@@ -40,9 +40,6 @@ const Matiere = () => {
             }
         )()
     }, [])
-    if (sessionStorage.getItem('section_id') === null) {
-      navigate('/')
-    }
 
     const deleteMatiere = (id) => {
         Swal.fire({
@@ -96,7 +93,7 @@ const Matiere = () => {
                                 }
                             </td>
                             <td style={{display: 'flex', justifyContent: 'space-between'}}>
-                                {/* <button onClick = { () => {setIsEditMatiere(matiere.id); setIsEditMatiere(v => !v  )}} className="btn btn-warning"> {subjectTraductions[getLang()].edit} </button> */}
+                                <button onClick = { () => {setId(matiere.id); setIsEditMatiere(v => !v  )}} className="btn btn-warning"> {subjectTraductions[getLang()].edit} </button>
                                 <button className="btn btn-danger" onClick={() => {deleteMatiere(matiere.id)}}> {loadingDel ? 'Suppression..' : 'Supprimer'} </button>
                             </td>
                         </tr> }) : <tr> {subjectTraductions[getLang()].nohavesubject + ' ' +subjectTraductions[getLang()].doyou} <button onClick={() => {setIsAddMatiere(v => !v)}} className="btn btn-blue"> {subjectTraductions[getLang()].add} </button></tr>
@@ -106,9 +103,9 @@ const Matiere = () => {
         <Modal isOpen={isAddMatier}>
             <AddMatiere  error={error} setError={setError} setIsSeq={setIsAddMatiere}/>
         </Modal>
-        {/* <Modal isOpen={isEditMatier}>
+        <Modal isOpen={isEditMatier}>
             <EditMatiere  error={error} setError={setError} setIsSeq={setIsEditMatiere} id={id}/>
-        </Modal> */}
+        </Modal>
     </div>
 }
 export default Matiere;

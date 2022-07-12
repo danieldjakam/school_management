@@ -1,18 +1,14 @@
 import React from 'react'
 import { useEffect } from "react";
 import { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
 import { sectionTraductions } from '../../local/section';
 import { host } from '../../utils/fetch';
 import { getLang } from '../../utils/lang';
 
-const EditSection = ({error, setError, setIsEditSection}) => {
-    const {id} = useParams();
+const EditSection = ({error, id, setError, setIsEditSection}) => {
     const [section, setSection] = useState({});
     const [loading, setLoading] = useState(false);
     const types = [1, 2, 3, 4, 5];
-    const navigate = useNavigate();
-
     useEffect(() => {
         (
             async () => {
@@ -34,12 +30,12 @@ const EditSection = ({error, setError, setIsEditSection}) => {
     const handleUpdate = (e) => {
         e.preventDefault();
         setLoading(true);
-        fetch(host+'/section/'+id, {method: 'PUT', body: JSON.stringify(section), headers: {'Content-Type': 'application/json', 'Authorization': sessionStorage.user}})
+        fetch(host+'/sections/'+id, {method: 'PUT', body: JSON.stringify(section), headers: {'Content-Type': 'application/json', 'Authorization': sessionStorage.user}})
         .then((res) => res.json())
         .then(res => {
           console.log(res);
             if (res.success) {
-              navigate('/class');
+                window.location.reload()
             }else{
               setError(res.message)
             }

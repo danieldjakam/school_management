@@ -6,7 +6,7 @@ import { host } from '../../utils/fetch';
 import { getLang } from '../../utils/lang';
 
 const AddMatiere = ({error, setError, setIsSeq}) => {
-  const [trims, setTrims] = useState({});
+  const [coms, setComs] = useState({});
   const [sections, setSections] = useState([]);
   useEffect(() => {
       (
@@ -16,7 +16,7 @@ const AddMatiere = ({error, setError, setIsSeq}) => {
                   'Authorization': sessionStorage.user
                 }})
               const data = await resp.json();
-              setTrims(data);
+              setComs(data);
               setLoading(false);
           }
       )()
@@ -36,6 +36,19 @@ const AddMatiere = ({error, setError, setIsSeq}) => {
     section: parseInt(sessionStorage.getItem('section_id')),
     pratiqueOver: 15,
   })
+  useEffect(() => {
+    (
+        async () => {
+            setLoading(true)
+            const resp = await fetch(host+'/sections/all', {headers: {
+                'Authorization': sessionStorage.user
+              }})
+            const data = await resp.json();
+            setSections(data);
+            setLoading(false);
+        }
+    )()
+  }, [])
   const [loading, setLoading] = useState(false);
   const handleAdd = (e) => {
       e.preventDefault();
@@ -52,21 +65,6 @@ const AddMatiere = ({error, setError, setIsSeq}) => {
       .catch(err => setError(`Erreur: ${err}`))
       setLoading(false)
   } 
-
-  useEffect(() => {
-    (
-        async () => {
-            setLoading(true)
-            const resp = await fetch(host+'/sections/all', {headers: {
-                'Authorization': sessionStorage.user
-              }})
-            const data = await resp.json();
-            setSections(data);
-            setLoading(false);
-        }
-    )()
-  }, [])
-
   const handleCancel = () => {
     setIsSeq(false)
     setError('')
@@ -75,7 +73,7 @@ const AddMatiere = ({error, setError, setIsSeq}) => {
     <div className="card-head">
       <h1>{ subjectTraductions[getLang()].addSubject }</h1>
     </div>
-    <form onSubmit={(e) => {handleAdd(e)}}>{sessionStorage.getItem('school_id')}
+    <form onSubmit={(e) => {handleAdd(e)}}>
       <div className="card-content">
         <div className="field">
           <div className="label">{ subjectTraductions[getLang()].subjectName }</div>
@@ -100,7 +98,7 @@ const AddMatiere = ({error, setError, setIsSeq}) => {
           <select value={data.comId}  className="form-control form-control-lg" onChange={(e) => {setData(val => {return {...val, comId: e.target.value}})}}>
                   <option value={''}>{ subjectTraductions[getLang()].selectCompetence }</option>
                   {
-                    trims.length > 0 ? trims.map(trim => {
+                    coms.length > 0 ? coms.map(trim => {
                                           return <option value={trim.id}>{trim.name}</option>                    
                                         })
                                   : <option value={''}>{ subjectTraductions[getLang()].addCom }</option>

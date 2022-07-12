@@ -14,6 +14,7 @@ function Home() {
     const [sections, setSections] = useState({})
     const [error, setError] = useState('');
     const [idAddSection, setIsAddSection] = useState(false);
+    const [id, setId] = useState('');
     const [idEditSection, setIsEditSection] = useState(false);
     const [loading, setLoading] = useState(false);
     const [loadingDel, setLoadingDel] = useState(false);
@@ -42,6 +43,7 @@ function Home() {
                 fetch(host+'/sections/'+id, {method: 'DELETE', headers: {'Authorization': sessionStorage.user}})
                     .then((res) => res.json())
                     .then((res) => {
+                        console.log(res);
                         if (res.success) {
                             window.location.reload();
                         }else{
@@ -62,26 +64,41 @@ function Home() {
             <h1 className='text-black'>
                 Choisissez une section pour continuer.
             </h1>
+            {
+                error !== '' ? <div className="alert alert-danger">{error}</div> : <></>
+            }
             <div style={{marginBottom: '10px'}}>
                 <button onClick={() => {setIsAddSection(v => !v)}} className="btn btn-blue">{sectionTraductions[getLang()].addSection}</button>
             </div>
-            <table className="table table-dark table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th>{sectionTraductions[getLang()].name}</th>
-                        <th>{sectionTraductions[getLang()].type}</th>
-                        <th>{sectionTraductions[getLang()].action}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {
-                        loading ? <tr ><td colSpan={5} style={{justifyItems: 'center', paddingLeft: '50%'}}><ReactLoading color="#fff" type="cylon"/></td></tr> : sections.length > 0 ? sections.map((section, index) => {
-                            return <tr key={index}>
-                                <td>{section.name}</td>
-                                <td>{section.type}</td>
-                                <td style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                    <button onClick={() => {chooseSection(section.id)}} className="btn btn-info">{sectionTraductions[getLang()].seeClass}</button>
-                                    <button className='btn btn-warning'>
+
+            <div className="allClas">
+                {
+                    loading ? <div className="error" style={{ position: 'absolute', top: '39%', left: '53%' }}><ReactLoading color="#fff" type="spin"/></div> : sections.length > 0? sections.map((section, id) => {
+                        return <div className="clas" key={id}>
+                            <div className="top">
+                                <div className="classAbs">
+                                    {section.name}
+                                </div>
+                                <div className="qq">
+                                    <span className="q">
+                                    {sectionTraductions[getLang()].name}
+                                    </span>
+                                    <span className="r">
+                                        {section.name}
+                                    </span>
+                                </div>
+                                <div className="qq">
+                                    <span className="q">
+                                    {sectionTraductions[getLang()].t}
+                                    </span>
+                                    <span className="r">
+                                        {section.type}    
+                                    </span>
+                                </div>
+                            </div>
+                            <div className="bottom">
+                                <button onClick={() => {chooseSection(section.id)}} className="btn btn-info">{sectionTraductions[getLang()].seeClass}</button>
+                                    <button onClick={() => {setId(section.id); setIsEditSection(v => !v)}} className='btn btn-warning'>
                                         {sectionTraductions['en'].edit}
                                     </button>
                                     <button onClick={() => {deleteSection(section.id)}} className="btn btn-danger">
@@ -89,18 +106,49 @@ function Home() {
                                             loadingDel ? sectionTraductions['en'].deleting : sectionTraductions['en'].delete 
                                         }
                                     </button>
-                                </td>
-                            </tr> }) : <tr> <td colSpan={5} style={{textAlign: 'center'}}>{sectionTraductions['fr'].noSection}</td> </tr>
-                    }
-                </tbody>
-            </table>  
+                            </div>  
+                        </div>
+                    }) : <div className="i">
+                            <div className="empty monINfos">
+                                {sectionTraductions[getLang()].noSection} <br />
+                            </div>
+                        </div>
+            }
+
+            <div className="clas" key={id}>
+                    <div className="top">
+                        <div className="classAbs">
+                            Enlever 
+                        </div>
+                        <div className="qq">
+                            <span className="q">
+                            Pas
+                            </span>
+                            <span className="r">
+                                de filtre
+                            </span>
+                        </div>
+                        <div className="qq">
+                            <span className="q">
+                                Pour tout 
+                            </span>
+                            <span className="r">
+                                afficher
+                            </span>
+                        </div>
+                    </div>
+                    <div className="bottom">
+                        <button onClick={() => {chooseSection('nothing')}} className="btn btn-info">{sectionTraductions[getLang()].seeClass}</button>
+                    </div>  
+                </div>
+            </div>  
             
 
             <Modal isOpen={idAddSection}>
                 <AddSection error={error} setError={setError} setIsAddSection={setIsAddSection}/>
             </Modal>
             <Modal isOpen={idEditSection}>
-                <EditSection error={error} setError={setError} setIsEditSection={setIsEditSection}/>
+                <EditSection error={error} setError={setError} id={id} setIsEditSection={setIsEditSection}/>
             </Modal>
         </div>
     )

@@ -15,6 +15,7 @@ import { handleChangeCsvFile } from '../../utils/functions';
 import { studentTraductions } from '../../local/student';
 import { getLang } from '../../utils/lang';
 import * as Swal from 'sweetalert2'
+import AddAnnualExam from '../AnnualExam/AddAnnualExam';
   
 
 const Student = () => {
@@ -155,13 +156,6 @@ const Student = () => {
         
     }
   
-    
-
-    if (sessionStorage.getItem('section_id') === null) {
-        const navigate = useNavigate();
-        navigate('/')
-    }
-
     const deleteSeq = (id) => {
         Swal.fire({
             title: 'Confirmez la suppression !',
@@ -243,7 +237,7 @@ const Student = () => {
                                         <td style={{display: 'flex', justifyContent: 'space-between'}}>
                                             <button className="btn btn-danger" onClick={() => {deleteTrim(trim.id)}}> {loadingDel ? studentTraductions[getLang()].deleting : studentTraductions[getLang()].delete} </button>
                                         </td>
-                                    </tr> }) : <tr> <td colSpan={5} style={{textAlign: 'center'}}>{studentTraductions[getLang()].noTrim} {studentTraductions['fr'].doYou} <button onClick={() => {setIsTrim(v => !v)}} className="btn btn-blue">{studentTraductions['fr'].add}</button> ?</td> </tr>
+                                    </tr> }) : <tr> <td colSpan={5} style={{textAlign: 'center'}}>{studentTraductions[getLang()].noTrim} {studentTraductions[getLang()].doYou} <button onClick={() => {setIsTrim(v => !v)}} className="btn btn-blue">{studentTraductions[getLang()].add}</button> ?</td> </tr>
                             }
                         </tbody>
                     </table>
@@ -251,7 +245,7 @@ const Student = () => {
                     <hr />
 
                     <div style={{marginBottom: '10px'}}>
-                        <button onClick={() => {setIsTrim(v => !v)}} className="btn btn-blue">{studentTraductions[getLang()].addAnnualExam}</button>
+                        <button onClick={() => {setIsAnnualExam(v => !v)}} className="btn btn-blue">{studentTraductions[getLang()].addAnnualExam}</button>
                     </div>
                     <table className="table table-dark table-bordered table-striped">
                         <thead>
@@ -270,7 +264,7 @@ const Student = () => {
                                         <td style={{display: 'flex', justifyContent: 'space-between'}}>
                                             <button className="btn btn-danger" onClick={() => {deleteTrim(trim.id)}}> {loadingDel ? studentTraductions[getLang()].deleting : studentTraductions[getLang()].delete} </button>
                                         </td>
-                                    </tr> }) : <tr> <td colSpan={5} style={{textAlign: 'center'}}>{studentTraductions[getLang()].noAnnualExam} {studentTraductions['fr'].doYou} <button onClick={() => {setIsTrim(v => !v)}} className="btn btn-blue">{studentTraductions['fr'].add}</button> ?</td> </tr>
+                                    </tr> }) : <tr> <td colSpan={5} style={{textAlign: 'center'}}>{studentTraductions[getLang()].noAnnualExam} {studentTraductions[getLang()].doYou} <button onClick={() => {setIsTrim(v => !v)}} className="btn btn-blue">{studentTraductions[getLang()].add}</button> ?</td> </tr>
                             }
                         </tbody>
                     </table>                                                                
@@ -280,17 +274,17 @@ const Student = () => {
             }
 
             <nav className="navbar navbar-expand-lg" style={{padding: '10px 10px', display:"flex", justifyContent:'space-between'}}>
-                <h2 style={{marginLeft  : '40px'}}>{studentTraductions['fr'].studentList} {classs.name}</h2>
+                <h2 style={{marginLeft  : '40px'}}>{studentTraductions[getLang()].studentList} {classs.name}</h2>
                 <div style={{marginRight: '10px'}} className='nav item'>
                     <ul className="navbar-nav" style={{fontSize: '1.3rem'}}>
                         {
                             sessionStorage.stat === 'ad' ? <>
-                                <button onClick={() => {setIsAddStudent(v => !v)}} className="btn btn-blue">{studentTraductions['fr'].addStudent}</button>
-                                <label htmlFor='csvFile' style={{marginLeft: '10px'}} className="btn btn-success">{studentTraductions['fr'].importStudent}</label>
+                                <button onClick={() => {setIsAddStudent(v => !v)}} className="btn btn-blue">{studentTraductions[getLang()].addStudent}</button>
+                                <label htmlFor='csvFile' style={{marginLeft: '10px'}} className="btn btn-success">{studentTraductions[getLang()].importStudent}</label>
                                 <input type="file" accept='.csv' id='csvFile' style={{display: 'none'}} onChange={(e) => {handleChangeCsvFile(e, '/upload/students/csv', setError)}} />
                             </> : <></>
                         }
-                        <button onClick={() => {getOrdonnedStudents()}} style={{marginLeft: '10px'}} className="btn btn-blue">{studentTraductions['fr'].range}</button>
+                        <button onClick={() => {getOrdonnedStudents()}} style={{marginLeft: '10px'}} className="btn btn-blue">{studentTraductions[getLang()].range}</button>
                     </ul>
                 </div>
 
@@ -298,22 +292,22 @@ const Student = () => {
             <nav className=" " style={{padding: '10px 10px'}}>
                 <div className="collapse navbar-collapse" id="navbarNav">
                 <ul className="navbar-nav" style={{fontSize: '1.3rem'}}>
-                    <a target={'_blank'} rel='noreferrer' href={host+'/download/csv/students/'+id} className="btn btn-secondary">{studentTraductions['fr'].downloadCsv}</a>
-                    <a target={'_blank'} rel='noreferrer' style={{marginLeft: '30px'}} href={host+'/download/pdf/students/'+id} className="btn btn-secondary">{studentTraductions['fr'].downloadPdf}</a>
+                    <a target={'_blank'} rel='noreferrer' href={host+'/download/csv/students/'+id} className="btn btn-secondary">{studentTraductions[getLang()].downloadCsv}</a>
+                    <a target={'_blank'} rel='noreferrer' style={{marginLeft: '30px'}} href={host+'/download/pdf/students/'+id} className="btn btn-secondary">{studentTraductions[getLang()].downloadPdf}</a>
                 </ul>
                 </div>
             </nav>
         <table className="table table-dark table-bordered table-striped">
             <thead>
                 <tr>
-                    <td>{studentTraductions['fr'].n} </td>
-                    <th>{studentTraductions['fr'].name}</th>
-                    <th>{studentTraductions['fr'].subname}</th>
-                    <th>{studentTraductions['fr'].s}</th>
-                    <th>{studentTraductions['fr'].b}</th>
-                    <th>{studentTraductions['fr'].class}</th>
+                    <td>{studentTraductions[getLang()].n} </td>
+                    <th>{studentTraductions[getLang()].name}</th>
+                    <th>{studentTraductions[getLang()].subname}</th>
+                    <th>{studentTraductions[getLang()].s}</th>
+                    <th>{studentTraductions[getLang()].b}</th>
+                    <th>{studentTraductions[getLang()].class}</th>
                     {
-                        sessionStorage.stat === 'ad' ? <th>{studentTraductions['fr'].action}</th> : <></>
+                        sessionStorage.stat === 'ad' ? <th>{studentTraductions[getLang()].action}</th> : <></>
                     }
                 </tr>
             </thead>
@@ -329,14 +323,14 @@ const Student = () => {
                                         <td>{id + 1}</td>
                                         <td>{student.name}</td>
                                         <td>{student.subname}</td>
-                                        <td>{student.sex === 'm' ? studentTraductions['fr'].m : studentTraductions['fr'].name}</td>
+                                        <td>{student.sex === 'm' ? studentTraductions[getLang()].m : studentTraductions[getLang()].name}</td>
                                         <td>{date}</td>
                                         <td>{classs.name}</td>
                                         {
                                             sessionStorage.stat === 'ad' ? <>
                                                 <td style={{display: 'flex', justifyContent: 'space-between'}}>
-                                                    <button onClick={() => {setStudentToEditId(student.id); setIsEditStudent(v => !v)}} to={`/students/edit/${student.id}`} className="btn btn-warning"> {studentTraductions['fr'].edit} </button>
-                                                    <button className="btn btn-danger" onClick={() => {deleteStudent(student.id)}}> {loadingDel ? studentTraductions['fr'].deleting : studentTraductions[getLang()].delete} </button>
+                                                    <button onClick={() => {setStudentToEditId(student.id); setIsEditStudent(v => !v)}} to={`/students/edit/${student.id}`} className="btn btn-warning"> {studentTraductions[getLang()].edit} </button>
+                                                    <button className="btn btn-danger" onClick={() => {deleteStudent(student.id)}}> {loadingDel ? studentTraductions[getLang()].deleting : studentTraductions[getLang()].delete} </button>
                                                 </td>
                                             </> : <></>
                                         }
@@ -360,6 +354,9 @@ const Student = () => {
         </Modal>
         <Modal isOpen={isEditStudent}>
             <EditStudent error={error} setError={setError} studentToEditId={studentToEditId} setIsEditStudent={setIsEditStudent}/>
+        </Modal>
+        <Modal isOpen={isAddAnnualExam}>
+            <AddAnnualExam error={error} setError={setError} setIsAnnualExam={setIsAnnualExam}/>
         </Modal>
     </div>
 }

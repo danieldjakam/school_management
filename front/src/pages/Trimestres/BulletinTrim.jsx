@@ -1,7 +1,7 @@
 import React from 'react'
 import { useEffect } from "react";
 import { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import BulletinEntete from '../../components/BulletinEntete';
 import { downloadTraductions } from '../../local/bulletin';
 import { host } from '../../utils/fetch';
@@ -26,10 +26,6 @@ const BulletinTrim = () => {
     const [firstAverage, setFirstAverage] = useState(0);
     const [lastAverage, setLastAverage] = useState(0);
 
-    if (sessionStorage.getItem('section_id') === null) {
-        const navigate = useNavigate();
-        navigate('/')
-    }
     useEffect(() => {
         (
             async () => {
