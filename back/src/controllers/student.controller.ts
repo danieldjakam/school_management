@@ -6,20 +6,26 @@ module.exports.addStudent = (req, res) => {
     if (!status) {
         status = 'old'
     }
-    if (name && subname && sex && birthday && fatherName && profession) {
+    if (name && fatherName) {
+        let birthdy = birthday;
+        console.log(birthday);
+        
+        if (!birthday || birthday === ''){
+            birthdy = null;
+        }
         if (name.length < 3) {
             res.status(401).json({success: false, message: 'Le nom de l\'eleve doit avoir au moins 3 caracteres!!'})
         }
-        else if (subname.length < 3) {
+        else if ( subname && subname.length < 3) {
             res.status(401).json({success: false, message: 'Le prenom de l\'eleve doit avoir au moins 3 caracteres!!'})
         }
-        else if (sex !== 'f' && sex !== 'm') {
+        else if ( sex && sex !== 'f' && sex !== 'm') {
             res.status(401).json({success: false, message: 'Sexe invalide'})
         }
-        else if (!isEmailUser(email)) {
+        else if (email && !isEmailUser(email)) {
             res.status(401).json({success: false, message: 'Format d\'email invalide'})
         }
-        else if (phone_number < 8) {
+        else if (phone_number && phone_number < 8) {
             res.status(401).json({success: false, message: 'Numero invalide'})
         }
         else if (status && status !== 'new' && status !== 'old') {
@@ -28,21 +34,21 @@ module.exports.addStudent = (req, res) => {
         else{
             req.connection.query('SELECT year_school FROM settings WHERE school_id = ?', [req.payload.school_id], (rerr, respe) => {
                 const {year_school} = respe[0];
-                req.connection.query('INSERT INTO students(id, name, subname, class_id, sex, birthday, email, phone_number, school_year, status, fatherName, profession, birthday_place, school_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [req.jwt.sign(name+year_school, req.env.SECRET), name, subname, id, sex, birthday, email, phone_number.toString(), year_school, status, fatherName, profession, birthday_place, req.payload.school_id], (err, resp) => {
+                req.connection.query('INSERT INTO students(id, name, subname, class_id, sex, birthday, email, phone_number, school_year, status, fatherName, profession, birthday_place, school_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [req.jwt.sign(name+year_school, req.env.SECRET), name, subname, id, sex, birthdy, email, phone_number.toString(), year_school, status, fatherName, profession, birthday, req.payload.school_id], (err, resp) => {
                     if(err) console.log(err);
                     else res.status(201).json({success: true})
                 })
             })
         }
     }else{
-        res.status(401).json({success: false, message: 'Svp remplissez tous les champs !!'})
+        res.status(401).json({success: false, message: 'Svp remplissez tous les champs marqués d\'un astérisque !!'})
     }
 }
 
 module.exports.updateStudent = (req, res) => {
     const {id} = req.params;
     const {name, subname, birthday ,fatherName, phone_number, profession, email, sex, birthday_place} = req.body;
-    if (name && subname && sex && birthday) {
+    if (name && fatherName) {
         if (name.length < 3) {
             res.status(401).json({success: false, message: 'Le nom de l\'eleve doit avoir au moins 3 caracteres!!'})
         }
@@ -65,7 +71,7 @@ module.exports.updateStudent = (req, res) => {
             })
         }
     }else{
-        res.status(401).json({success: false, message: 'Svp remplissez tous les champs !!'})
+        res.status(401).json({success: false, message: 'Svp remplissez tous les champs marqués d\'un astérisque !!'})
     }
 }
 

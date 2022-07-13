@@ -5,14 +5,18 @@ const fsTeacher = require('fs');
 module.exports.addTeacher = (req, res) => {
     const {name, subname, birthday, phone_number, sex, classId} = req.body;
     const id = req.jwt.sign(name, req.env.SECRET);
-    if (name && subname && classId && birthday && phone_number && sex) {
+    if (name && classId && sex) {
+        let birthdy = birthday;
+        if (!birthday){
+            birthdy = null;
+        }
         if (name.length < 0) {
             res.status(401).json({success: false, message: 'Le nom de l\'enseignant doit avoir au moins 3 caracteres!!'})
         }
-        else if (subname.length < 0) {
+        else if ( subname && subname.length < 0) {
             res.status(401).json({success: false, message: 'Le prenom de l\'enseignant doit avoir au moins 3 caracteres!!'})
         }
-        else if (phone_number < 8) {
+        else if (phone_number && phone_number < 8) {
             res.status(401).json({success: false, message: 'Numero invalide'})
         }
         else if (sex !== 'f' && sex !== 'm') {
@@ -35,7 +39,7 @@ module.exports.addTeacher = (req, res) => {
                     cname = cname.toUpperCase()
                     const code = 'SEM-'+cname;
                     const p = phone_number.toString()
-                    req.connection.query('INSERT INTO teachers(id, name, subname, class_id, matricule, password, sex, phone_number, birthday, school_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [id, name, subname, classId, code, password, sex, p, birthday, req.payload.school_id], (err, resp) => {
+                    req.connection.query('INSERT INTO teachers(id, name, subname, class_id, matricule, password, sex, phone_number, birthday, school_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [id, name, subname, classId, code, password, sex, p, birthdy, req.payload.school_id], (err, resp) => {
                         if(err) console.log(err);
 
                         else {
@@ -51,7 +55,7 @@ module.exports.addTeacher = (req, res) => {
             
         }
     }else{
-        res.status(401).json({success: false, message: 'Svp remplissez tous les champs !!'})
+        res.status(401).json({success: false, message: 'Svp remplissez tous les champs marqués d\'un astérisque !!'})
     }
 }
  
@@ -59,7 +63,7 @@ module.exports.updateTeacher = (req, res) => {
     const {name, subname, class_id, OldclassId, birthday, phone_number, sex} = req.body;
     const {id} = req.params;
     
-    if (name && subname && class_id && birthday && phone_number && sex) {
+    if (name && class_id && sex) {
         if (name.length < 4) {
             res.status(401).json({success: false, message: 'Le nom de l\'enseignant doit avoir au moins 3 caracteres!!'})
         }
@@ -108,7 +112,7 @@ module.exports.updateTeacher = (req, res) => {
             })
         }
     }else{
-        res.status(401).json({success: false, message: 'Svp remplissez tous les champs !!'})
+        res.status(401).json({success: false, message: 'Svp remplissez tous les champs marqués d\'un astérisque !!'})
     }
 }
 

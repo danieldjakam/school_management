@@ -13,7 +13,7 @@ const AddTeacher = ({ error, setError, setIsAddTeacher}) => {
     classId: '',
 
     phone_number: '',
-    sex: '',
+    sex: 'm',
     birthday: ''
   })
   const [classs, setClasss] = useState({});
@@ -23,7 +23,7 @@ const AddTeacher = ({ error, setError, setIsAddTeacher}) => {
       (
           async () => {
               setLoading(true)
-              const resp = await fetch(host+'/class/getOAll', {headers: {
+              const resp = await fetch(host+'/class/getAll', {headers: {
                   'Authorization': sessionStorage.user
               }})
               const data = await resp.json();
@@ -61,7 +61,7 @@ const AddTeacher = ({ error, setError, setIsAddTeacher}) => {
     <form onSubmit={(e) => {handleAdd(e)}}>
       <div className="card-content">
         <div className="field">
-            <div className="label">{teacherTraductions[getLang()].teacherName}</div>
+            <div className="label">{teacherTraductions[getLang()].teacherName} <span className="text-danger">*</span> </div>
             <input type="text" value={data.name} onChange={(e) => {setData(val => {return {...val, name: e.target.value}})}} placeholder={teacherTraductions[getLang()].teacherName} />
         </div> 
         <div className="field">
@@ -69,7 +69,7 @@ const AddTeacher = ({ error, setError, setIsAddTeacher}) => {
             <input type="text" value={data.subname} onChange={(e) => {setData(val => {return {...val, subname: e.target.value}})}} placeholder={teacherTraductions[getLang()].teacherSubname} />
         </div> 
         <div className="field">
-            <div className="label">{teacherTraductions[getLang()].teacherClassname}</div>
+            <div className="label">{teacherTraductions[getLang()].teacherClassname} <span className="text-danger">*</span> </div>
             <select value={data.classId} onChange={(e) => {setData(val => {return {...val, classId: e.target.value}})}} className="form-control"
                 placeholder={teacherTraductions[getLang()].teacherClassname}>
                     <option value={''}>{teacherTraductions[getLang()].selectClass}</option>

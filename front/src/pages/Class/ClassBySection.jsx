@@ -15,7 +15,7 @@ import { handleChangeCsvFile } from '../../utils/functions';
 import { getLang } from '../../utils/lang';
 import { classTraductions } from '../../local/class';
 
-const Class = () => {
+const ClassBySection = () => {
     const navigate = useNavigate()
     
     if (sessionStorage.stat !== 'ad') {
@@ -133,4 +133,4 @@ const Class = () => {
             <EditClass error={error} setError={setError} setIsEditClass={setIsEditClass} classToEditId={classToEditId}/>        </Modal>
     </div>
 }
-export default Class;
+export default ClassBySection;

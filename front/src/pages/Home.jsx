@@ -57,7 +57,7 @@ function Home() {
     const navigate = useNavigate();
     const chooseSection = (section_id) => {
         sessionStorage.setItem('section_id', section_id)
-        navigate('/class')
+        navigate('/classBySection')
     }
     return (
         <div className='container' style={{paddingTop: '20px'}}>

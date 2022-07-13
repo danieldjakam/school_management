@@ -14,7 +14,7 @@ const EditTeacher = ({error, setError, setIsEditClass, teacherToEditId}) => {
         (
             async () => {
                 setLoading(true)
-                const resp = await fetch(host+'/class/getOAll', {headers: {
+                const resp = await fetch(host+'/class/getAll', {headers: {
                     'Authorization': sessionStorage.user
                 }}).catch(e => setError(e))
                 const data = await resp.json();
@@ -65,7 +65,7 @@ const EditTeacher = ({error, setError, setIsEditClass, teacherToEditId}) => {
     <form onSubmit={(e) => {handleUpdate(e)}}>
       <div className="card-content">
         <div className="field">
-            <div className="label">{teacherTraductions[getLang()].teacherName}</div>
+            <div className="label">{teacherTraductions[getLang()].teacherName} <span className="text-danger">*</span> </div>
             <input type="text" value={teacher.name} onChange={(e) => {setTeacher(val => {return {...val, name: e.target.value}})}} placeholder={teacherTraductions[getLang()].teacherName} />
         </div> 
         <div className="field">
@@ -73,7 +73,7 @@ const EditTeacher = ({error, setError, setIsEditClass, teacherToEditId}) => {
             <input type="text" value={teacher.subname} onChange={(e) => {setTeacher(val => {return {...val, subname: e.target.value}})}} placeholder={teacherTraductions[getLang()].teacherSubname} />
         </div> 
         <div className="field">
-            <div className="label">{teacherTraductions[getLang()].teacherClassname}</div>
+            <div className="label">{teacherTraductions[getLang()].teacherClassname} <span className="text-danger">*</span> </div>
             <select value={teacher.class_id} onChange={(e) => {setTeacher(val => {return {...val, class_id: e.target.value}})}} className="form-control"
                 placeholder={teacherTraductions[getLang()].teacherClassname}>
                     <option value={''}>{teacherTraductions[getLang()].selectClass}</option>
@@ -89,7 +89,7 @@ const EditTeacher = ({error, setError, setIsEditClass, teacherToEditId}) => {
             <input type="tel" value={teacher.phone_number} onChange={(e) => {setTeacher(val => {return {...val, phone_number: e.target.value}})}} placeholder={teacherTraductions[getLang()].number} />
         </div>
         <div className="field">
-            <div className="label">{teacherTraductions[getLang()].sex}</div>
+            <div className="label">{teacherTraductions[getLang()].sex} <span className="text-danger">*</span> </div>
             <select value={teacher.sex} onChange={(e) => {setTeacher(val => {return {...val, sex: e.target.value}})}} className="form-control">
                     <option value={''}>{teacherTraductions[getLang()].selectSex}</option>
                     <option value="m">{teacherTraductions[getLang()].m}</option>

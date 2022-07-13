@@ -50,7 +50,7 @@ const EditStudent = ({error, setError, studentToEditId, setIsEditStudent}) => {
   <form onSubmit={(e) => {handleUpdate(e)}}>
     <div className="card-content">
       <div className="field">
-          <div className="label">{studentTraductions[getLang()].studentName}</div>
+          <div className="label">{studentTraductions[getLang()].studentName} <span className="text-danger">*</span> </div>
           <input type="text" value={student.name} onChange={(e) => {setStudent(val => {return {...val, name: e.target.value}})}} placeholder={studentTraductions[getLang()].studentName}/>
       </div>
       <div className="field">
@@ -74,7 +74,7 @@ const EditStudent = ({error, setError, studentToEditId, setIsEditStudent}) => {
               </select>
       </div>
       <div className="field">
-          <div className="label">{studentTraductions[getLang()].fatherName}</div>
+          <div className="label">{studentTraductions[getLang()].fatherName} <span className="text-danger">*</span> </div>
           <input type="tel" value={student.fatherName} onChange={(e) => {setStudent(val => {return {...val, fatherName: e.target.value}})}} placeholder={studentTraductions[getLang()].fatherName} />
       </div>
       <div className="field">

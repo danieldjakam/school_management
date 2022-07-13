@@ -12,10 +12,10 @@ const AddStudent = ({setIsAddStudent, error, setError}) => {
     name: '',
     subname: '',
     birthday: '',
-    sex: '',
+    sex: 'm',
     email: '',
     phone_number: '',
-    status: 'old',
+    status: 'new',
     fatherName: '',
     profession: '',
     birthday_place: ''
@@ -62,7 +62,7 @@ const AddStudent = ({setIsAddStudent, error, setError}) => {
         <form onSubmit={(e) => {handleAdd(e)}}>
           <div className="card-content">
             <div className="field">
-                <div className="label">{studentTraductions[getLang()].studentName}</div>
+                <div className="label">{studentTraductions[getLang()].studentName} <span className="text-danger">*</span> </div>
                 <input type="text" value={data.name} onChange={(e) => {setData(val => {return {...val, name: e.target.value}})}} placeholder={studentTraductions[getLang()].studentName}/>
             </div>
             <div className="field">
@@ -86,7 +86,7 @@ const AddStudent = ({setIsAddStudent, error, setError}) => {
                     </select>
             </div>
             <div className="field">
-                <div className="label">{studentTraductions[getLang()].fatherName}</div>
+                <div className="label">{studentTraductions[getLang()].fatherName} <span className="text-danger">*</span> </div>
                 <input type="tel" value={data.fatherName} onChange={(e) => {setData(val => {return {...val, fatherName: e.target.value}})}} placeholder={studentTraductions[getLang()].fatherName} />
             </div>
             <div className="field">

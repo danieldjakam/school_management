@@ -21,6 +21,7 @@ import TrimStu from './pages/Trimestres/TrimStu';
 import SeqStu from './pages/Sequences/SeqStu';
 import Settings from './pages/Settings';
 import Home from './pages/Home';
+import ClassBySection from './pages/Class/ClassBySection';
 
 function App() {
   let val = null;
@@ -37,6 +38,7 @@ function App() {
             user ? <>
                     <Route path='/' element={<Home/>} />
                     <Route path='/class' element={<Class/>} /> 
+                    <Route path='/classBySection' element={<ClassBySection />} /> 
                     <Route path='/students/:id' element={<Student/>} />
                     <Route path='/teachers' element={<Teachers/>} />
                     <Route path='/competences' element={<Comp/>} />

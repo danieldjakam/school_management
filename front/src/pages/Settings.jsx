@@ -1,6 +1,6 @@
 import React from 'react';
-import { useEffect } from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react'; 
+import { useNavigate } from 'react-router-dom';
 import { settingTraductions } from '../local/setting'
 import { available_years } from '../utils/date'
 import { host } from '../utils/fetch'
@@ -10,7 +10,8 @@ import { getLang } from '../utils/lang'
 function Settings() {
   const [settings, setSettings] = useState({})
   const [loading, setLoading] = useState(false)
-  const [errors, setErrors] = useState('')
+  const [errors, setErrors] = useState('');
+  const navigate = useNavigate();
   
   useEffect(() => {
     (
