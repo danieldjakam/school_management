@@ -83,7 +83,7 @@ const AddSection = ({error, setError, setIsAddSection}) => {
             </div>
             <div className="card-footer">
                 <button className="btn btn-blue" type="submit">{loading ? sectionTraductions[getLang()].saving : sectionTraductions[getLang()].save}</button>
-                <button onClick={() => {handleCancel()}} type="submit"> {sectionTraductions[getLang()].close}</button>
+                <span onClick={() => {handleCancel()}} type="cancel"> {sectionTraductions[getLang()].close}</span>
             </div>
         
         </form>

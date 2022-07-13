@@ -48,7 +48,7 @@ function OneClass({clas, key}) {
                     {classTraductions[getLang()].section}:
                     </span>
                     <span className="r">
-                        {clas.section === 'ma' ? classTraductions[getLang()].mat : clas.section === 'fr' ? classTraductions[getLang()].fr : classTraductions[getLang()].en}
+                        {clas.sName}
                     </span>
                 </div>
             </div>

@@ -42,8 +42,13 @@ module.exports.updateClass = (req : any, res : any) => {
 //     })
 // }
 module.exports.getAllClass = (req : any, res : any) => {
-    req.connection.query('SELECT * FROM class WHERE school_id = ?', [req.payload.school_id], (err: any, resp : any) => {
-        res.status(201).json(resp);
+    req.connection.query('SELECT class.name as name, class.level, sections.name as sName FROM class LEFT JOIN sections ON sections.id = class.section WHERE school_id = ?', [req.payload.school_id], (err: any, resp : any) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.status(201).json(resp);
+        }
+        console.log(resp);
     })
 }
 module.exports.getAllOClass = (req : any, res : any) => {

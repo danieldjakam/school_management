@@ -98,7 +98,7 @@ const ClassBySection = () => {
                                 {classTraductions[getLang()].section}:
                                 </span>
                                 <span className="r">
-                                    {classs.section === 'ma' ? classTraductions[getLang()].mat : classs.section === 'fr' ? classTraductions[getLang()].fr : classTraductions[getLang()].en}
+                                    {classs.sName}
                                 </span>
                             </div>
                             <div className="qq">

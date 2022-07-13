@@ -19,6 +19,10 @@ function Home() {
     const [loading, setLoading] = useState(false);
     const [loadingDel, setLoadingDel] = useState(false);
 
+    const navigate = useNavigate();
+    if (sessionStorage.stat !== 'ad') {
+        navigate('/students/'+sessionStorage.classId)
+    }
     useEffect(() => {
         (
             async () => {
@@ -54,7 +58,6 @@ function Home() {
             }
         })
     }
-    const navigate = useNavigate();
     const chooseSection = (section_id) => {
         sessionStorage.setItem('section_id', section_id)
         navigate('/classBySection')
@@ -115,32 +118,6 @@ function Home() {
                         </div>
             }
 
-            <div className="clas" key={id}>
-                    <div className="top">
-                        <div className="classAbs">
-                            Enlever 
-                        </div>
-                        <div className="qq">
-                            <span className="q">
-                            Pas
-                            </span>
-                            <span className="r">
-                                de filtre
-                            </span>
-                        </div>
-                        <div className="qq">
-                            <span className="q">
-                                Pour tout 
-                            </span>
-                            <span className="r">
-                                afficher
-                            </span>
-                        </div>
-                    </div>
-                    <div className="bottom">
-                        <button onClick={() => {chooseSection('nothing')}} className="btn btn-info">{sectionTraductions[getLang()].seeClass}</button>
-                    </div>  
-                </div>
             </div>  
             
 

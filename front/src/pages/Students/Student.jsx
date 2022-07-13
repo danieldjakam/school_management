@@ -284,7 +284,10 @@ const Student = () => {
                                 <input type="file" accept='.csv' id='csvFile' style={{display: 'none'}} onChange={(e) => {handleChangeCsvFile(e, '/upload/students/csv', setError)}} />
                             </> : <></>
                         }
-                        <button onClick={() => {getOrdonnedStudents()}} style={{marginLeft: '10px'}} className="btn btn-blue">{studentTraductions[getLang()].range}</button>
+                        {
+                            sessionStorage.stat === 'ad' ? <button onClick={() => {getOrdonnedStudents()}} style={{marginLeft: '10px'}} className="btn btn-blue">{studentTraductions[getLang()].range}</button> : <></>
+                        }
+                        
                     </ul>
                 </div>
 
@@ -318,7 +321,12 @@ const Student = () => {
                                     <ReactLoading color="#fff" type="cylon"/>
                                 </td>
                             </tr> : students.length > 0 ? students.map((student, id) => {
-                                    const date = new Date(student.birthday).getDate() + ' '+ months[new Date(student.birthday).getMonth()] + " " + new Date(student.birthday).getUTCFullYear()
+                                    let date;
+                                    if (student.birthday) {
+                                        date = new Date(student.birthday).getDate() + ' '+ months[new Date(student.birthday).getMonth()] + " " + new Date(student.birthday).getUTCFullYear()
+                                    }else{
+                                        date = 'Aucune date de naissance';
+                                    }
                                     return <tr key={id}>
                                         <td>{id + 1}</td>
                                         <td>{student.name}</td>

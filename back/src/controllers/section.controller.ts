@@ -1,31 +1,40 @@
 module.exports.addSection = (req: any, res: any) => {
     const {name, type} = req.body;
-    req.connection.query('INSERT INTO sections(name, type) VALUES(?, ?)', [name, type], (err, resp) => {
-        if(err) console.log(err);
-        else res.status(201).json({success: true})
-    })
+    if (name && type) {
+        req.connection.query('INSERT INTO sections(name, type) VALUES(?, ?)', [name, type], (err, resp) => {
+            if (err) res.status(401).json({success: false, message: 'Une erreur est survenue : \n '+err})
+            else res.status(201).json({success: true})
+        })
+    } else {
+        res.status(401).json({success: false, message: 'Remplissez tous les champs svp'})
+    }
 }
 
 module.exports.getAllSection = (req, res) => {
     req.connection.query('SELECT * FROM sections', (err, resp) => {
-        if(err) console.log(err);
+        if (err) res.status(401).json({success: false, message: 'Une erreur est survenue : \n '+err})
         else res.status(201).json(resp)
     })
 }
 
 module.exports.getOneSection = (req, res) => {
     req.connection.query('SELECT * FROM sections WHERE id = ?', [req.params.id], (err, resp) => {
-        if(err) console.log(err);
+        if (err) res.status(401).json({success: false, message: 'Une erreur est survenue : \n '+err})
         else res.status(201).json(resp[0])
     })
 }
 
 module.exports.updateSection = (req, res) => {
     const {name, type} = req.body;
-    req.connection.query('UPDATE sections SET name = ?, type = ? WHERE id = ?', [name, type, req.params.id], (err, resp) => {
-        if (err) res.status(401).json({success: false});
-        else res.status(201).json({success: true})
-    })
+    if (name && type) {
+        req.connection.query('UPDATE sections SET name = ?, type = ? WHERE id = ?', [name, type, req.params.id], (err, resp) => {
+            if (err) res.status(401).json({success: false, message: `Erreur: ${err}`});
+            else res.status(201).json({success: true})
+        })
+    } else {
+        res.status(401).json({success: false, message: 'Remplissez tous les champs svp'})
+    }
+    
 }
 
 module.exports.deleteSection = (req, res) => {
