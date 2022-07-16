@@ -7,7 +7,7 @@
 #
 # Host: localhost (MySQL 5.7.38)
 # Database: school_management
-# Generation Time: 2022-07-13 06:17:13 +0000
+# Generation Time: 2022-07-16 14:06:55 +0000
 # ************************************************************
 
 
@@ -20,6 +20,31 @@ SET NAMES utf8mb4;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 
+# Dump of table activities
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `activities`;
+
+CREATE TABLE `activities` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `domainId` varchar(255) DEFAULT NULL,
+  `section` varchar(255) DEFAULT NULL,
+  `appreciationsNber` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+LOCK TABLES `activities` WRITE;
+/*!40000 ALTER TABLE `activities` DISABLE KEYS */;
+
+INSERT INTO `activities` (`id`, `name`, `domainId`, `section`, `appreciationsNber`)
+VALUES
+	(1,'fsdfd5','3','9',4);
+
+/*!40000 ALTER TABLE `activities` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
 # Dump of table annual_exams
 # ------------------------------------------------------------
 
@@ -28,11 +53,19 @@ DROP TABLE IF EXISTS `annual_exams`;
 CREATE TABLE `annual_exams` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
-  `section_id` varchar(255) NOT NULL,
   `school_year` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 
+LOCK TABLES `annual_exams` WRITE;
+/*!40000 ALTER TABLE `annual_exams` DISABLE KEYS */;
+
+INSERT INTO `annual_exams` (`id`, `name`, `school_year`)
+VALUES
+	(2,'Test edit','2022');
+
+/*!40000 ALTER TABLE `annual_exams` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 # Dump of table class
@@ -55,7 +88,6 @@ LOCK TABLES `class` WRITE;
 INSERT INTO `class` (`id`, `name`, `section`, `teacherId`, `level`, `school_id`)
 VALUES
 	('eyJhbGciOiJIUzI1NiJ9.U2lsIEI.cJlfh-J53quTXCbAFWXImGXV9XWJxASbWf5N2ktBo6Q','Sil B','fr','eyJhbGciOiJIUzI1NiJ9.Q2xhc3MgMQ.yC4Z-RCT2PUlVDkfXBY070I8TwWaVy2bWHjyOH7Ti7w',1,'eyJhbGciOiJIUzI1NiJ9.TGEgc2VtZW5jZQ.fRwDFJ3L2PVmkUqN4jd2fVM6kbTM_43Bb1LSFMLOOGU'),
-	('eyJhbGciOiJIUzI1NiJ9.Q0UxIEI.UTpihmB-5GQdmBP-NkBMZlZNx-EEAvb5hWe7bn9vsLk','CE1 B','fr','eyJhbGciOiJIUzI1NiJ9.dGVlZQ.mNKPg0q2TWBuSiwJuKzAgBMSPGUBoJWVcFUna93mQXs',3,'eyJhbGciOiJIUzI1NiJ9.TGEgc2VtZW5jZQ.fRwDFJ3L2PVmkUqN4jd2fVM6kbTM_43Bb1LSFMLOOGU'),
 	('eyJhbGciOiJIUzI1NiJ9.Q2xhc3MgMQ.yC4Z-RCT2PUlVDkfXBY070I8TwWaVy2bWHjyOH7Ti7w','Class 1','en','eyJhbGciOiJIUzI1NiJ9.bGxsbGw.5-W5rvE0mESNVGDruW3aY_zt_6zSiZXFT7Yupx8WiqI',1,'eyJhbGciOiJIUzI1NiJ9.TGEgc2VtZW5jZQ.fRwDFJ3L2PVmkUqN4jd2fVM6kbTM_43Bb1LSFMLOOGU'),
 	('eyJhbGciOiJIUzI1NiJ9.Q0UyIEE.LxKJf3O-NG5tJJRC9byuUexbIubmCB7qvUGsf8ghLdY','CE2 A','fr','eyJhbGciOiJIUzI1NiJ9.bGxsbGw.5-W5rvE0mESNVGDruW3aY_zt_6zSiZXFT7Yupx8WiqI',4,'eyJhbGciOiJIUzI1NiJ9.TGEgc2VtZW5jZQ.fRwDFJ3L2PVmkUqN4jd2fVM6kbTM_43Bb1LSFMLOOGU'),
 	('eyJhbGciOiJIUzI1NiJ9.bGxsbGw.5-W5rvE0mESNVGDruW3aY_zt_6zSiZXFT7Yupx8WiqI','CE2A','fr','eyJhbGciOiJIUzI1NiJ9.U2lsIEI.cJlfh-J53quTXCbAFWXImGXV9XWJxASbWf5N2ktBo6Q',4,'eyJhbGciOiJIUzI1NiJ9.TGEgc2VtZW5jZQ.fRwDFJ3L2PVmkUqN4jd2fVM6kbTM_43Bb1LSFMLOOGU'),
@@ -84,38 +116,34 @@ LOCK TABLES `com` WRITE;
 INSERT INTO `com` (`id`, `name`, `section`)
 VALUES
 	('eyJhbGciOiJIUzI1NiJ9.Q29tcGV0ZW5jZSAx.O6mhOhIp-XqkRK0yc74aS49FLbqcX0ANPs6MPSAxcQo','Competence 1','fr'),
-	('eyJhbGciOiJIUzI1NiJ9.Q29tcGV0ZW5jZSAy.C9MYUKISqcYCkYluHhHN7req0xTZN5isGM9nXIA6WhE','Competence 2','fr');
+	('eyJhbGciOiJIUzI1NiJ9.Q29tcGV0ZW5jZSAy.C9MYUKISqcYCkYluHhHN7req0xTZN5isGM9nXIA6WhE','Competence 2','fr'),
+	('eyJhbGciOiJIUzI1NiJ9.ZnNmc2Zz.CzaoNBiDQ44yG1BLNgkmRSkZh5IwKE9ywfZ4S999Qkw','fsfsfs','9');
 
 /*!40000 ALTER TABLE `com` ENABLE KEYS */;
 UNLOCK TABLES;
 
 
-# Dump of table matiere
+# Dump of table domains
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `matiere`;
+DROP TABLE IF EXISTS `domains`;
 
-CREATE TABLE `matiere` (
-  `id` varchar(255) DEFAULT NULL,
+CREATE TABLE `domains` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
-  `slug` varchar(255) DEFAULT NULL,
   `section` varchar(255) DEFAULT NULL,
-  `comId` varchar(255) DEFAULT NULL,
-  `tags` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
-LOCK TABLES `matiere` WRITE;
-/*!40000 ALTER TABLE `matiere` DISABLE KEYS */;
+LOCK TABLES `domains` WRITE;
+/*!40000 ALTER TABLE `domains` DISABLE KEYS */;
 
-INSERT INTO `matiere` (`id`, `name`, `slug`, `section`, `comId`, `tags`)
+INSERT INTO `domains` (`id`, `name`, `section`)
 VALUES
-	('eyJhbGciOiJIUzI1NiJ9.Q29tcGV0ZW5jZSAxQTogRnJhbmNhaXM.u-0AlCqOyzn3OQDTMrGKYNGxWOTGaK7T3rwRFab_FYM','Competence 1A: Francais','Apprendre le francais','fr','eyJhbGciOiJIUzI1NiJ9.Q29tcGV0ZW5jZSAx.O6mhOhIp-XqkRK0yc74aS49FLbqcX0ANPs6MPSAxcQo','[{\"name\":\"Orale\",\"over\":5},{\"name\":\"Ecrit\",\"over\":5},{\"name\":\"Savoir Etre\",\"over\":5}]'),
-	('eyJhbGciOiJIUzI1NiJ9.Q29tcGV0ZW5jZSAxQjogQW5nbGFpcw.XTTtBzujnRqHnUCzFAW0G63-QthrFMUdGW_WPnCxraA','Competence 1B: Anglais','Apprendre l\'anglais','fr','eyJhbGciOiJIUzI1NiJ9.Q29tcGV0ZW5jZSAx.O6mhOhIp-XqkRK0yc74aS49FLbqcX0ANPs6MPSAxcQo','[{\"name\":\"Orale\",\"over\":5},{\"name\":\"Ecrit\",\"over\":5},{\"name\":\"Savoir Etre\",\"over\":5}]'),
-	('eyJhbGciOiJIUzI1NiJ9.Q29tcGV0ZW5jZSAxQzogTGFuZ3VlIE5hdGlvbmFsZQ.kygvJZYf1i8dmB98UdUnwr35Eg3eKeMODmaKZIT-j3U','Competence 1C: Langue Nationale','Apprendre la lange nationale','fr','eyJhbGciOiJIUzI1NiJ9.Q29tcGV0ZW5jZSAx.O6mhOhIp-XqkRK0yc74aS49FLbqcX0ANPs6MPSAxcQo','[{\"name\":\"Orale\",\"over\":5},{\"name\":\"Ecrit\",\"over\":5},{\"name\":\"Savoir Etre\",\"over\":5}]'),
-	('eyJhbGciOiJIUzI1NiJ9.Q29tcGV0ZW5jZSAyQTogTWF0aHM.kBFih7OVKo7vSNZodIZOR40r4DpV_cSfTBqS-SdB6H0','Competence 2A: Maths','Mathematiques','fr','eyJhbGciOiJIUzI1NiJ9.Q29tcGV0ZW5jZSAy.C9MYUKISqcYCkYluHhHN7req0xTZN5isGM9nXIA6WhE','[{\"name\":\"Orale\",\"over\":5},{\"name\":\"Ecrit\",\"over\":\"5\"},{\"name\":\"Savoir Etre\",\"over\":\"5\"},{\"name\":\"Pratique\",\"over\":15}]'),
-	('eyJhbGciOiJIUzI1NiJ9.Q29tcGV0ZW5jZSAyQzogU2NpZW5jZQ.vA9eVQf4Ks1HiVuNLJ_MTynLu2shl07rVpmG6bpVxS4','Competence 2C: Science','Science','fr','eyJhbGciOiJIUzI1NiJ9.Q29tcGV0ZW5jZSAy.C9MYUKISqcYCkYluHhHN7req0xTZN5isGM9nXIA6WhE','[{\"name\":\"Orale\",\"over\":\"5\"},{\"name\":\"Ecrit\",\"over\":5},{\"name\":\"Savoir Etre\",\"over\":5},{\"name\":\"Pratique\",\"over\":15}]');
+	(3,'Retest4','9'),
+	(4,'ffsfdsfdsf','7');
 
-/*!40000 ALTER TABLE `matiere` ENABLE KEYS */;
+/*!40000 ALTER TABLE `domains` ENABLE KEYS */;
 UNLOCK TABLES;
 
 
@@ -134,7 +162,7 @@ CREATE TABLE `notes` (
   `value` varchar(255) DEFAULT NULL,
   `school_year` varchar(255) NOT NULL DEFAULT '2022',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=68 DEFAULT CHARSET=utf8;
 
 LOCK TABLES `notes` WRITE;
 /*!40000 ALTER TABLE `notes` DISABLE KEYS */;
@@ -246,7 +274,7 @@ CREATE TABLE `sections` (
   `name` varchar(255) NOT NULL,
   `type` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4;
 
 LOCK TABLES `sections` WRITE;
 /*!40000 ALTER TABLE `sections` DISABLE KEYS */;
@@ -293,7 +321,7 @@ CREATE TABLE `settings` (
   `year_school` year(4) NOT NULL,
   `school_id` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 
 LOCK TABLES `settings` WRITE;
 /*!40000 ALTER TABLE `settings` DISABLE KEYS */;
@@ -318,7 +346,7 @@ CREATE TABLE `stats` (
   `exam_id` varchar(255) NOT NULL,
   `totalPoints` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
 LOCK TABLES `stats` WRITE;
 /*!40000 ALTER TABLE `stats` DISABLE KEYS */;
@@ -369,9 +397,64 @@ VALUES
 	('eyJhbGciOiJIUzI1NiJ9.bGxsbGw.5-W5rvE0mESNVGDruW3aY_zt_6zSiZXFT7Yupx8WiqI','lllll','fddd','ffff@ggg.jj','655773402','eyJhbGciOiJIUzI1NiJ9.U2lsIEI.cJlfh-J53quTXCbAFWXImGXV9XWJxASbWf5N2ktBo6Q','f','2022-06-18 00:00:00','','2024','new','eyJhbGciOiJIUzI1NiJ9.TGEgc2VtZW5jZQ.fRwDFJ3L2PVmkUqN4jd2fVM6kbTM_43Bb1LSFMLOOGU','',''),
 	('eyJhbGciOiJIUzI1NiJ9.bGxsbGw.5-W5rvE0mESNVGDruW3aY_zt_6zSiZXFT7Yupx8WiqI','lllll','fddd','ffff@ggg.jj','655773402','eyJhbGciOiJIUzI1NiJ9.U2lsIEI.cJlfh-J53quTXCbAFWXImGXV9XWJxASbWf5N2ktBo6Q','f','2022-06-18 00:00:00','','2024','new','eyJhbGciOiJIUzI1NiJ9.TGEgc2VtZW5jZQ.fRwDFJ3L2PVmkUqN4jd2fVM6kbTM_43Bb1LSFMLOOGU','',''),
 	('eyJhbGciOiJIUzI1NiJ9.dGVzdDIwMjI.vKVFPFXiqwtEoz2cp1odcnAk2UgKRxMqKLRn5WrO9aM','test','test','test@gmail.com','65555555','eyJhbGciOiJIUzI1NiJ9.U2lsIEI.cJlfh-J53quTXCbAFWXImGXV9XWJxASbWf5N2ktBo6Q','m','2022-07-06 00:00:00','bertoua','2022','old','eyJhbGciOiJIUzI1NiJ9.TGEgc2VtZW5jZQ.fRwDFJ3L2PVmkUqN4jd2fVM6kbTM_43Bb1LSFMLOOGU','tester','tester'),
-	('eyJhbGciOiJIUzI1NiJ9.Z2RmZzIwMjI.56Zc2bJhpPp39dXwTOlzdfp2WMudXL1Fhy9w3qq0Gyk','gdfg','','','','eyJhbGciOiJIUzI1NiJ9.U2lsIEI.cJlfh-J53quTXCbAFWXImGXV9XWJxASbWf5N2ktBo6Q','',NULL,'','2022','new','eyJhbGciOiJIUzI1NiJ9.TGEgc2VtZW5jZQ.fRwDFJ3L2PVmkUqN4jd2fVM6kbTM_43Bb1LSFMLOOGU','gdgfdg','');
+	('eyJhbGciOiJIUzI1NiJ9.Z2RmZzIwMjI.56Zc2bJhpPp39dXwTOlzdfp2WMudXL1Fhy9w3qq0Gyk','gdfg','','','','eyJhbGciOiJIUzI1NiJ9.U2lsIEI.cJlfh-J53quTXCbAFWXImGXV9XWJxASbWf5N2ktBo6Q','',NULL,'','2022','new','eyJhbGciOiJIUzI1NiJ9.TGEgc2VtZW5jZQ.fRwDFJ3L2PVmkUqN4jd2fVM6kbTM_43Bb1LSFMLOOGU','gdgfdg',''),
+	('eyJhbGciOiJIUzI1NiJ9.a2trMjAyMg.WsyciSZg9mOlYUwEcYgKXpQRltz5UtLMhnv8MOkXXlg','kkk','','','','eyJhbGciOiJIUzI1NiJ9.U2lsIEI.cJlfh-J53quTXCbAFWXImGXV9XWJxASbWf5N2ktBo6Q','m',NULL,'','2022','new','eyJhbGciOiJIUzI1NiJ9.TGEgc2VtZW5jZQ.fRwDFJ3L2PVmkUqN4jd2fVM6kbTM_43Bb1LSFMLOOGU','',''),
+	('eyJhbGciOiJIUzI1NiJ9.NjU1MjAyMg.wAhDRWws1Npc9cJYoEXuKQp-6WswVjHSRhxuD81vEcI','655','','','','eyJhbGciOiJIUzI1NiJ9.U2lsIEI.cJlfh-J53quTXCbAFWXImGXV9XWJxASbWf5N2ktBo6Q','m',NULL,'','2022','new','eyJhbGciOiJIUzI1NiJ9.TGEgc2VtZW5jZQ.fRwDFJ3L2PVmkUqN4jd2fVM6kbTM_43Bb1LSFMLOOGU','','');
 
 /*!40000 ALTER TABLE `students` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# Dump of table sub_com
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `sub_com`;
+
+CREATE TABLE `sub_com` (
+  `id` varchar(255) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `slug` varchar(255) DEFAULT NULL,
+  `section` varchar(255) DEFAULT NULL,
+  `comId` varchar(255) DEFAULT NULL,
+  `tags` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+LOCK TABLES `sub_com` WRITE;
+/*!40000 ALTER TABLE `sub_com` DISABLE KEYS */;
+
+INSERT INTO `sub_com` (`id`, `name`, `slug`, `section`, `comId`, `tags`)
+VALUES
+	('eyJhbGciOiJIUzI1NiJ9.Q29tcGV0ZW5jZSAxQTogRnJhbmNhaXM.u-0AlCqOyzn3OQDTMrGKYNGxWOTGaK7T3rwRFab_FYM','Competence 1A: Francais','Apprendre le francais','fr','eyJhbGciOiJIUzI1NiJ9.Q29tcGV0ZW5jZSAx.O6mhOhIp-XqkRK0yc74aS49FLbqcX0ANPs6MPSAxcQo','[{\"name\":\"Orale\",\"over\":5},{\"name\":\"Ecrit\",\"over\":5},{\"name\":\"Savoir Etre\",\"over\":5}]'),
+	('eyJhbGciOiJIUzI1NiJ9.Q29tcGV0ZW5jZSAxQjogQW5nbGFpcw.XTTtBzujnRqHnUCzFAW0G63-QthrFMUdGW_WPnCxraA','Competence 1B: Anglais','Apprendre l\'anglais','fr','eyJhbGciOiJIUzI1NiJ9.Q29tcGV0ZW5jZSAx.O6mhOhIp-XqkRK0yc74aS49FLbqcX0ANPs6MPSAxcQo','[{\"name\":\"Orale\",\"over\":5},{\"name\":\"Ecrit\",\"over\":5},{\"name\":\"Savoir Etre\",\"over\":5}]'),
+	('eyJhbGciOiJIUzI1NiJ9.Q29tcGV0ZW5jZSAxQzogTGFuZ3VlIE5hdGlvbmFsZQ.kygvJZYf1i8dmB98UdUnwr35Eg3eKeMODmaKZIT-j3U','Competence 1C: Langue Nationale','Apprendre la lange nationale','fr','eyJhbGciOiJIUzI1NiJ9.Q29tcGV0ZW5jZSAx.O6mhOhIp-XqkRK0yc74aS49FLbqcX0ANPs6MPSAxcQo','[{\"name\":\"Orale\",\"over\":5},{\"name\":\"Ecrit\",\"over\":5},{\"name\":\"Savoir Etre\",\"over\":5}]'),
+	('eyJhbGciOiJIUzI1NiJ9.Q29tcGV0ZW5jZSAyQTogTWF0aHM.kBFih7OVKo7vSNZodIZOR40r4DpV_cSfTBqS-SdB6H0','Competence 2A: Maths','Mathematiques','fr','eyJhbGciOiJIUzI1NiJ9.Q29tcGV0ZW5jZSAy.C9MYUKISqcYCkYluHhHN7req0xTZN5isGM9nXIA6WhE','[{\"name\":\"Orale\",\"over\":5},{\"name\":\"Ecrit\",\"over\":\"5\"},{\"name\":\"Savoir Etre\",\"over\":\"5\"},{\"name\":\"Pratique\",\"over\":15}]'),
+	('eyJhbGciOiJIUzI1NiJ9.Q29tcGV0ZW5jZSAyQzogU2NpZW5jZQ.vA9eVQf4Ks1HiVuNLJ_MTynLu2shl07rVpmG6bpVxS4','Competence 2C: Science','Science','fr','eyJhbGciOiJIUzI1NiJ9.Q29tcGV0ZW5jZSAy.C9MYUKISqcYCkYluHhHN7req0xTZN5isGM9nXIA6WhE','[{\"name\":\"Orale\",\"over\":\"5\"},{\"name\":\"Ecrit\",\"over\":5},{\"name\":\"Savoir Etre\",\"over\":5},{\"name\":\"Pratique\",\"over\":15}]');
+
+/*!40000 ALTER TABLE `sub_com` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# Dump of table subjects
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `subjects`;
+
+CREATE TABLE `subjects` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `section` varchar(255) DEFAULT NULL,
+  `over` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+LOCK TABLES `subjects` WRITE;
+/*!40000 ALTER TABLE `subjects` DISABLE KEYS */;
+
+INSERT INTO `subjects` (`id`, `name`, `section`, `over`)
+VALUES
+	(1,'testf','9',20);
+
+/*!40000 ALTER TABLE `subjects` ENABLE KEYS */;
 UNLOCK TABLES;
 
 
@@ -398,7 +481,7 @@ LOCK TABLES `teachers` WRITE;
 
 INSERT INTO `teachers` (`id`, `name`, `subname`, `class_id`, `matricule`, `password`, `sex`, `birthday`, `phone_number`, `school_id`)
 VALUES
-	('eyJhbGciOiJIUzI1NiJ9.bGR3ZWQ.8-vlz1RV44_A9aLGF7wJuZ5_ApsNOzk-od2SwNEkb9M','CE1 ffff','sfdffdsfdfsfff','eyJhbGciOiJIUzI1NiJ9.Z2JiZw.cirmzP3yNWf0s_dB06uVgIbThs1et4KR2OUIshRp2Y8','SEM-SILA','1795','m','2022-07-01 00:00:00','ffdfsfdsf','eyJhbGciOiJIUzI1NiJ9.TGEgc2VtZW5jZQ.fRwDFJ3L2PVmkUqN4jd2fVM6kbTM_43Bb1LSFMLOOGU'),
+	('eyJhbGciOiJIUzI1NiJ9.bGR3ZWQ.8-vlz1RV44_A9aLGF7wJuZ5_ApsNOzk-od2SwNEkb9M','CE1 ffff445','sfdffdsfdfsfffdfsdfdfsfdfdds','eyJhbGciOiJIUzI1NiJ9.Z2JiZw.cirmzP3yNWf0s_dB06uVgIbThs1et4KR2OUIshRp2Y8','SEM-SILA','1795','f','2022-07-01 00:00:00','ffdfsfdsf','eyJhbGciOiJIUzI1NiJ9.TGEgc2VtZW5jZQ.fRwDFJ3L2PVmkUqN4jd2fVM6kbTM_43Bb1LSFMLOOGU'),
 	('eyJhbGciOiJIUzI1NiJ9.ZGRk.i-WTaTAqrBc50-UIf_mc28J8ngzylHDryCGqEePGALg','Teacher','dddd','eyJhbGciOiJIUzI1NiJ9.U2lsIEI.cJlfh-J53quTXCbAFWXImGXV9XWJxASbWf5N2ktBo6Q','SEM-SILB','2978','m','2022-07-20 00:00:00','9888888888','eyJhbGciOiJIUzI1NiJ9.TGEgc2VtZW5jZQ.fRwDFJ3L2PVmkUqN4jd2fVM6kbTM_43Bb1LSFMLOOGU'),
 	('eyJhbGciOiJIUzI1NiJ9.ZmRzZGZzZmRzZnNkZg.5fIah07li1WpSAv4sN1uuEu4Roh12P80lp38b7F5p1o','test','test','eyJhbGciOiJIUzI1NiJ9.bGxsbGw.5-W5rvE0mESNVGDruW3aY_zt_6zSiZXFT7Yupx8WiqI','SEM-CE2A','1839','m','2022-07-22 00:00:00','888888888','eyJhbGciOiJIUzI1NiJ9.TGEgc2VtZW5jZQ.fRwDFJ3L2PVmkUqN4jd2fVM6kbTM_43Bb1LSFMLOOGU'),
 	('eyJhbGciOiJIUzI1NiJ9.dGVlZQ.mNKPg0q2TWBuSiwJuKzAgBMSPGUBoJWVcFUna93mQXs','teee','','eyJhbGciOiJIUzI1NiJ9.Q0UxIEI.UTpihmB-5GQdmBP-NkBMZlZNx-EEAvb5hWe7bn9vsLk','SEM-CE1B','3783','m',NULL,'','eyJhbGciOiJIUzI1NiJ9.TGEgc2VtZW5jZQ.fRwDFJ3L2PVmkUqN4jd2fVM6kbTM_43Bb1LSFMLOOGU');
