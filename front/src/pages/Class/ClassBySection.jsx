@@ -2,7 +2,7 @@ import React from 'react'
 import { useEffect } from "react";
 import { useState } from "react";
 import ReactLoading from 'react-loading';
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import * as Swal from 'sweetalert2';
 import AddClass from "./AddClass";
 import EditClass from "./EditClass";
@@ -28,10 +28,12 @@ const ClassBySection = () => {
     const [Classes, setClass] = useState({});
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
-    const [classToEditId, setClassToEditId] = useState('')
+    const [classToEditId, setClassToEditId] = useState('');
     const [loadingDel, setLoadingDel] = useState(false);
     const [isAddClass, setIsAddClass] = useState(false);
     const [isEditClass, setIsEditClass] = useState(false);
+
+    const sectionName = useParams().name;
 
     useEffect(() => {
         (
@@ -73,6 +75,7 @@ const ClassBySection = () => {
     return <div style={{padding: '10px 10px'}} className='container'>
         
         <div style={{marginBottom: '10px'}}>
+            <h1><b>Section : </b> {loading ? '' : sectionName} </h1>
             <button onClick={() => {setIsAddClass(v => !v)}} className="btn btn-blue">Ajouter une classe</button>
                                 <label htmlFor='csvFile' style={{marginLeft: '10px'}} className="btn btn-success">Importer les classes</label>
                                 <input type="file" accept='.csv' id='csvFile' style={{display: 'none'}} onChange={(e) => {handleChangeCsvFile(e, '/upload/class/csv', setError)}} />

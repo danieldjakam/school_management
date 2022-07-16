@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import * as Swal from 'sweetalert2'
 import { paramsTraductions } from '../../local/params';
 import { host } from '../../utils/fetch';

@@ -2,7 +2,7 @@ import React from 'react'
 import { useEffect } from "react";
 import { useState } from "react";
 import ReactLoading from 'react-loading';
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import * as Swal from 'sweetalert2';
 import {
     Modal
@@ -78,13 +78,18 @@ const Comp = () => {
             </thead>
             <tbody>
                 {
-                    loading ? <tr ><td colSpan={4} style={{justifyItems: 'center', paddingLeft: '50%'}}> <div className="error" style={{ position: 'absolute', top: '39%', left: '53%' }}><ReactLoading color="#fff" type="spin"/></div></td></tr> : trims.length > 0 ? trims.map((classs, id) => {
+                    loading ? <tr ><td colSpan={4} style={{justifyItems: 'center', paddingLeft: '50%'}}> <div className="error" style={{ position: 'absolute', top: '39%', left: '53%' }}><ReactLoading color="#fff" type="spin"/></div></td></tr> : trims.length > 0 ? trims.map((com, id) => {
                         return <tr key={id}>
-                            <td>{classs.name}</td>
-                            <td>{classs.section === 'ma' ?comTraductions[getLang()].mat : classs.section === 'fr' ?comTraductions[getLang()].fr :comTraductions[getLang()].en}</td>
+                            <td>{com.name}</td>
+                            <td>
+                                {
+                                    com.section_name
+                                }
+                            </td>
                             <td style={{display: 'flex', justifyContent: 'space-between'}}>
-                                <button onClick = { () => {setCompToEditId(classs.id); setIsEditComp(v => !v  )}} className="btn btn-warning"> {comTraductions[getLang()].edit} </button>
-                                <button className="btn btn-danger" onClick={() => {deleteClass(classs.id)}}> {loadingDel ? 'Suppression..' : 'Supprimer'} </button>
+                                <Link to={'/competences/'+com.id} className="btn btn-primary">Sous competences </Link>
+                                <button onClick = { () => {setCompToEditId(com.id); setIsEditComp(v => !v  )}} className="btn btn-warning"> {comTraductions[getLang()].edit} </button>
+                                <button className="btn btn-danger" onClick={() => {deleteClass(com.id)}}> {loadingDel ? 'Suppression..' : 'Supprimer'} </button>
                             </td>
                         </tr> }) : <tr> {comTraductions[getLang()].nohaveclass + ' ' +comTraductions[getLang()].doyou} <button onClick={() => {setIsAddComp(v => !v)}} className="btn btn-blue"> {comTraductions[getLang()].add} </button></tr>
                 }

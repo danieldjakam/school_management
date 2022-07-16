@@ -30,6 +30,18 @@ module.exports.getOneSeq = (req, res) => {
     }) 
 }
 
+module.exports.update = (req, res) => {
+    const {name} = req.body;
+    if (name && name !== '') {
+        req.connection.query('UPDATE seq SET name = ? WHERE id = ?', [name, req.params.id], (err, resp) => {
+            if(err) console.log(err);
+            else res.status(201).json({success: true})
+        })
+    }else{
+        res.status(401).json({success: false, message: "Remplir tous les champs ducond !!"})
+    }
+}
+
 module.exports.deleteSeq = (req, res) => {
     const {id} = req.params;
     req.connection.query('DELETE FROM seq WHERE id = ?', [id], (err, resp) => {

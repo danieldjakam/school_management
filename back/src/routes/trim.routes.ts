@@ -9,7 +9,7 @@ routerForTrims.get('/getAll', authGlobalForTrims, authForTrims, trimController.g
 routerForTrims.get('/:id', authGlobalForTrims, authForTrims, trimController.getOneTrimestre);
 // routerForTrims.get('/:id', teachersController.getOnmatiere);
 routerForTrims.post('/add', authGlobalForTrims, authAdminForTrims, trimController.addTrimestre);
-// routerForTrims.put('/:id',matiereController.updateMatiere);
+routerForTrims.put('/:id', authGlobalForTrims, authAdminForTrims, trimController.update);
 routerForTrims.delete('/:id', authGlobalForTrims, authAdminForTrims, trimController.deleteTrimestre)
 
 module.exports = routerForTrims;

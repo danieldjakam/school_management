@@ -1,24 +1,24 @@
 import React from 'react'
 import { useEffect } from "react";
 import { useState } from "react";
-import { subjectTraductions } from '../../local/subject';
+import { domainsTraductions } from '../../local/domains';
 import { host } from '../../utils/fetch';
 import { getLang } from '../../utils/lang';
 
-const EditMatiere = ({error, setError, setIsSeq, id}) => {
+const EditDomain = ({error, setError, setIsSeq, id}) => {
     
-    const [subject, setSubject] = useState({});
+    const [domain, setDomain] = useState({});
     const [loading, setLoading] = useState(false);
     const [sections, setSections] = useState([]);
     useEffect(() => {
         (
             async () => {
                 setLoading(true)
-                const resp = await fetch(host+'/subjects/'+id, {headers: {
+                const resp = await fetch(host+'/domains/'+id, {headers: {
                     'Authorization': sessionStorage.user
                   }})
                 const data = await resp.json();
-                setSubject(data);
+                setDomain(data);
                 setLoading(false);
             }
         )()
@@ -39,7 +39,7 @@ const EditMatiere = ({error, setError, setIsSeq, id}) => {
     const handleUpdate = (e) => {
         e.preventDefault();
         setLoading(true);
-        fetch(host+'/subjects/'+id, {method: 'PUT', body: JSON.stringify(subject), headers: {'Content-Type': 'application/json', 'Authorization': sessionStorage.user}})
+        fetch(host+'/domains/'+id, {method: 'PUT', body: JSON.stringify(domain), headers: {'Content-Type': 'application/json', 'Authorization': sessionStorage.user}})
         .then((res) => res.json())
         .then(res => {
             if (res.success) {
@@ -58,21 +58,17 @@ const EditMatiere = ({error, setError, setIsSeq, id}) => {
 
     return <div className="card login-card">
     <div className="card-head">
-      <h1>{ subjectTraductions[getLang()].addSubject }</h1>
+      <h1>{ domainsTraductions[getLang()].editDomain }</h1>
     </div>
     <form onSubmit={(e) => {handleUpdate(e)}}>
       <div className="card-content">
         <div className="field">
-          <div className="label">{ subjectTraductions[getLang()].subjectName }</div>
-          <input type="text" value={subject.name} onChange={(e) => {setSubject(val => {return {...val, name: e.target.value}})}} placeholder={ subjectTraductions[getLang()].subjectName } />
+          <div className="label">{ domainsTraductions[getLang()].domainName }</div>
+          <input type="text" value={domain.name} onChange={(e) => {setDomain(val => {return {...val, name: e.target.value}})}} placeholder={ domainsTraductions[getLang()].subjectName } />
         </div> 
         <div className="field">
-          <div className="label">{ subjectTraductions[getLang()].over }</div>
-          <input type="text" value={subject.over} onChange={(e) => {setSubject(val => {return {...val, over: e.target.value}})}} placeholder={ subjectTraductions[getLang()].subjectOver } />
-        </div> 
-        <div className="field">
-            <div className="label">{ subjectTraductions[getLang()].section }</div>
-            <select value={subject.section}  className="form-control form-control-lg" onChange={(e) => {setSubject(val => {return {...val, section: e.target.value}})}}
+            <div className="label">{ domainsTraductions[getLang()].section }</div>
+            <select value={domain.section}  className="form-control form-control-lg" onChange={(e) => {setDomain(val => {return {...val, section: e.target.value}})}}
             placeholder="Enter password">
               <option value={''}>--- Selectionner la section ----</option>
                 {
@@ -86,12 +82,12 @@ const EditMatiere = ({error, setError, setIsSeq, id}) => {
         } 
       </div>
       <div className="card-footer">
-        <button className="btn btn-blue" type="submit">{loading ? subjectTraductions[getLang()].saving : subjectTraductions[getLang()].save}</button>
-        <button onClick={() => {handleCancel()}} type="submit"> {subjectTraductions[getLang()].close} </button>
+        <button className="btn btn-blue" type="submit">{loading ? domainsTraductions[getLang()].saving : domainsTraductions[getLang()].save}</button>
+        <button onClick={() => {handleCancel()}} type="submit"> {domainsTraductions[getLang()].close} </button>
       </div>
       
     </form>
   </div>
 }
 
-export default EditMatiere;
+export default EditDomain;

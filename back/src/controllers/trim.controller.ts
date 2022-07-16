@@ -29,23 +29,12 @@ module.exports.getOneTrimestre = (req, res) => {
     })
 }
 
-module.exports.updateTrimestre = (req, res) => {
-    const {name, slug} = req.body;
-    if (name && name !== '' && slug && slug !== '') {
-        req.connection.query('SELECT * FROM users WHERE name = ?', [name], (err, resp) => {
-            if(resp.length < 1){
-                res.status(401).json({success: false, message: 'nom de la matiere non reconnu'})
-            }else{
-                if (resp[0].slug === slug) {
-                    const token = jwt.req.jwt.sign({
-                        id: resp[0].id,
-                        role: 'client'
-                    }, req.env.SECRET)
-                    res.status(401).json({success: true, token})
-                }else{
-                    res.status(401).json({success: false, message: ''})
-                }
-            }
+module.exports.update = (req, res) => {
+    const {name} = req.body;
+    if (name && name !== '') {
+        req.connection.query('UPDATE trims SET name = ? WHERE id = ?', [name, req.params.id], (err, resp) => {
+            if(err) console.log(err);
+            else res.status(201).json({success: true})
         })
     }else{
         res.status(401).json({success: false, message: "Remplir tous les champs ducond !!"})

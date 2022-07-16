@@ -1,58 +1,56 @@
-import React from 'react'
-import { useEffect } from "react";
+import React, { useEffect } from 'react'
 import { useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
 import { sequenceTraductions } from '../../local/sequence';
 import { host } from '../../utils/fetch';
 import { getLang } from '../../utils/lang';
-import AddSequence from "./AddSequence";
 
-const EditSequence = () => {
-    const {id} = useParams();
-    const [sequence, setSequence] = useState({});
-    const [error, setError] = useState('');
-    const [success, setSuccess] = useState('');
+const EditSequence = ({error, setError, setIsEditSeq, id}) => {
     const [loading, setLoading] = useState(false);
-    const navigate = useNavigate();
+    const [seq, setSeq] = useState({});
 
+    const handleAdd = (e) => {
+        e.preventDefault();
+        setLoading(true);
+        fetch(host+'/seq/'+id, {method: 'PUT', body: JSON.stringify(seq), headers: {'Content-Type': 'application/json', 'Authorization': sessionStorage.user}})
+        .then((res) => res.json())
+        .then(res => {
+            if (res.success) {
+                window.location.reload();
+            }else{
+                setError(res.message)
+            }
+        })
+        .catch(err => setError(`Erreur: ${err}`))
+        setLoading(false)
+    }
     useEffect(() => {
         (
             async () => {
                 setLoading(true)
-                const resp = await fetch(host+'/sequence/'+id, {headers: {
+                const resp = await fetch(host+'/seq/'+id, {headers: {
                     'Authorization': sessionStorage.user
-                }})
+                  }})
                 const data = await resp.json();
-                setSequence(data);
+                setSeq(data);
                 setLoading(false);
             }
         )()
     }, [])
-
-    const handleUpdate = (e) => {
-        e.preventDefault();
-        setLoading(true);
-        fetch(host+'/sequence/'+id, {method: 'PUT', body: JSON.stringify(AddSequence), headers: {'Content-Type': 'application/json', 'Authorization': sessionStorage.user}})
-        .then((res) => res.json())
-        .then(res => {
-          console.log(res);
-            if (res.success) {
-              navigate('/class');
-            }else{
-              setError(res.message)
-            }
-        })
-        setLoading(false)
+    
+    const handleCancel = () => {
+      setIsEditSeq(false)
+      setError('')
     }
+
     return <div className="card login-card">
     <div className="card-head">
       <h1>{sequenceTraductions[getLang()].addSeq}</h1>
     </div>
-    <form onSubmit={(e) => {handleUpdate(e)}}>
+    <form onSubmit={(e) => {handleAdd(e)}}>
       <div className="card-content">
         <div className="field">
             <div className="label">{sequenceTraductions[getLang()].seqName}</div>
-            <input type="text" value={sequence.name} onChange={(e) => {setSequence(val => {return {...val, name: e.target.value}})}} placeholder={sequenceTraductions[getLang()].seqName} />
+            <input type="text" value={seq.name} onChange={(e) => {setSeq(val => {return {...val, name: e.target.value}})}} placeholder={sequenceTraductions[getLang()].seqName} />
         </div>
         {
           error !== '' ? <div className="error">{error}</div> : ''

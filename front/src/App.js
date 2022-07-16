@@ -22,6 +22,9 @@ import SeqStu from './pages/Sequences/SeqStu';
 import Settings from './pages/Settings';
 import Home from './pages/Home';
 import ClassBySection from './pages/Class/ClassBySection';
+import SubComp from './pages/Competences/SubComp';
+import Domains from './pages/Domains/Domains';
+import Activities from './pages/Domains/Activities';
 
 function App() {
   let val = null;
@@ -38,20 +41,23 @@ function App() {
             user ? <>
                     <Route path='/' element={<Home/>} />
                     <Route path='/class' element={<Class/>} /> 
-                    <Route path='/classBySection' element={<ClassBySection />} /> 
+                    <Route path='/classBySection/:name' element={<ClassBySection />} /> 
                     <Route path='/students/:id' element={<Student/>} />
                     <Route path='/teachers' element={<Teachers/>} />
                     <Route path='/competences' element={<Comp/>} />
+                    <Route path='/competences/:id' element={<SubComp/>}/>
                     <Route path='/matieres' element={<Matiere/>} /> 
+                    <Route path='/domains' element={<Domains/>} /> 
+                    <Route path='/domains/:id' element={<Activities/>} /> 
                     <Route path='/exams/:exam_id/:class_id' element={<Exams/>} /> 
                     <Route path='/trims/:exam_id/:class_id' element={<Trims/>} /> 
                     <Route path='/exams/:exam_id/:class_id/:student_id' element={<Bulletin/>} /> 
                     <Route path='/trims/:exam_id/:class_id/:student_id' element={<BulletinTrim/>} /> 
                     <Route path='/search' element={<SearchView/>}/>
                     <Route path='/params' element={<Params/>}/>
-                    <Route path='/trims' element={<TrimStu/>}/>
                     <Route path='/seqs' element={<SeqStu/>}/>
                     <Route path='/settings' element={<Settings/>}/>
+                    <Route path='/trims' element={<TrimStu/>}/>
                     <Route path='*' element={<Error404/>} />
                   </>
                  : <> 

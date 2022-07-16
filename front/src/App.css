@@ -898,7 +898,6 @@ div.check > label.checked::after{
 }
 
 .choices > .choice{
-  border: 2px solid #30363d;
   width: 200px;
   margin-bottom: 10px;
   border-radius: 10px;
@@ -915,6 +914,7 @@ div.check > label.checked::after{
 
 .choices > .choice > .name{
   padding: 10px;
+  height: 40px;
   pointer-events: none;
   background: #0D1117;
   color: #fff;
@@ -964,5 +964,5 @@ div.check > label.checked::after{
   width: 450px;
 }
 .choice.checked{
-    border: 2px solid #1ce !important;
+    border: 4px solid #1ce !important;
 }

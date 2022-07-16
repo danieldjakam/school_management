@@ -8,6 +8,7 @@ const seqController = require('../controllers/seq.controller');
 routerForSeq.get('/getAll', authGlobalForSeq, authForSeq, seqController.getAllSeq);
 routerForSeq.get('/:id', authGlobalForSeq, authForSeq, seqController.getOneSeq);
 routerForSeq.post('/add', authGlobalForSeq, authAdminForSeq, seqController.addSeq);
+routerForSeq.put('/:id', authGlobalForSeq, authAdminForSeq, seqController.update);
 routerForSeq.delete('/:id', authGlobalForSeq, authAdminForSeq, seqController.deleteSeq);
 
 module.exports = routerForSeq;

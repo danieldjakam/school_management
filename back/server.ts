@@ -19,6 +19,10 @@ const comRoutes = require('./src/routes/com.routes');
 const notesRoutes = require('./src/routes/notes.routes');
 const uploadRoutes = require('./src/routes/upload.routes');
 const sectionRoutes = require('./src/routes/section.routes');
+const subComRoutes = require('./src/routes/sub_comp.routes');
+const domainsRoutes = require('./src/routes/domains.routes');
+const activitiesRoutes = require('./src/routes/activities.routes');
+const annualsRoutes = require('./src/routes/annuals.routes');
 
 app.use(bodyparser.json());
 app.use(
@@ -32,7 +36,7 @@ app.use('/users', userRoutes)
 app.use('/class', classRoutes)
 app.use('/students', studentRoutes)
 app.use('/teachers', teachersRoutes)
-app.use('/matiere', matiereRoutes)
+app.use('/subjects', matiereRoutes)
 app.use('/download', downloadRoutes)
 app.use('/seq', seqRoutes);
 app.use('/trim', trimRoutes);
@@ -41,7 +45,11 @@ app.use('/notes', notesRoutes);
 app.use('/settings', settingsRoutes)
 app.use('/send', sendRoutes);
 app.use('/upload', uploadRoutes);
+app.use('/annuals', annualsRoutes);
 app.use('/sections', sectionRoutes);
+app.use('/sub_comp', subComRoutes);
+app.use('/domains', domainsRoutes);
+app.use('/activities', activitiesRoutes);
 
 app.listen(process.env.PORT, () => {
     console.log(`Listenning on ${process.env.PORT}`);

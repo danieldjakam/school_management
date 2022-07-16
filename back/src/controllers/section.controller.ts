@@ -37,6 +37,13 @@ module.exports.updateSection = (req, res) => {
     
 }
 
+module.exports.getNberOfClass = (req, res) => {
+   req.connection.query('SELECT * FROM class WHERE section = ? ', [req.params.id], (err, resp) => {
+        if (err) res.status(401).json({success: false, message: `Erreur: ${err}`});
+        else res.status(201).json({success: true, message: resp.length})
+   }) 
+}
+
 module.exports.deleteSection = (req, res) => {
     const {id} = req.params;    
     try {

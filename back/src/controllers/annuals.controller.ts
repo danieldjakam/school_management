@@ -1,5 +1,5 @@
-module.exports.addStudent = (req, res) => {
-    const {name, section_id} = req.body;
+module.exports.add = (req, res) => {
+    const {name} = req.body;
     if (name) {
         if (name.length < 3) {
             res.status(401).json({success: false, message: 'Le nom de l\'exam annuel doit avoir au moins 3 caracteres!!'})
@@ -7,7 +7,7 @@ module.exports.addStudent = (req, res) => {
         else{
             req.connection.query('SELECT year_school FROM settings WHERE school_id = ?', [req.payload.school_id], (rerr, respe) => {
                 const {year_school} = respe[0];
-                req.connection.query('INSERT INTO annual_exams(name, section_id, school_year) VALUES(?, ?, ?)', [name, section_id, year_school], (err, resp) => {
+                req.connection.query('INSERT INTO annual_exams(name, school_year) VALUES(?, ?)', [name, year_school], (err, resp) => {
                     if(err) console.log(err);
                     else res.status(201).json({success: true})
                 })
@@ -18,15 +18,15 @@ module.exports.addStudent = (req, res) => {
     }
 }
 
-module.exports.updateStudent = (req, res) => {
-    const {name, section_id} = req.body;
+module.exports.update = (req, res) => {
+    const {name} = req.body;
     const {id} = req.params;
     if (name) {
         if (name.length < 3) {
             res.status(401).json({success: false, message: 'Le nom de l\'exam annuel doit avoir au moins 3 caracteres!!'})
         }
         else{
-            req.connection.query('UPDATE annual_exams SET name = ?, section_id = ? WHERE id = ?', [name, section_id, id], (err, resp) => {
+            req.connection.query('UPDATE annual_exams SET name = ? WHERE id = ?', [name, id], (err, resp) => {
                 if(err) console.log(err);
                 else res.status(201).json({success: true})
             })
@@ -36,7 +36,7 @@ module.exports.updateStudent = (req, res) => {
     }
 }
 
-module.exports.getAll = (req, res) => {
+module.exports.all = (req, res) => {
     req.connection.query('SELECT year_school FROM settings WHERE school_id = ?', [req.payload.school_id], (rerr, respe) => {
         const {year_school} = respe[0];
         req.connection.query('SELECT * FROM annual_exams WHERE school_year = ?', [year_school], (err, resp) => {
@@ -46,7 +46,17 @@ module.exports.getAll = (req, res) => {
     })
 }
 
-module.exports.deleteSection = (req, res) => {
+module.exports.one = (req, res) => {
+    req.connection.query('SELECT year_school FROM settings WHERE school_id = ?', [req.payload.school_id], (rerr, respe) => {
+        const {year_school} = respe[0];
+        req.connection.query('SELECT * FROM annual_exams WHERE school_year = ? AND id = ?', [year_school, req.params.id], (err, resp) => {
+            if(err) console.log(err);
+            else res.status(201).json(resp[0])
+        })
+    })
+}
+
+module.exports.delete = (req, res) => {
     const {id} = req.params;
     req.connection.query('SELECT year_school FROM settings WHERE school_id = ?', [req.payload.school_id], (rerr, respe) => {
         const {year_school} = respe[0];

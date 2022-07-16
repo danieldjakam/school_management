@@ -30,7 +30,16 @@ function Home() {
                 const resp = await fetch(host+'/sections/all', {headers: {
                     'Authorization': sessionStorage.user
                   }})
-                const data = await resp.json();
+                let data = await resp.json();
+                data.forEach(r => {
+                    r.count = 0;
+                    fetch(host+'/sections/getNberOfClass/'+r.id, {headers: {
+                        'Authorization': sessionStorage.user
+                    }})
+                        .then(rr => rr.json())
+                        .then(tt => r.count = tt.message)
+                        .catch(e => setError(e));
+                })
                 setSections(data);
                 setLoading(false);
             }
@@ -58,10 +67,11 @@ function Home() {
             }
         })
     }
-    const chooseSection = (section_id) => {
+    const chooseSection = (section_id, section_name) => {
         sessionStorage.setItem('section_id', section_id)
-        navigate('/classBySection')
+        navigate('/classBySection/'+section_name)
     }
+    console.log(sections);
     return (
         <div className='container' style={{paddingTop: '20px'}}>
             <h1 className='text-black'>
@@ -76,7 +86,9 @@ function Home() {
 
             <div className="allClas">
                 {
-                    loading ? <div className="error" style={{ position: 'absolute', top: '39%', left: '53%' }}><ReactLoading color="#fff" type="spin"/></div> : sections.length > 0? sections.map((section, id) => {
+                    loading ? <div className="error" style={{ position: 'absolute', top: '39%', left: '53%' }}>
+                        <ReactLoading color="#fff" type="spin"/></div> : sections.length > 0? sections.map((section, id) => {
+                            console.log();
                         return <div className="clas" key={id}>
                             <div className="top">
                                 <div className="classAbs">
@@ -98,9 +110,17 @@ function Home() {
                                         {section.type}    
                                     </span>
                                 </div>
+                                <div className="qq">
+                                    <span className="q">
+                                     {section.count}
+                                    </span>
+                                    <span className="r">
+                                        classe{ section.count > 1 ? 's' : ''}  
+                                    </span>
+                                </div>
                             </div>
                             <div className="bottom">
-                                <button onClick={() => {chooseSection(section.id)}} className="btn btn-info">{sectionTraductions[getLang()].seeClass}</button>
+                                <button onClick={() => {chooseSection(section.id, section.name)}} className="btn btn-info">{sectionTraductions[getLang()].seeClass}</button>
                                     <button onClick={() => {setId(section.id); setIsEditSection(v => !v)}} className='btn btn-warning'>
                                         {sectionTraductions['en'].edit}
                                     </button>

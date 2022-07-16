@@ -6,12 +6,16 @@ module.exports.addStudent = (req, res) => {
     if (!status) {
         status = 'old'
     }
-    if (name && fatherName) {
+    if (name) {
         let birthdy = birthday;
         console.log(birthday);
         
         if (!birthday || birthday === ''){
             birthdy = null;
+        }
+        let t = '';
+        if (fatherName){
+            t = fatherName;
         }
         if (name.length < 3) {
             res.status(401).json({success: false, message: 'Le nom de l\'eleve doit avoir au moins 3 caracteres!!'})
@@ -34,7 +38,7 @@ module.exports.addStudent = (req, res) => {
         else{
             req.connection.query('SELECT year_school FROM settings WHERE school_id = ?', [req.payload.school_id], (rerr, respe) => {
                 const {year_school} = respe[0];
-                req.connection.query('INSERT INTO students(id, name, subname, class_id, sex, birthday, email, phone_number, school_year, status, fatherName, profession, birthday_place, school_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [req.jwt.sign(name+year_school, req.env.SECRET), name, subname, id, sex, birthdy, email, phone_number.toString(), year_school, status, fatherName, profession, birthday, req.payload.school_id], (err, resp) => {
+                req.connection.query('INSERT INTO students(id, name, subname, class_id, sex, birthday, email, phone_number, school_year, status, fatherName, profession, birthday_place, school_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [req.jwt.sign(name+year_school, req.env.SECRET), name, subname, id, sex, birthdy, email, phone_number.toString(), year_school, status, t, profession, birthday, req.payload.school_id], (err, resp) => {
                     if(err) console.log(err);
                     else res.status(201).json({success: true})
                 })

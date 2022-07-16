@@ -1,20 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useState } from "react";
 import { studentTraductions } from '../../local/student';
 import { host } from '../../utils/fetch';
 import { getLang } from '../../utils/lang';
 
-const AddAnnualExam = ({error, setError, setIsAnnualExam}) => {
+const EditAnnualExam = ({error, setError, setIsEditAnnualExam, id}) => {
 
-    const [data, setData] = useState({
-      name: ''
-    })
+    const [annual_exam, setAnnualExam] = useState({});
     const [loading, setLoading] = useState(false);
     
     const handleAdd = (e) => {
         e.preventDefault();
         setLoading(true);
-        fetch(host+'/annuals/add', {method: 'POST', body: JSON.stringify(data), headers: {'Content-Type': 'application/json', 'Authorization': sessionStorage.user}})
+        fetch(host+'/annuals/'+id, {method: 'PUT', body: JSON.stringify(annual_exam), headers: {'Content-Type': 'application/json', 'Authorization': sessionStorage.user}})
             .then((res) => res.json())
             .then(res => {
                 if (res.success) {
@@ -26,8 +24,21 @@ const AddAnnualExam = ({error, setError, setIsAnnualExam}) => {
             .catch(err => setError(`Erreur: ${err}`))
         setLoading(false)
     }
+    useEffect(() => {
+        (
+            async () => {
+                setLoading(true)
+                const resp = await fetch(host+'/annuals/'+id, {headers: {
+                    'Authorization': sessionStorage.user
+                  }})
+                const data = await resp.json();
+                setAnnualExam(data);
+                setLoading(false);
+            }
+        )()
+    }, [])
     const handleCancel = () => {
-      setIsAnnualExam(false)
+      setIsEditAnnualExam(false)
       setError('')
     }
     return <div className="card login-card">
@@ -38,7 +49,7 @@ const AddAnnualExam = ({error, setError, setIsAnnualExam}) => {
           <div className="card-content">
             <div className="field">
                 <div className="label">{studentTraductions[getLang()].examName}</div>
-                <input type="text" value={data.name} onChange={(e) => {setData(val => {return {...val, name: e.target.value}})}} placeholder={studentTraductions[getLang()].addTrim} />
+                <input type="text" value={annual_exam.name} onChange={(e) => {setAnnualExam(val => {return {...val, name: e.target.value}})}} placeholder={studentTraductions[getLang()].addTrim} />
             </div>
             {
               error !== '' ? <div className="error">{error}</div> : ''
@@ -53,4 +64,4 @@ const AddAnnualExam = ({error, setError, setIsAnnualExam}) => {
   </div>
 }
 
-export default AddAnnualExam;
+export default EditAnnualExam;

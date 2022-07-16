@@ -1,16 +1,15 @@
 import React from 'react'
 import { useEffect } from "react";
 import { useState } from "react";
-import { subjectTraductions } from '../../local/subject';
+import { domainsTraductions } from '../../local/domains';
 import { host } from '../../utils/fetch';
 import { getLang } from '../../utils/lang';
 
-const AddMatiere = ({error, setError, setIsSeq}) => {
+const AddDomain = ({error, setError, setIsSeq}) => {
   const [sections, setSections] = useState([]);
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState({
     name: '',
-    over: 0,
     section: parseInt(sessionStorage.getItem('section_id')),
   })
 
@@ -31,7 +30,7 @@ const AddMatiere = ({error, setError, setIsSeq}) => {
   const handleAdd = (e) => {
       e.preventDefault();
       setLoading(true);
-      fetch(host+'/subjects/add', {method: 'POST', body: JSON.stringify(data), headers: {'Content-Type': 'application/json', 'Authorization': sessionStorage.user}})
+      fetch(host+'/domains/add', {method: 'POST', body: JSON.stringify(data), headers: {'Content-Type': 'application/json', 'Authorization': sessionStorage.user}})
       .then((res) => res.json())
       .then(res => {
           if (res.success) {
@@ -49,20 +48,16 @@ const AddMatiere = ({error, setError, setIsSeq}) => {
   }
   return <div className="card login-card">
     <div className="card-head">
-      <h1>{ subjectTraductions[getLang()].addSubject }</h1>
+      <h1>{ domainsTraductions[getLang()].addDomain }</h1>
     </div>
     <form onSubmit={(e) => {handleAdd(e)}}>
       <div className="card-content">
         <div className="field">
-          <div className="label">{ subjectTraductions[getLang()].subjectName }</div>
-          <input type="text" value={data.name} onChange={(e) => {setData(val => {return {...val, name: e.target.value}})}} placeholder={ subjectTraductions[getLang()].subjectName } />
+          <div className="label">{ domainsTraductions[getLang()].domainName }</div>
+          <input type="text" value={data.name} onChange={(e) => {setData(val => {return {...val, name: e.target.value}})}} placeholder={ domainsTraductions[getLang()].domainName } />
         </div> 
         <div className="field">
-          <div className="label">{ subjectTraductions[getLang()].over }</div>
-          <input type="number" min={0} value={data.over} onChange={(e) => {setData(val => {return {...val, over: e.target.value}})}} placeholder={ subjectTraductions[getLang()].subjectOver } />
-        </div> 
-        <div className="field">
-            <div className="label">{ subjectTraductions[getLang()].section }</div>
+            <div className="label">{ domainsTraductions[getLang()].section }</div>
             <select value={data.section}  className="form-control form-control-lg" onChange={(e) => {setData(val => {return {...val, section: e.target.value}})}}
             placeholder="Enter password">
               <option value={''}>--- Selectionner la section ----</option>
@@ -76,12 +71,12 @@ const AddMatiere = ({error, setError, setIsSeq}) => {
         } 
       </div>
       <div className="card-footer">
-        <button className="btn btn-blue" type="submit">{loading ? subjectTraductions[getLang()].saving : subjectTraductions[getLang()].save}</button>
-        <button onClick={() => {handleCancel()}} type="submit"> {subjectTraductions[getLang()].close} </button>
+        <button className="btn btn-blue" type="submit">{loading ? domainsTraductions[getLang()].saving : domainsTraductions[getLang()].save}</button>
+        <button onClick={() => {handleCancel()}} type="submit"> {domainsTraductions[getLang()].close} </button>
       </div>
       
     </form>
   </div>
 }
 
-export default AddMatiere;
+export default AddDomain;
