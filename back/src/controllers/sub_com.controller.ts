@@ -1,8 +1,8 @@
 module.exports.store = async (req, res) => {
     const {name, slug, section, comId, orale, ecrit, savEtre, pratique, oraleOver, ecritOver, savOver, pratiqueOver} = req.body;
     if ( name && name !== '' && slug && slug !== '' &&  section && section !== '' &&  comId && comId !== '' ) {
-        if (name.length < 3 || name.length > 50) {
-            res.status(401).json({success: false, message: "Le nom doit etre compris entre 5 et 50 caracteres !!"})
+        if (name.length < 3 || name.length > 255) {
+            res.status(401).json({success: false, message: "Le nom doit etre compris entre 5 et 255 caracteres !!"})
         }
         else if (slug.length < 3) {
             res.status(401).json({success: false, message: "Slug trop court minimum 3 caracteres !!"})
@@ -52,8 +52,6 @@ module.exports.all = (req : any, res : any) => {
 
 
 module.exports.some = (req : any, res : any) => {
-    console.log();
-    
     req.connection.query('SELECT * FROM sub_com WHERE comId = ?', [req.params.com_id], (err, resp) => {
         if(err) console.log(err);
         else res.status(201).json(resp);

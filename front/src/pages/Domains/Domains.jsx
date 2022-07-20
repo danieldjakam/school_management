@@ -73,6 +73,7 @@ const Domains = () => {
                 <tr>
                     <th>{domainsTraductions[getLang()].name}</th>
                     <th>{domainsTraductions[getLang()].section}</th>
+                    <th>Nombre d'activites</th>
                     <th>{domainsTraductions[getLang()].action}</th>
                 </tr>
             </thead>
@@ -84,6 +85,11 @@ const Domains = () => {
                             <td>
                                 {
                                     domain.section_name
+                                }
+                            </td>
+                            <td>
+                                {
+                                    domain.total_activities
                                 }
                             </td>
                             <td style={{display: 'flex', justifyContent: 'space-between'}}>

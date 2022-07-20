@@ -86,7 +86,7 @@ const ClassBySection = () => {
                     return <div className="clas" key={id}>
                         <div className="top">
                             <div className="classAbs">
-                                {classs.name}
+                                {classs.name.slice(0, 8)}
                             </div>
                             <div className="qq">
                                 <span className="q">

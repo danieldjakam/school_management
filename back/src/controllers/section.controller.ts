@@ -11,11 +11,12 @@ module.exports.addSection = (req: any, res: any) => {
 }
 
 module.exports.getAllSection = (req, res) => {
-    req.connection.query('SELECT * FROM sections', (err, resp) => {
+    req.connection.query('SELECT *,(select count(id) from class where class.section = sections.id) as total_class FROM sections WHERE type != 3', (err, resp) => {
         if (err) res.status(401).json({success: false, message: 'Une erreur est survenue : \n '+err})
         else res.status(201).json(resp)
     })
 }
+
 
 module.exports.getOneSection = (req, res) => {
     req.connection.query('SELECT * FROM sections WHERE id = ?', [req.params.id], (err, resp) => {

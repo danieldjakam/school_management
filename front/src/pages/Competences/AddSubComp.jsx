@@ -30,8 +30,8 @@ const AddSubComp = ({error, setError, setIsSeq, comInfo}) => {
     ecrit: true,
     savEtre: true,
     pratique: false,
-    oraleOver: 5,
-    ecritOver: 5,
+    oraleOver: 20,
+    ecritOver: 10,
     savOver: 5,
     section: comInfo.section,
     pratiqueOver: 15,
@@ -76,12 +76,12 @@ const AddSubComp = ({error, setError, setIsSeq, comInfo}) => {
     <form onSubmit={(e) => {handleAdd(e)}}>
       <div className="card-content">
         <div className="field">
-          <div className="label">{ subjectTraductions[getLang()].subjectName }</div>
-          <input type="text" value={data.name} onChange={(e) => {setData(val => {return {...val, name: e.target.value}})}} placeholder={ subjectTraductions[getLang()].subjectName } />
+          <div className="label">{ subjectTraductions[getLang()].subName }</div>
+          <input type="text" value={data.name} onChange={(e) => {setData(val => {return {...val, name: e.target.value}})}} placeholder={ subjectTraductions[getLang()].subName } />
         </div> 
         <div className="field">
           <div className="label">{ subjectTraductions[getLang()].slug }</div>
-          <input type="text" value={data.slug} onChange={(e) => {setData(val => {return {...val, slug: e.target.value}})}} placeholder={ subjectTraductions[getLang()].slugName } />
+          <input type="text" value={data.slug} onChange={(e) => {setData(val => {return {...val, slug: e.target.value}})}} placeholder={ subjectTraductions[getLang()].slug } />
         </div> 
         <table className="table table-bordered">
               <thead className="table-dark" style={{textAlign :'center'}}>
@@ -101,7 +101,7 @@ const AddSubComp = ({error, setError, setIsSeq, comInfo}) => {
                   </td>
                   <td>
                     {
-                      data.orale ? <input type="number" value={data.oraleOver} min={5} max={20} onChange={(e) => {setData(val => {return {...val, oraleOver: e.target.value }})}} placeholder="Sur" />: <></>
+                      data.orale ? <input type="number" value={data.oraleOver} min={0} max={100} onChange={(e) => {setData(val => {return {...val, oraleOver: e.target.value }})}} placeholder="Sur" />: <></>
                     }
                   </td>
                 </tr>
@@ -114,7 +114,7 @@ const AddSubComp = ({error, setError, setIsSeq, comInfo}) => {
                   </td>
                   <td>
                     {
-                      data.ecrit ? <input type="number" value={data.ecritOver} min={5} max={20} onChange={(e) => {setData(val => {return {...val, ecritOver: e.target.value }})}} placeholder="Sur" />: <></>
+                      data.ecrit ? <input type="number" value={data.ecritOver} min={0} max={100} onChange={(e) => {setData(val => {return {...val, ecritOver: e.target.value }})}} placeholder="Sur" />: <></>
                     }
                   </td>
                 </tr>
@@ -127,7 +127,7 @@ const AddSubComp = ({error, setError, setIsSeq, comInfo}) => {
                   </td>
                   <td>
                     {
-                      data.savEtre ? <input type="number" value={data.savOver} min={2} max={20} onChange={(e) => {setData(val => {return {...val, savOver: e.target.value }})}} placeholder="Sur" />: <></>
+                      data.savEtre ? <input type="number" value={data.savOver} min={0} max={100} onChange={(e) => {setData(val => {return {...val, savOver: e.target.value }})}} placeholder="Sur" />: <></>
                     }
                   </td>
                 </tr>
@@ -140,7 +140,7 @@ const AddSubComp = ({error, setError, setIsSeq, comInfo}) => {
                   </td>
                   <td>
                     {
-                      data.pratique ? <input type="number" value={data.pratiqueOver} min={2} max={20} onChange={(e) => {setData(val => {return {...val, pratiqueOver: e.target.value }})}} placeholder="Sur" />: <></>
+                      data.pratique ? <input type="number" value={data.pratiqueOver} min={0} max={100} onChange={(e) => {setData(val => {return {...val, pratiqueOver: e.target.value }})}} placeholder="Sur" />: <></>
                     }
                   </td>
                 </tr>

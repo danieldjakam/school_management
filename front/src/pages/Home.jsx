@@ -29,17 +29,8 @@ function Home() {
                 setLoading(true)
                 const resp = await fetch(host+'/sections/all', {headers: {
                     'Authorization': sessionStorage.user
-                  }})
+                }})
                 let data = await resp.json();
-                data.forEach(r => {
-                    r.count = 0;
-                    fetch(host+'/sections/getNberOfClass/'+r.id, {headers: {
-                        'Authorization': sessionStorage.user
-                    }})
-                        .then(rr => rr.json())
-                        .then(tt => r.count = tt.message)
-                        .catch(e => setError(e));
-                })
                 setSections(data);
                 setLoading(false);
             }
@@ -88,11 +79,10 @@ function Home() {
                 {
                     loading ? <div className="error" style={{ position: 'absolute', top: '39%', left: '53%' }}>
                         <ReactLoading color="#fff" type="spin"/></div> : sections.length > 0? sections.map((section, id) => {
-                            console.log();
                         return <div className="clas" key={id}>
                             <div className="top">
                                 <div className="classAbs">
-                                    {section.name}
+                                    {section.name.slice(0, 6)}
                                 </div>
                                 <div className="qq">
                                     <span className="q">
@@ -112,10 +102,10 @@ function Home() {
                                 </div>
                                 <div className="qq">
                                     <span className="q">
-                                     {section.count}
+                                     {section.total_class}
                                     </span>
                                     <span className="r">
-                                        classe{ section.count > 1 ? 's' : ''}  
+                                        classe{ section.total_class > 1 ? 's' : ''}  
                                     </span>
                                 </div>
                             </div>

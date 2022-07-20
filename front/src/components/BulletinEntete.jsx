@@ -53,17 +53,17 @@ const BulletinEntete = ({student, currentClass, actualExam}) => {
 
             
             <div>
-            <table className='table table-light table-bordered table-striped' style={{marginLeft: '5vw', width: '90vw'}}>
+            <table className='table table-light table-bordered table-striped'>
             <thead style={{textAlign: 'center'}}>
                 <tr>
                     <th>{downloadTraductions[getLang()].nameAndSubname}</th>
-                    <th colSpan={3}>
+                    <th colSpan={5}>
                         {student.name} {student.subname}
                     </th>
                 </tr>
                 <tr>
-                    <th>{downloadTraductions[getLang()].birthday}</th>
-                    <th >
+                    <th colSpan={2}>{downloadTraductions[getLang()].birthday}</th>
+                    <th  colSpan={2}>
                         {
                             date
                         }
@@ -82,8 +82,10 @@ const BulletinEntete = ({student, currentClass, actualExam}) => {
                             currentClass.name
                         }
                     </th>
+                    <th>Effectif</th>
+                    <th>{currentClass.total_students}</th>
                     <th>{downloadTraductions[getLang()].teacher}</th>
-                    <th>{currentClass.tName} {currentClass.subname}</th>
+                    <th>{currentClass.teacher_name} {currentClass.teacher_subname}</th>
                 </tr>
             </thead>
             </table>

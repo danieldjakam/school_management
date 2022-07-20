@@ -106,20 +106,6 @@ const Exams = () => {
         )()
     }, []);
     useEffect(() => {
-        (
-            async () => {
-                setLoading(true)
-            }
-        )()
-    }, []);
-    useEffect(() => {
-        (
-            async () => {
-                setLoading(true)
-            }
-        )()
-    }, []);
-    useEffect(() => {
         let obj = [];
         students.forEach((student, index) => {
             const herNotes = notes.length > 0 ? notes.filter(n => n.student_id === student.id) : {}

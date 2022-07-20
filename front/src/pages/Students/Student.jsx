@@ -270,7 +270,7 @@ const Student = () => {
                                     loading ? <tr ><td colSpan={5} style={{justifyItems: 'center', paddingLeft: '50%'}}><ReactLoading color="#fff" type="cylon"/></td></tr> : exams.length > 0 ? exams.map((exam, index) => {
                                         return <tr key={index}>
                                             <td>{exam.name}</td>
-                                            <td><a style={{textDecoration: 'none', color: '#fff'}} href={`/exams/${exam.id}/${id}`}>{studentTraductions[getLang()].enterData}</a></td>
+                                            <td><a style={{textDecoration: 'none', color: '#fff'}} href={`/exams${classs.type}/${exam.id}/${id}`}>{studentTraductions[getLang()].enterData}</a></td>
                                             <td style={{display: 'flex', justifyContent: 'space-between'}}>
                                                 <button className="btn btn-warning" onClick={() => {setSeqId(exam.id); setIsEditSeq(v => !v)}}>Editer</button>
                                                 <button className="btn btn-danger" onClick={() => {deleteSeq(exam.id)}}> {loadingDel ? studentTraductions[getLang()].deleting : studentTraductions[getLang()].delete} </button>
@@ -298,7 +298,7 @@ const Student = () => {
                                     loading ? <tr ><td colSpan={5} style={{justifyItems: 'center', paddingLeft: '50%'}}><ReactLoading color="#fff" type="cylon"/></td></tr> : trims.length > 0 ? trims.map((trim, index) => {
                                         return <tr key={index}>
                                             <td>{trim.name}</td>
-                                            <td><a style={{textDecoration: 'none', color: '#fff'}} href={`/trims/${trim.id}/${id}`}>{studentTraductions[getLang()].seeData}</a></td>
+                                            <td><a style={{textDecoration: 'none', color: '#fff'}} href={`/trims${classs.type}/${trim.id}/${id}`}>{studentTraductions[getLang()].seeData}</a></td>
                                             <td style={{display: 'flex', justifyContent: 'space-between'}}>
                                                 <button className="btn btn-warning" onClick={() => {setTrimId(trim.id); setIsEditTrim(v => !v)}}>Editer</button>
                                                 <button className="btn btn-danger" onClick={() => {deleteTrim(trim.id)}}> {loadingDel ? studentTraductions[getLang()].deleting : studentTraductions[getLang()].delete} </button>
@@ -310,10 +310,10 @@ const Student = () => {
                         
                         <hr />
 
-                        <div style={{marginBottom: '10px'}}>
+                        {/* <div style={{marginBottom: '10px'}}>
                             <button onClick={() => {setIsAnnualExam(v => !v)}} className="btn btn-blue">{studentTraductions[getLang()].addAnnualExam}</button>
-                        </div>
-                        <table className="table table-dark table-bordered table-striped">
+                        </div> */}
+                        {/* <table className="table table-dark table-bordered table-striped">
                             <thead>
                                 <tr>
                                     <th>{studentTraductions[getLang()].name}</th>
@@ -334,7 +334,7 @@ const Student = () => {
                                         </tr> }) : <tr> <td colSpan={5} style={{textAlign: 'center'}}>{studentTraductions[getLang()].noAnnualExam} {studentTraductions[getLang()].doYou} <button onClick={() => {setIsAnnualExam(v => !v)}} className="btn btn-blue">{studentTraductions[getLang()].add}</button> ?</td> </tr>
                                 }
                             </tbody>
-                        </table>                                                                
+                        </table>                                                                 */}
 
                         <hr />
                         </>
@@ -362,11 +362,9 @@ const Student = () => {
 
             </nav>
             <nav className=" " style={{padding: '10px 10px'}}>
-                <div className="collapse navbar-collapse" id="navbarNav">
-                <ul className="navbar-nav" style={{fontSize: '1.3rem'}}>
+                <div className="colla" id="navbarNav" style={{padding: '10px 10px', display:"flex", justifyContent:'space-between'}}>
                     <a target={'_blank'} rel='noreferrer' href={host+'/download/csv/students/'+id} className="btn btn-secondary">{studentTraductions[getLang()].downloadCsv}</a>
                     <a target={'_blank'} rel='noreferrer' style={{marginLeft: '30px'}} href={host+'/download/pdf/students/'+id} className="btn btn-secondary">{studentTraductions[getLang()].downloadPdf}</a>
-                </ul>
                 </div>
             </nav>
         <table className="table table-dark table-bordered table-striped">
@@ -400,7 +398,7 @@ const Student = () => {
                                         <td>{id + 1}</td>
                                         <td>{student.name}</td>
                                         <td>{student.subname}</td>
-                                        <td>{student.sex === 'm' ? studentTraductions[getLang()].m : studentTraductions[getLang()].name}</td>
+                                        <td>{student.sex === 'm' ? studentTraductions[getLang()].m : studentTraductions[getLang()].f}</td>
                                         <td>{date}</td>
                                         <td>{classs.name}</td>
                                         {

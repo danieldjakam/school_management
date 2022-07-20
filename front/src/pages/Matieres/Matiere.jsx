@@ -96,7 +96,7 @@ const Matiere = () => {
                                 <button onClick = { () => {setId(matiere.id); setIsEditMatiere(v => !v  )}} className="btn btn-warning"> {subjectTraductions[getLang()].edit} </button>
                                 <button className="btn btn-danger" onClick={() => {deleteMatiere(matiere.id)}}> {loadingDel ? 'Suppression..' : 'Supprimer'} </button>
                             </td>
-                        </tr> }) : <tr> <td colSpan={3} align='center'> {subjectTraductions[getLang()].nohavesubject + ' ' +subjectTraductions[getLang()].doyou} <button onClick={() => {setIsAddMatiere(v => !v)}} className="btn btn-blue"> {subjectTraductions[getLang()].add} </button> </td> </tr>
+                        </tr> }) : <tr> <td colSpan={4} align='center'> {subjectTraductions[getLang()].nohavesubject + ' ' +subjectTraductions[getLang()].doyou} <button onClick={() => {setIsAddMatiere(v => !v)}} className="btn btn-blue"> {subjectTraductions[getLang()].add} </button> </td> </tr>
                 }
             </tbody>
         </table>

@@ -79,7 +79,7 @@ const Class = () => {
                     return <div className="clas" key={id}>
                         <div className="top">
                             <div className="classAbs">
-                                {classs.name}
+                                {classs.name.slice(0, 8)}
                             </div>
                             <div className="qq">
                                 <span className="q">
@@ -103,6 +103,14 @@ const Class = () => {
                                 </span>
                                 <span className="r">
                                     {classs.level}
+                                </span>
+                            </div>
+                            <div className="qq">
+                                <span className="q">
+                                    {classs.total_students}
+                                </span>
+                                <span className="r">
+                                    élève{classs.total_students > 1 ? 's' : ''}
                                 </span>
                             </div>
                         </div>

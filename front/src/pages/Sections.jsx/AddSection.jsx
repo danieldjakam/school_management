@@ -19,10 +19,10 @@ const AddSection = ({error, setError, setIsAddSection}) => {
             id: 2,
             indication: 'maternelle fr'
         },
-        {
-            id: 3,
-            indication: 'Primaire fr'
-        },
+        // {
+        //     id: 3,
+        //     indication: 'Primaire fr'
+        // },
         {
             id: 4,
             indication: 'Primaire en'

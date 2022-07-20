@@ -50,6 +50,7 @@ app.use('/sections', sectionRoutes);
 app.use('/sub_comp', subComRoutes);
 app.use('/domains', domainsRoutes);
 app.use('/activities', activitiesRoutes);
+app.use('/public', express.static('public'));
 
 app.listen(process.env.PORT, () => {
     console.log(`Listenning on ${process.env.PORT}`);

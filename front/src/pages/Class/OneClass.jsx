@@ -33,7 +33,7 @@ function OneClass({clas, key}) {
   return <div className="clas" key={key}>
             <div className="top">
                 <div className="classAbs">
-                    {clas.name}
+                    {clas.name.slice(0, 8)}
                 </div>
                 <div className="qq">
                     <span className="q">

@@ -131,7 +131,7 @@ const Teachers = () => {
                                     </span>
                                     <span className="r">
                                         {
-                                            teacher.section === 'ma' ? teacherTraductions[getLang()].mat : teacher.section === 'fr' ? teacherTraductions[getLang()].fr : teacherTraductions[getLang()].en
+                                            teacher.section_name
                                         }    
                                     </span>
                                 </div>

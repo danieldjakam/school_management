@@ -73,6 +73,7 @@ const Comp = () => {
                 <tr>
                     <th>{comTraductions[getLang()].name}</th>
                     <th>{comTraductions[getLang()].section}</th>
+                    <th>Nombre</th>
                     <th>{comTraductions[getLang()].action}</th>
                 </tr>
             </thead>
@@ -86,12 +87,17 @@ const Comp = () => {
                                     com.section_name
                                 }
                             </td>
+                            <td>
+                                {
+                                    com.total_sub_com
+                                }
+                            </td>
                             <td style={{display: 'flex', justifyContent: 'space-between'}}>
                                 <Link to={'/competences/'+com.id} className="btn btn-primary">Sous competences </Link>
                                 <button onClick = { () => {setCompToEditId(com.id); setIsEditComp(v => !v  )}} className="btn btn-warning"> {comTraductions[getLang()].edit} </button>
                                 <button className="btn btn-danger" onClick={() => {deleteClass(com.id)}}> {loadingDel ? 'Suppression..' : 'Supprimer'} </button>
                             </td>
-                        </tr> }) : <tr> {comTraductions[getLang()].nohaveclass + ' ' +comTraductions[getLang()].doyou} <button onClick={() => {setIsAddComp(v => !v)}} className="btn btn-blue"> {comTraductions[getLang()].add} </button></tr>
+                        </tr> }) : <tr> <td colSpan={4} align='center'>{comTraductions[getLang()].nohavecom + ' ' +comTraductions[getLang()].doyou} <button onClick={() => {setIsAddComp(v => !v)}} className="btn btn-blue"> {comTraductions[getLang()].add} </button></td> </tr>
                 }
             </tbody>
         </table>

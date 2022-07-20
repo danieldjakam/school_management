@@ -16,12 +16,19 @@ module.exports.store = async (req : any, res : any) => {
 }
 
 module.exports.all = (req : any, res : any) => {
-    req.connection.query('SELECT domains.name, domains.id, sections.name as section_name FROM domains JOIN sections ON sections.id = domains.section', (err, resp) => {
+    req.connection.query('SELECT domains.name, domains.id, sections.name as section_name, (SELECT COUNT(id) FROM activities WHERE activities.domainId = domains.id) as total_activities FROM domains JOIN sections ON sections.id = domains.section', (err, resp) => {
         if(err) console.log(err);
         else res.status(201).json(resp);
     })
 }
 
+module.exports.all2 = (req, res) => {
+    const {type} = req.params;
+    req.connection.query('SELECT domains.name, domains.id, (SELECT COUNT(id) FROM activities WHERE activities.domainId = domains.id) as total_activities FROM domains JOIN sections ON sections.id = domains.section WHERE sections.type = ?', [type], (err, resp) => {
+        if(err) console.log(err)
+        else res.status(201).json(resp);
+    })
+}
 module.exports.one = (req : any, res : any) => {
     req.connection.query('SELECT * FROM domains WHERE id = ?', [req.params.id], (err, resp) => {
         if(err) console.log(err);

@@ -42,7 +42,7 @@ module.exports.updateClass = (req : any, res : any) => {
 //     })
 // }
 module.exports.getAllClass = (req : any, res : any) => {
-    req.connection.query('SELECT class.name as name, class.id, class.level, sections.name as sName FROM class LEFT JOIN sections ON sections.id = class.section WHERE school_id = ?', [req.payload.school_id], (err: any, resp : any) => {
+    req.connection.query('SELECT class.name as name, class.id, class.level, sections.name as sName, (select count(id) FROM students where students.class_id = class.id) as total_students  FROM class LEFT JOIN sections ON sections.id = class.section WHERE school_id = ? AND sections.type != 3', [req.payload.school_id], (err: any, resp : any) => {
         if (err) {
             console.log(err);
         } else {
@@ -51,7 +51,7 @@ module.exports.getAllClass = (req : any, res : any) => {
     })
 }
 module.exports.getAllOClass = (req : any, res : any) => {
-    req.connection.query('SELECT class.name as name, class.id, class.level, sections.name as sName FROM class LEFT JOIN sections ON sections.id = class.section WHERE school_id = ? AND section = ?', [req.payload.school_id, req.params.section_id], (err: any, resp : any) => {
+    req.connection.query('SELECT class.name as name, class.id, class.level, sections.name as sName, (select count(id) FROM students where students.class_id = class.id) as total_students  FROM class LEFT JOIN sections ON sections.id = class.section WHERE school_id = ? AND section = ? AND sections.type != 3', [req.payload.school_id, req.params.section_id], (err: any, resp : any) => {
         if (err) {
             console.log(err);
         } else {
@@ -67,8 +67,9 @@ module.exports.getSpecialClass = (req : any, res : any) => {
     })
 }
 module.exports.getOneClass = (req : any, res : any) => {
-    req.connection.query('SELECT * FROM class WHERE id = ? AND school_id = ?', [req.params.id, req.payload.school_id], (err: any, resp : any) => {
-        res.status(201).json(resp[0])
+    req.connection.query('SELECT class.name, class.id, class.level, sections.type, teachers.name as teacher_name, teachers.subname as teacher_subname, (select count(id) FROM students where students.class_id = class.id) as total_students   FROM class JOIN sections ON sections.id = class.section JOIN teachers ON teachers.class_id = class.id WHERE class.id = ? AND class.school_id = ?', [req.params.id, req.payload.school_id], (err: any, resp : any) => {
+        if(err) console.log(err);
+        res.status(201).json(resp[0]);
     })
 }
 module.exports.deleteClass = (req : any, res : any) => {

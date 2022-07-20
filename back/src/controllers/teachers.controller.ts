@@ -117,7 +117,7 @@ module.exports.updateTeacher = (req, res) => {
 }
 
 module.exports.getAllTeachers = (req, res) => {
-    req.connection.query('SELECT teachers.name, teachers.password, teachers.matricule, class.name as className, teachers.id, teachers.subname FROM teachers LEFT JOIN class ON class.id = teachers.class_id WHERE class.school_id = ?', [req.payload.school_id], (err, resp) => {
+    req.connection.query('SELECT teachers.name, teachers.password, teachers.matricule, sections.name as section_name, class.name as className, teachers.id, teachers.subname FROM teachers LEFT JOIN class ON class.id = teachers.class_id JOIN sections ON sections.id = class.section WHERE class.school_id = ?', [req.payload.school_id], (err, resp) => {
         if(err) console.log(err);
         res.status(201).json(resp)
     })

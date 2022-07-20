@@ -19,14 +19,14 @@ module.exports.store = async (req, res) => {
 }
 
 module.exports.some = (req, res ) => {
-    req.connection.query('SELECT activities.name, activities.id, activities.appreciationsNber as nber, sections.name as section_name FROM activities JOIN sections ON sections.id = activities.section WHERE domainId = ?', [req.params.id], (err, resp) => {
+    req.connection.query('SELECT activities.name, activities.appreciationsNber, activities.id, activities.appreciationsNber as nber, sections.name as section_name FROM activities JOIN sections ON sections.id = activities.section WHERE domainId = ?', [req.params.id], (err, resp) => {
         if(err) console.log(err)
         else res.status(201).json(resp);
     })
 }
 
 module.exports.all = (req, res) => {
-    req.connection.query('SELECT activities.name, activities.id, activities.over, sections.name as section_name FROM activities JOIN sections ON sections.id = activities.section', (err, resp) => {
+    req.connection.query('SELECT activities.name, activities.appreciationsNber, activities.id, activities.domainId, activities.appreciationsNber as nber, sections.name as section_name FROM activities JOIN sections ON sections.id = activities.section', (err, resp) => {
         if(err) console.log(err)
         else res.status(201).json(resp);
     })

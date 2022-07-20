@@ -23,7 +23,7 @@ function SearchView() {
     (
       async () => {
           setLoading(true)
-          const resp = await fetch(`${host+ sessionStorage.stat === 'ad' ? '/students/getAll' : '/students/getOrdonnedStudents/'+sessionStorage.classId}`, {headers: {
+          const resp = await fetch(`${host+'/students/getAll'}`, {headers: {
               'Authorization': sessionStorage.user
             }})
           const data = await resp.json();
@@ -77,7 +77,7 @@ function SearchView() {
 			const resultsStudentsByName = students.filter(student => student.name.toLowerCase().includes(searchValue.toLocaleLowerCase()))
 			const resultsStudentsBySubname = students.filter(student => student.subname.toLowerCase().includes(searchValue.toLocaleLowerCase()))
 			const finallyStudentsResults = [...new Set([...resultsStudentsByName, ...resultsStudentsBySubname])]
-			setResults(finallyStudentsResults)
+			setResults(students)
 			break;
 		
 		case 'c':

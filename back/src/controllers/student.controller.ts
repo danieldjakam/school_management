@@ -38,7 +38,7 @@ module.exports.addStudent = (req, res) => {
         else{
             req.connection.query('SELECT year_school FROM settings WHERE school_id = ?', [req.payload.school_id], (rerr, respe) => {
                 const {year_school} = respe[0];
-                req.connection.query('INSERT INTO students(id, name, subname, class_id, sex, birthday, email, phone_number, school_year, status, fatherName, profession, birthday_place, school_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [req.jwt.sign(name+year_school, req.env.SECRET), name, subname, id, sex, birthdy, email, phone_number.toString(), year_school, status, t, profession, birthday, req.payload.school_id], (err, resp) => {
+                req.connection.query('INSERT INTO students(name, subname, class_id, sex, birthday, email, phone_number, school_year, status, fatherName, profession, birthday_place, school_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [name, subname, id, sex, birthdy, email, phone_number.toString(), year_school, status, t, profession, birthday, req.payload.school_id], (err, resp) => {
                     if(err) console.log(err);
                     else res.status(201).json({success: true})
                 })
@@ -91,11 +91,10 @@ module.exports.getAllStudent = (req, res) => {
 
 module.exports.getSpecificStudents = (req, res) => {
     req.connection.query('SELECT year_school FROM settings WHERE school_id = ?', [req.payload.school_id], (rerr, respe) => {
-        console.log(respe);
         const {year_school} = respe[0]
         
         req.connection.query('SELECT * FROM students WHERE class_id = ? AND school_year = ? AND status = "old" AND school_id = ? ORDER BY name ASC', [req.params.id, year_school, req.payload.school_id] , (err, oldStudents) => {
-
+            
             if(err) console.log(err);
             else {
                 req.connection.query('SELECT * FROM students WHERE class_id = ? AND school_year = ? AND status = "new" AND school_id = ?', [req.params.id, year_school, req.payload.school_id] , (err, newStudents) => {
@@ -103,7 +102,6 @@ module.exports.getSpecificStudents = (req, res) => {
                     if (newStudents.length > 0) {
                         resp = [...oldStudents, ...newStudents]
                     }
-                    
                     else{
                         resp = [...oldStudents]
                     }

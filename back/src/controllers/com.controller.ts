@@ -16,7 +16,7 @@ module.exports.addCompetence = async (req : any, res : any) => {
 }
 
 module.exports.getAllCompetence = (req : any, res : any) => {
-    req.connection.query('SELECT com.name, com.id, sections.name as section_name FROM com JOIN sections ON sections.id = com.section', (err, resp) => {
+    req.connection.query('SELECT com.name, com.id, sections.name as section_name, (SELECT COUNT(id) FROM sub_com WHERE sub_com.comId = com.id) as total_sub_com FROM com JOIN sections ON sections.id = com.section', (err, resp) => {
         if(err) console.log(err);
         else res.status(201).json(resp);
     })

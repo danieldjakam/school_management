@@ -10,7 +10,7 @@ const AddMatiere = ({error, setError, setIsSeq}) => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState({
     name: '',
-    over: 0,
+    over: 20,
     section: parseInt(sessionStorage.getItem('section_id')),
   })
 

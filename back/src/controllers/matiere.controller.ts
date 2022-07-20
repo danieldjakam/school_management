@@ -4,7 +4,7 @@ module.exports.store = async (req, res) => {
         if (name.length < 3 || name.length > 255) {
             res.status(401).json({success: false, message: "Le nom doit etre compris entre 5 et 255 caracteres !!"})
         }
-        else if (over < 0 || over > 20) {
+        else if (over < 0 || over > 200) {
             res.status(401).json({success: false, message: "Le total la matiere doit etre compris entre 0 et 20 "})
         }
         else{
@@ -17,9 +17,17 @@ module.exports.store = async (req, res) => {
         res.status(401).json({success: false, message: "Remplir tous les champs svp !!"})
     }
 }
-
+ 
 module.exports.all = (req, res) => {
     req.connection.query('SELECT subjects.name, subjects.id, subjects.over, sections.name as section_name FROM subjects JOIN sections ON sections.id = subjects.section', (err, resp) => {
+        if(err) console.log(err)
+        else res.status(201).json(resp);
+    })
+}
+
+module.exports.all2 = (req, res) => {
+    const {type} = req.params;
+    req.connection.query('SELECT subjects.name, subjects.id, subjects.over FROM subjects JOIN sections ON sections.id = subjects.section WHERE sections.type = ?', [type], (err, resp) => {
         if(err) console.log(err)
         else res.status(201).json(resp);
     })
@@ -38,7 +46,7 @@ module.exports.update = (req, res) => {
         if (name.length < 3 || name.length > 255) {
             res.status(401).json({success: false, message: "Le nom doit etre compris entre 5 et 255 caracteres !!"})
         }
-        else if (over < 0 || over > 20) {
+        else if (over < 0 || over > 200) {
             res.status(401).json({success: false, message: "Le total la matiere doit etre compris entre 0 et 20 "})
         }
         else{

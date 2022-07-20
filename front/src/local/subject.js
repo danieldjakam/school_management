@@ -35,7 +35,8 @@ export const subjectTraductions = {
         pratic: 'Pratique',
         addSubCom: 'Ajouter une sous competence',
         select: 'Sélectionné',
-        addCom: 'Veuilez ajouter des competences pour continuer'
+        addCom: 'Veuilez ajouter des competences pour continuer',
+        subName: 'Nom de la sous compétence',
     },
     fr: {
         addSubject: 'Ajouter une matière',
@@ -73,6 +74,7 @@ export const subjectTraductions = {
         savoirEtre: 'Savoir Être',
         pratic: 'Pratique',
         select: 'Sélectionné',
-        addCom: 'Veuilez ajouter des competences pour continuer'
+        addCom: 'Veuilez ajouter des competences pour continuer',
+        subName: 'Nom de la sous compétence',
     }
 }
